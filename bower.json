@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "angular-moment": "^0.10.3",
-    "moment": "^2.13.0"
+    "moment": "^2.13.0",
+    "ion-datetime-picker": "^0.1.3"
   }
 }

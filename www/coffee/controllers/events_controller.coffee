@@ -2,7 +2,8 @@ class EventsController
   constructor: ($scope, $state, $stateParams, UserService, Event) ->
     @scope = $scope
     @state = $state
-    @stateParams = $stateParams
+    @calendar = $stateParams.calendar
+    @service_id = $stateParams.id
     @UserService = UserService
     @Event = Event
 
@@ -16,11 +17,21 @@ class EventsController
       { value: 'booked', label: 'Booked' }
   ]
 
-  add: ->
-    @event['service_id'] = @stateParams['id']
+  modifyDate: (date) =>
+    date_moment= moment(date)
+
+    moment(@calendar.selectedDate)
+      .hours(date_moment.hours())
+      .minutes(date_moment.minutes())
+      .format(@calendar.dateTimeFormat)
+
+  save: =>
+    @event['service_id'] = @service_id
+    @event.start_at = @modifyDate(@event.start_at)
+    @event.end_at = @modifyDate(@event.end_at)
 
     @Event.$r.save(@event).$promise.then(((response) =>
-      @service = response.service
+      @state.go('service.calendar')
     ), (refejcted) ->
       console.log('rejected')
     )

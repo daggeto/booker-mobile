@@ -29,7 +29,7 @@ CalendarController = (function() {
       start_at: this.calendar.toDateFormat(date)
     }).$promise.then(((function(_this) {
       return function(response) {
-        return _this.events = response;
+        return _this.calendar.events = response;
       };
     })(this)), function(refejcted) {
       return console.log('rejected');
@@ -55,13 +55,17 @@ CalendarController = (function() {
 
 app.controller('CalendarController', CalendarController);
 
-var EventsController;
+var EventsController,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 EventsController = (function() {
   function EventsController($scope, $state, $stateParams, UserService, Event) {
+    this.save = bind(this.save, this);
+    this.modifyDate = bind(this.modifyDate, this);
     this.scope = $scope;
     this.state = $state;
-    this.stateParams = $stateParams;
+    this.calendar = $stateParams.calendar;
+    this.service_id = $stateParams.id;
     this.UserService = UserService;
     this.Event = Event;
     this.event = Event.$new;
@@ -81,11 +85,19 @@ EventsController = (function() {
     }
   ];
 
-  EventsController.prototype.add = function() {
-    this.event['service_id'] = this.stateParams['id'];
+  EventsController.prototype.modifyDate = function(date) {
+    var date_moment;
+    date_moment = moment(date);
+    return moment(this.calendar.selectedDate).hours(date_moment.hours()).minutes(date_moment.minutes()).format(this.calendar.dateTimeFormat);
+  };
+
+  EventsController.prototype.save = function() {
+    this.event['service_id'] = this.service_id;
+    this.event.start_at = this.modifyDate(this.event.start_at);
+    this.event.end_at = this.modifyDate(this.event.end_at);
     return this.Event.$r.save(this.event).$promise.then(((function(_this) {
       return function(response) {
-        return _this.service = response.service;
+        return _this.state.go('service.calendar');
       };
     })(this)), function(refejcted) {
       return console.log('rejected');

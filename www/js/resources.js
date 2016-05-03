@@ -3,6 +3,8 @@ app.factory('Calendar', function(moment) {
   return Calendar = (function() {
     var dateFormat, dayFormat, month, weekDayFormat;
 
+    Calendar.dateTimeFormat = 'YYYY-MM-DD H:mm';
+
     dateFormat = 'YYYY-MM-DD';
 
     dayFormat = 'DD';
@@ -15,6 +17,7 @@ app.factory('Calendar', function(moment) {
       this.currentDate = moment().startOf('day');
       this.selectedDate = moment(this.currentDate);
       this.startOfWeek = moment(this.currentDate).startOf('isoweek');
+      this.events = [];
       this.recalculateWeek();
     }
 

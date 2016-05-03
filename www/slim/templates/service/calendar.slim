@@ -5,7 +5,7 @@ ion-view
     h1.title Calendar
     .buttons
       a.ion-ios-plus-outline.b-action-button.padding[
-        ui-sref="service.add_event({ id: vm.service.id })"
+        ui-sref="service.add_event({ id: vm.service.id, calendar: vm.calendar })"
         ng-show="vm.showIosAddButton()"
       ]
   ion-content.padding.calendar[scroll="false"]
@@ -31,9 +31,13 @@ ion-view
     .row
       ion-lists.calendar__list.center[can-swipe="true"]
         ion-item.calendar__event.col.col-center[
-          ng-repeat="event in vm.events"
+          ng-repeat="event in vm.calendar.events"
           class="calendar__event--{{event.status}}"
         ]
           | {{event.description}}
-    button.button.button-float[ng-click="vm.addEvent()" ng-show="android"]
+    button.button.button-float[
+      ng-click="vm.addEvent()"
+      ng-show="android"
+      ui-sref="service.add_event({ id: vm.service.id, calendar: vm.calendar })"
+      ]
       i.icon.ion-plus-round

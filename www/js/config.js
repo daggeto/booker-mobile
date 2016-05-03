@@ -34,6 +34,9 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     }
   }).state('service.add_event', {
     url: '/add_event',
+    params: {
+      calendar: {}
+    },
     views: {
       calendar: {
         templateUrl: 'templates/calendar/add_event.html',

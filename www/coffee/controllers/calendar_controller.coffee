@@ -24,7 +24,7 @@ class CalendarController
       service_id: @service.id
       start_at: @calendar.toDateFormat(date)
     ).$promise.then(((response) =>
-      @events = response
+      @calendar.events = response
     ), (refejcted) ->
       console.log('rejected')
     )

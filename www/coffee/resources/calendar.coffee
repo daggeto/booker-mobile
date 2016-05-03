@@ -1,5 +1,6 @@
 app.factory('Calendar', (moment)->
   class Calendar
+    @dateTimeFormat = 'YYYY-MM-DD H:mm'
     dateFormat = 'YYYY-MM-DD'
     dayFormat = 'DD'
     weekDayFormat = 'ddd'
@@ -9,6 +10,7 @@ app.factory('Calendar', (moment)->
       @currentDate = moment().startOf('day')
       @selectedDate = moment(@currentDate)
       @startOfWeek = moment(@currentDate).startOf('isoweek')
+      @events = []
       @recalculateWeek()
 
     nextWeek: ->

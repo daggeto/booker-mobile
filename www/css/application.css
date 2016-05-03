@@ -13,6 +13,9 @@
 .pull-right {
   float: right; }
 
+.align-right {
+  text-align: right; }
+
 .center {
   margin-left: auto;
   margin-right: auto;
