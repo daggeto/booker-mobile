@@ -1,0 +1,35 @@
+ion-view
+  ion-header-bar[align-title="center"]
+    .buttons
+      a.button.icon-left.ion-chevron-left.button-clear.button-dark[ng-click="vm.back()"] Back
+    h1.title Settings
+    .buttons
+      a.ion-ios-checkmark-outline.b-action-button.padding[
+        ng-click="vm.save()"
+        ng-show="vm.showIosSaveButton()"
+      ]
+  ion-content[scroll="false"]
+    .list
+      label.item.item-input.item-stacked-label.padding
+        span.input-label Name
+        input[type="text" ng-model="vm.service.name"]
+      label.item.item-select.padding
+        span.input-label Duration
+        select[
+          ng-model="vm.service.duration"
+          ng-options="dur.value as dur.label for dur in vm.durations"]
+
+      label.item.item-input.item-stacked-label.padding
+        span.input-label Price
+        input[type="text" ng-model="vm.service.price"]
+
+      label.item.item-input.item-stacked-label.padding
+        span.input-label Phone Number
+        input[type="text" ng-model="vm.service.phone"]
+
+      label.item.item-input.item-stacked-label.padding
+        span.input-label Address
+        input[type="text" ng-model="vm.service.address"]
+
+    button.button.button-float[ng-click="vm.save()" ng-show="android"]
+      i.icon.ion-checkmark-round

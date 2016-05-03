@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+html
+  head
+    meta[charset="utf-8"]
+    title Todo
+    meta[name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width"]
+
+    link[href="css/ionic.app.css" rel="stylesheet"]
+    link[href="css/application.css" rel="stylesheet"]
+
+    script[src="lib/ionic/js/ionic.bundle.js"]
+    script[src="lib/ionic/js/angular/angular-resource.min.js"]
+    script[src="lib/node_modules/moment/moment.js"]
+    script[src="lib/node_modules/angular-moment/angular-moment.js"]
+
+    script[src="js/application.js"]
+    script[src="js/config.js"]
+    script[src="js/controllers.js"]
+    script[src="js/services.js"]
+    script[src="js/resources.js"]
+    script[src="js/constants.js"]
+
+    script[src="cordova.js"]
+  body[ng-app="booker" ng-controller="MainController"]
+    ion-nav-view[animation="slide-left-right"]

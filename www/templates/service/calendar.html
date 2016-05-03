@@ -1,0 +1,38 @@
+<ion-view><ion-header-bar align-title="center">
+    <div class="buttons">
+      <a class="button icon-left ion-chevron-left button-clear button-dark" ng-click="vm.back()">Back</a>
+    </div>
+    <h1 class="title">
+      Calendar
+    </h1>
+    <div class="buttons">
+      <a class="ion-ios-plus-outline b-action-button padding" ng-show="vm.showIosAddButton()" ui-sref="service.add_event({ id: vm.service.id })"></a>
+    </div>
+  </ion-header-bar><ion-content class="padding calendar" scroll="false">
+    <div class="row calendar__month">
+      <div class="col">
+        {{ vm.calendar.month() }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-center" ng-click="vm.calendar.previousWeek()">
+        <div class="ion-chevron-left calendar__arrow pull-right"></div>
+      </div>
+      <div class="col">
+        <div class="button-bar">
+          <div class="button calendar__day" ng-class="{
+&#39;calendar__day--active&#39;: vm.calendar.isDateSelected(day.moment),
+&#39;calendar__day--current&#39;: vm.calendar.isCurrent(day.moment)
+}" ng-click="vm.selectDate(day.moment)" ng-repeat="day in vm.calendar.selectedWeek">
+            {{ day.number }}
+          </div>
+        </div>
+      </div>
+      <div class="col col-center" ng-click="vm.calendar.nextWeek()">
+        <div class="ion-chevron-right calendar__arrow pull-left"></div>
+      </div>
+    </div>
+    <div class="row">
+      <ion-lists can-swipe="true" class="calendar__list center"><ion-item class="calendar__event col col-center calendar__event--{{event.status}}" ng-repeat="event in vm.events">{{event.description}}</ion-item></ion-lists>
+    </div>
+    <button class="button button-float" ng-click="vm.addEvent()" ng-show="android"><i class="icon ion-plus-round"></i></button></ion-content></ion-view>

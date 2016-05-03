@@ -1,0 +1,54 @@
+$day-width: 40px;
+$day-padding: 0 5px !important;
+$list-width: 80%;
+$event-free-color: #8BC34A;
+$event-pending-color: #FFC107;
+$event-booked-color: #F44336;
+
+.calendar {
+  &__month {
+    text-align: center;
+  }
+
+  &__day {
+    font-size: $font-small;
+    min-width: $day-width;
+    min-height: $day-width;
+    padding: $day-padding;
+
+    &--active {
+      background-color: #e5e5e5;
+    }
+
+    &--current {
+      color: red;
+    }
+  }
+
+  &__list {
+    width: $list-width;
+  }
+
+  &__event {
+    margin: $size-default 0;
+    padding: $size-default;
+
+    &--free {
+      background-color: $event-free-color;
+    }
+
+    &--pending {
+      background-color: $event-pending-color;
+    }
+
+    &--booked {
+      background-color: $event-booked-color;
+    }
+  }
+
+  &__arrow {
+    font-size: $font-default
+  }
+
+
+}

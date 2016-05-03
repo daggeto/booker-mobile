@@ -1,0 +1,39 @@
+ion-view
+  ion-header-bar[align-title="center" ]
+    .buttons
+      a.button.icon-left.ion-chevron-left.button-clear.button-dark[ng-click="vm.back()"] Back
+    h1.title Calendar
+    .buttons
+      a.ion-ios-plus-outline.b-action-button.padding[
+        ui-sref="service.add_event({ id: vm.service.id })"
+        ng-show="vm.showIosAddButton()"
+      ]
+  ion-content.padding.calendar[scroll="false"]
+    .row.calendar__month
+      .col {{ vm.calendar.month() }}
+    .row
+      .col.col-center[ng-click="vm.calendar.previousWeek()"]
+        .ion-chevron-left.calendar__arrow.pull-right
+      .col
+        .button-bar
+          .button.calendar__day[
+            ng-repeat="day in vm.calendar.selectedWeek"
+            ng-class="{
+              'calendar__day--active': vm.calendar.isDateSelected(day.moment),
+              'calendar__day--current': vm.calendar.isCurrent(day.moment)
+              }"
+            ng-click="vm.selectDate(day.moment)"
+          ]
+            | {{ day.number }}
+
+      .col.col-center[ng-click="vm.calendar.nextWeek()"]
+        .ion-chevron-right.calendar__arrow.pull-left
+    .row
+      ion-lists.calendar__list.center[can-swipe="true"]
+        ion-item.calendar__event.col.col-center[
+          ng-repeat="event in vm.events"
+          class="calendar__event--{{event.status}}"
+        ]
+          | {{event.description}}
+    button.button.button-float[ng-click="vm.addEvent()" ng-show="android"]
+      i.icon.ion-plus-round

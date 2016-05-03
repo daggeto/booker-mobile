@@ -1,0 +1,36 @@
+ion-view[title="Add Event"]
+  ion-nav-bar
+    ion-nav-back-button.button-clear
+    i.ion-arrow-left-c Back
+
+  ion-nav-buttons[side="right"]
+    a.ion-ios-plus-outline.b-action-button.padding[
+      ng-click="vm.add()"
+      ng-show="vm.showIosAddButton()"
+    ]
+  ion-content[scroll="false"]
+    .list
+      label.item.item-input.item-stacked-label.padding
+        span.input-label Description
+        input[type="text" ng-model="vm.event.description"]
+      label.item.item-select.padding
+        span.input-label Status
+        select[
+          ng-model="vm.event.status"
+          ng-options="status.value as status.label for status in vm.statuses"]
+      /
+      / label.item.item-input.item-stacked-label.padding
+      /   span.input-label Price
+      /   input[type="text" ng-model="vm.service.price"]
+      /
+      / label.item.item-input.item-stacked-label.padding
+      /   span.input-label Phone Number
+      /   input[type="text" ng-model="vm.service.phone"]
+      /
+      / label.item.item-input.item-stacked-label.padding
+      /   span.input-label Address
+      /   input[type="text" ng-model="vm.service.address"]
+
+
+    button.button.button-float[ng-click="vm.add()" ng-show="android"]
+      i.icon.ion-plus-round

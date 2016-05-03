@@ -1,0 +1,10 @@
+{
+  "name": "booker-mobile",
+  "app_id": "",
+	"gulpStartupTasks": [
+		"sass",
+		"coffee",
+		"slim",
+		"watch"
+	]
+}

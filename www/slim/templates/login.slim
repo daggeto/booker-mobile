@@ -1,0 +1,11 @@
+ion-view[name="login-view"]
+  ion-content
+    div[class="list"]
+      label[class="item item-input item-floating-label"]
+        span[class="input-label"] Email
+        input[type="email" placeholder="Email" ng-model="data.email"]
+      label[class="item item-input item-floating-label"]
+        span[class="input-label"] Password
+        input[type="password" placeholder="Password" ng-model="data.password"]
+    div[class="padding"]
+      button[class="button button-block button-calm" ng-click="login(data)"] Login
