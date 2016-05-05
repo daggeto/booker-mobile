@@ -8,9 +8,9 @@ ion-view
         ui-sref="service.add_event({ id: vm.service.id, calendar: vm.calendar })"
         ng-show="vm.showIosAddButton()"
       ]
-  ion-content.padding.calendar[scroll="false"]
+  ion-content.padding.calendar
     .row.calendar__month
-      .col {{ vm.calendar.month() }}
+      .col {{ vm.calendar.startOfWeek | amDateFormat: 'MMMM' }}
     .row
       .col.col-center[ng-click="vm.calendar.previousWeek()"]
         .ion-chevron-left.calendar__arrow.pull-right
@@ -34,7 +34,7 @@ ion-view
           ng-repeat="event in vm.calendar.events"
           class="calendar__event--{{event.status}}"
         ]
-          | {{event.description}}
+          | {{event.start_at | amDateFormat: 'HH:mm' }}
     button.button.button-float[
       ng-click="vm.addEvent()"
       ng-show="android"

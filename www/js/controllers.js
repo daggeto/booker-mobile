@@ -1,7 +1,7 @@
 var CalendarController;
 
 CalendarController = (function() {
-  function CalendarController($scope, $state, $stateParams, UserService, Event, Calendar) {
+  function CalendarController($scope, $state, $locale, $stateParams, UserService, Event, Calendar) {
     this.scope = $scope;
     this.state = $state;
     this.stateParams = $stateParams;
@@ -26,7 +26,7 @@ CalendarController = (function() {
   CalendarController.prototype.loadEvents = function(date) {
     return this.Event.$r.query({
       service_id: this.service.id,
-      start_at: this.calendar.toDateFormat(date)
+      start_at: date.format()
     }).$promise.then(((function(_this) {
       return function(response) {
         return _this.calendar.events = response;

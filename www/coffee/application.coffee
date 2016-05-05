@@ -1,5 +1,5 @@
 app = angular.module('booker', ['ionic', 'ngResource', 'angularMoment', 'ion-datetime-picker'])
-.run(($rootScope, $state, AuthService, AUTH_EVENTS, $ionicPlatform) ->
+.run(($rootScope, $state, AuthService, AUTH_EVENTS, $ionicPlatform, $locale, amMoment) ->
   $ionicPlatform.ready ->
     if window.cordova and window.cordova.plugins.Keyboard
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);

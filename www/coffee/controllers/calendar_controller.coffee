@@ -1,5 +1,5 @@
 class CalendarController
-  constructor: ($scope, $state, $stateParams, UserService, Event, Calendar) ->
+  constructor: ($scope, $state, $locale, $stateParams, UserService, Event, Calendar) ->
     @scope = $scope
     @state = $state
     @stateParams = $stateParams
@@ -22,7 +22,7 @@ class CalendarController
   loadEvents: (date) ->
     @Event.$r.query(
       service_id: @service.id
-      start_at: @calendar.toDateFormat(date)
+      start_at: date.format()
     ).$promise.then(((response) =>
       @calendar.events = response
     ), (refejcted) ->

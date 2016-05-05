@@ -1,7 +1,6 @@
 app.factory('Calendar', (moment)->
   class Calendar
     @dateTimeFormat = 'YYYY-MM-DD H:mm'
-    dateFormat = 'YYYY-MM-DD'
     dayFormat = 'DD'
     weekDayFormat = 'ddd'
     month = 'MMMM'
@@ -30,9 +29,6 @@ app.factory('Calendar', (moment)->
           moment: day
         }
 
-    month: ->
-      @startOfWeek.format('MMMM')
-
     isDateSelected: (date)->
       @selectedDate.diff(date, 'days', true) == 0
 
@@ -41,7 +37,4 @@ app.factory('Calendar', (moment)->
 
     selectDate: (date) ->
       @selectedDate = moment(date)
-
-    toDateFormat: (date) ->
-      date.format(dateFormat)
 )

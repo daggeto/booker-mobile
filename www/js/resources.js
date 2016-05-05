@@ -1,11 +1,9 @@
 app.factory('Calendar', function(moment) {
   var Calendar;
   return Calendar = (function() {
-    var dateFormat, dayFormat, month, weekDayFormat;
+    var dayFormat, month, weekDayFormat;
 
     Calendar.dateTimeFormat = 'YYYY-MM-DD H:mm';
-
-    dateFormat = 'YYYY-MM-DD';
 
     dayFormat = 'DD';
 
@@ -45,10 +43,6 @@ app.factory('Calendar', function(moment) {
       })(this));
     };
 
-    Calendar.prototype.month = function() {
-      return this.startOfWeek.format('MMMM');
-    };
-
     Calendar.prototype.isDateSelected = function(date) {
       return this.selectedDate.diff(date, 'days', true) === 0;
     };
@@ -59,10 +53,6 @@ app.factory('Calendar', function(moment) {
 
     Calendar.prototype.selectDate = function(date) {
       return this.selectedDate = moment(date);
-    };
-
-    Calendar.prototype.toDateFormat = function(date) {
-      return date.format(dateFormat);
     };
 
     return Calendar;
