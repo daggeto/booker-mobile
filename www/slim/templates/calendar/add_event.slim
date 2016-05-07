@@ -21,13 +21,20 @@ ion-view[title="{{vm.calendar.selectedDate.format() | date }}"]
           ng-options="status.value as status.label for status in vm.statuses"]
 
       label.item.item-input.padding[
-      ion-datetime-picker time
-      ng-model="vm.event.start_at"]
+        ion-datetime-picker time
+        default-date="vm.calendar.selectedDate"
+        title="Time From"
+        name="from"
+        ng-model="vm.event.start_at"
+      ]
         .col.input-label From:
         .col.align-right {{ vm.event.start_at | date: "H:mm" }}
 
       label.item.item-input.padding[
         ion-datetime-picker time
+        default-date="vm.calendar.selectedDate"
+        title="Time To"
+        name="to"
         ng-model="vm.event.end_at"
       ]
         .col.input-label To:

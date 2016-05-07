@@ -33,6 +33,6 @@
       </div>
     </div>
     <div class="row">
-      <ion-lists can-swipe="true" class="calendar__list center"><ion-item class="calendar__event col col-center calendar__event--{{event.status}}" ng-repeat="event in vm.calendar.events">{{event.start_at | amDateFormat: 'HH:mm' }}</ion-item></ion-lists>
+      <ion-lists can-swipe="true" class="calendar__list center"><ion-item class="calendar__event col col-center calendar__event--{{event.status}}" ng-repeat="event in vm.calendar.events">{{event.start_at | amDateFormat: 'HH:mm' }} - {{event.end_at | amDateFormat: 'HH:mm' }}</ion-item></ion-lists>
     </div>
     <button class="button button-float" ng-click="vm.addEvent()" ng-show="android" ui-sref="service.add_event({ id: vm.service.id, calendar: vm.calendar })"><i class="icon ion-plus-round"></i></button></ion-content></ion-view>

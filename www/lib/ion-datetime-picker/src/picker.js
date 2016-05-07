@@ -5,10 +5,12 @@ angular.module("ion-datetime-picker", ["ionic"])
             require: "ngModel",
             scope: {
                 modelDate: "=ngModel",
-                title: "=",
-                subTitle: "=",
-                buttonOk: "=",
-                buttonCancel: "="
+                defaultDate: "=",
+                name: "@",
+                title: "@",
+                subTitle: "@",
+                buttonOk: "@",
+                buttonCancel: "@"
             },
             controller: function($scope, $ionicPopup, $ionicPickerI18n, $timeout) {
                 $scope.i18n = $ionicPickerI18n;
@@ -111,6 +113,8 @@ angular.module("ion-datetime-picker", ["ionic"])
                     }
                 };
                 $scope.change = function(unit) {
+                  $scope.$emit('timeChanged', { target: this });
+
                     var value = $scope.bind[unit];
                     if (value && unit === "meridiem") {
                         value = value.toUpperCase();
@@ -175,7 +179,16 @@ angular.module("ion-datetime-picker", ["ionic"])
                 };
 
                 $scope.commit = function() {
+                  if ($scope.dateEnabled) {
                     $scope.modelDate = new Date($scope.year, $scope.month, $scope.day, $scope.hour, $scope.minute, $scope.second);
+                  }
+
+                  if ($scope.timeEnabled) {
+                    date = moment($scope.defaultDate).hours($scope.hour).minutes($scope.minute)
+                    $scope.modelDate = date.toDate()
+                    $scope.$emit('timeChanged', { timePickerName: $scope.name, date: date});
+                  }
+
                     ngModelCtrl.$setViewValue($scope.modelDate);
                 };
 

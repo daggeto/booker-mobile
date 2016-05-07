@@ -33,8 +33,6 @@ gulp.task("js", ["html"], function() {
     return gulp.src(["src/picker.js", "src/picker-*.js", "release/ion-datetime-picker.min.js"])
         .pipe(ngAnnotate())
         .pipe(concat("ion-datetime-picker.min.js"))
-        .pipe(iife())
-        .pipe(uglify())
         .pipe(gulp.dest("release"));
 });
 

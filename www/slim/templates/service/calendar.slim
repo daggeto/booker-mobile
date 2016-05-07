@@ -34,7 +34,8 @@ ion-view
           ng-repeat="event in vm.calendar.events"
           class="calendar__event--{{event.status}}"
         ]
-          | {{event.start_at | amDateFormat: 'HH:mm' }}
+          | {{event.start_at | amDateFormat: 'HH:mm' }} - 
+          | {{event.end_at | amDateFormat: 'HH:mm' }}
     button.button.button-float[
       ng-click="vm.addEvent()"
       ng-show="android"

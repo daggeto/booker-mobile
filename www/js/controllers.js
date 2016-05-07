@@ -59,19 +59,6 @@ var EventsController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 EventsController = (function() {
-  function EventsController($scope, $state, $stateParams, UserService, Event) {
-    this.save = bind(this.save, this);
-    this.modifyDate = bind(this.modifyDate, this);
-    this.scope = $scope;
-    this.state = $state;
-    this.calendar = $stateParams.calendar;
-    this.service_id = $stateParams.id;
-    this.UserService = UserService;
-    this.Event = Event;
-    this.event = Event.$new;
-    this;
-  }
-
   EventsController.prototype.statuses = [
     {
       value: 'free',
@@ -85,10 +72,62 @@ EventsController = (function() {
     }
   ];
 
-  EventsController.prototype.modifyDate = function(date) {
-    var date_moment;
-    date_moment = moment(date);
-    return moment(this.calendar.selectedDate).hours(date_moment.hours()).minutes(date_moment.minutes()).format(this.calendar.dateTimeFormat);
+  function EventsController($scope, $state, $stateParams, UserService, Event) {
+    this.modifyDate = bind(this.modifyDate, this);
+    this.save = bind(this.save, this);
+    this.validateTime = bind(this.validateTime, this);
+    this.scope = $scope;
+    this.state = $state;
+    this.calendar = $stateParams.calendar;
+    this.service_id = $stateParams.id;
+    this.UserService = UserService;
+    this.Event = Event;
+    this.event = Event.$new;
+    this.valid = false;
+    this.bind();
+    this;
+  }
+
+  EventsController.prototype.bind = function() {
+    return this.scope.$on('timeChanged', this.validateTime);
+  };
+
+  EventsController.prototype.validateTime = function(event, params) {
+    var timePickerName;
+    timePickerName = params.timePickerName;
+    if (timePickerName === 'from') {
+      this.validateTimeFrom(params.date);
+    }
+    if (timePickerName === 'to') {
+      return this.validateTimeTo(moment(params.date));
+    }
+  };
+
+  EventsController.prototype.validateTimeFrom = function(date) {
+    if (this.checkOverlap(date)) {
+      return alert('Overlaps');
+    }
+    if (date.isAfter(this.event.end_at)) {
+      return alert("Can't be after Time To");
+    }
+  };
+
+  EventsController.prototype.validateTimeTo = function(date) {
+    if (this.checkOverlap(date)) {
+      return alert('Overlaps');
+    }
+    if (date.isBefore(this.event.start_at)) {
+      return alert("Can't be before Time From");
+    }
+  };
+
+  EventsController.prototype.checkOverlap = function(date) {
+    var overlaps;
+    return overlaps = _.find(this.calendar.events, (function(_this) {
+      return function(event, i) {
+        return moment.range(event.start_at, event.end_at).contains(date);
+      };
+    })(this));
   };
 
   EventsController.prototype.save = function() {
@@ -102,6 +141,12 @@ EventsController = (function() {
     })(this)), function(refejcted) {
       return console.log('rejected');
     });
+  };
+
+  EventsController.prototype.modifyDate = function(date) {
+    var date_moment;
+    date_moment = moment(date);
+    return moment(this.calendar.selectedDate).hours(date_moment.hours()).minutes(date_moment.minutes()).format(this.calendar.dateTimeFormat);
   };
 
   EventsController.prototype.showIosAddButton = function() {
