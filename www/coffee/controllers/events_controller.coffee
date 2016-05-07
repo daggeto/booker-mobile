@@ -5,7 +5,7 @@ class EventsController
     { value: 'booked', label: 'Booked' }
   ]
 
-  constructor: ($scope, $state, $stateParams, UserService, Event) ->
+  constructor: ($scope, $state, $stateParams, UserService, Event, ionicToast) ->
     @scope = $scope
     @state = $state
     @calendar = $stateParams.calendar
@@ -13,6 +13,7 @@ class EventsController
     @UserService = UserService
     @Event = Event
     @event = Event.$new
+    @ionicToast = ionicToast
 
     @valid = false
 
@@ -21,7 +22,6 @@ class EventsController
     this
 
   bind: ->
-    @scope.$on('timeChanged', @validateTime)
 
   validateTime: (event, params) =>
     timePickerName = params.timePickerName
@@ -29,29 +29,47 @@ class EventsController
     @validateTimeFrom(params.date) if timePickerName == 'from'
     @validateTimeTo(moment(params.date)) if timePickerName == 'to'
 
-  validateTimeFrom: (date) ->
-    return alert('Overlaps') if @checkOverlap(date)
-
-    return alert("Can't be after Time To") if date.isAfter(@event.end_at)
-
-  validateTimeTo: (date) ->
-    return alert('Overlaps') if @checkOverlap(date)
-
-    return alert("Can't be before Time From") if date.isBefore(@event.start_at)
-
-  checkOverlap: (date) ->
-    overlaps = _.find(@calendar.events, (event, i) =>
-      moment.range(event.start_at, event.end_at).contains(date)
-    )
   save: =>
+    return unless @validateTime()
+
     @event['service_id'] = @service_id
     @event.start_at = @modifyDate(@event.start_at)
     @event.end_at = @modifyDate(@event.end_at)
 
     @Event.$r.save(@event).$promise.then(((response) =>
-      @state.go('service.calendar')
+      @state.go('service.calendar', {id: @service_id}).reload()
     ), (refejcted) ->
       console.log('rejected')
+    )
+
+  validateTime: ->
+    return false unless @checkRequired(@event.start_at, 'Time From')
+    return false unless @checkRequired(@event.end_at, 'Time To')
+
+    if moment(@event.start_at).isAfter(@event.end_at)
+      @showToast("Time From can't be after Time To")
+      return false
+
+    if @checkOverlap()
+      @showToast('Event overlaps with other this day events')
+      return false
+
+    true
+
+  checkRequired: (value, fieldName) ->
+    if value == ''
+       @showToast("#{fieldName} is required")
+       return false
+
+     true
+
+  checkOverlap:  ->
+    newEventRange = moment.range(@event.start_at, @event.end_at)
+
+    overlaps = _.find(@calendar.events, (event, i) =>
+      eventRange = moment.range(event.start_at, event.end_at)
+
+      newEventRange.contains(eventRange) || eventRange.contains(newEventRange)
     )
 
   modifyDate: (date) =>
@@ -61,6 +79,9 @@ class EventsController
       .hours(date_moment.hours())
       .minutes(date_moment.minutes())
       .format(@calendar.dateTimeFormat)
+
+  showToast: (message) ->
+    @ionicToast.show(message, 'bottom', false, 3000);
 
   showIosAddButton: ->
     @scope.ios && @state.is('service.add_event')

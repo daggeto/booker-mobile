@@ -8,7 +8,7 @@ class Event
 
     @$new = {
       description: ''
-      status: ''
+      status: 'free'
       start_at: ''
       end_at: ''
     }

@@ -72,7 +72,7 @@ EventsController = (function() {
     }
   ];
 
-  function EventsController($scope, $state, $stateParams, UserService, Event) {
+  function EventsController($scope, $state, $stateParams, UserService, Event, ionicToast) {
     this.modifyDate = bind(this.modifyDate, this);
     this.save = bind(this.save, this);
     this.validateTime = bind(this.validateTime, this);
@@ -83,14 +83,13 @@ EventsController = (function() {
     this.UserService = UserService;
     this.Event = Event;
     this.event = Event.$new;
+    this.ionicToast = ionicToast;
     this.valid = false;
     this.bind();
     this;
   }
 
-  EventsController.prototype.bind = function() {
-    return this.scope.$on('timeChanged', this.validateTime);
-  };
+  EventsController.prototype.bind = function() {};
 
   EventsController.prototype.validateTime = function(event, params) {
     var timePickerName;
@@ -103,50 +102,70 @@ EventsController = (function() {
     }
   };
 
-  EventsController.prototype.validateTimeFrom = function(date) {
-    if (this.checkOverlap(date)) {
-      return alert('Overlaps');
-    }
-    if (date.isAfter(this.event.end_at)) {
-      return alert("Can't be after Time To");
-    }
-  };
-
-  EventsController.prototype.validateTimeTo = function(date) {
-    if (this.checkOverlap(date)) {
-      return alert('Overlaps');
-    }
-    if (date.isBefore(this.event.start_at)) {
-      return alert("Can't be before Time From");
-    }
-  };
-
-  EventsController.prototype.checkOverlap = function(date) {
-    var overlaps;
-    return overlaps = _.find(this.calendar.events, (function(_this) {
-      return function(event, i) {
-        return moment.range(event.start_at, event.end_at).contains(date);
-      };
-    })(this));
-  };
-
   EventsController.prototype.save = function() {
+    if (!this.validateTime()) {
+      return;
+    }
     this.event['service_id'] = this.service_id;
     this.event.start_at = this.modifyDate(this.event.start_at);
     this.event.end_at = this.modifyDate(this.event.end_at);
     return this.Event.$r.save(this.event).$promise.then(((function(_this) {
       return function(response) {
-        return _this.state.go('service.calendar');
+        return _this.state.go('service.calendar', {
+          id: _this.service_id
+        }).reload();
       };
     })(this)), function(refejcted) {
       return console.log('rejected');
     });
   };
 
+  EventsController.prototype.validateTime = function() {
+    if (!this.checkRequired(this.event.start_at, 'Time From')) {
+      return false;
+    }
+    if (!this.checkRequired(this.event.end_at, 'Time To')) {
+      return false;
+    }
+    if (moment(this.event.start_at).isAfter(this.event.end_at)) {
+      this.showToast("Time From can't be after Time To");
+      return false;
+    }
+    if (this.checkOverlap()) {
+      this.showToast('Event overlaps with other this day events');
+      return false;
+    }
+    return true;
+  };
+
+  EventsController.prototype.checkRequired = function(value, fieldName) {
+    if (value === '') {
+      this.showToast(fieldName + " is required");
+      return false;
+    }
+    return true;
+  };
+
+  EventsController.prototype.checkOverlap = function() {
+    var newEventRange, overlaps;
+    newEventRange = moment.range(this.event.start_at, this.event.end_at);
+    return overlaps = _.find(this.calendar.events, (function(_this) {
+      return function(event, i) {
+        var eventRange;
+        eventRange = moment.range(event.start_at, event.end_at);
+        return newEventRange.contains(eventRange) || eventRange.contains(newEventRange);
+      };
+    })(this));
+  };
+
   EventsController.prototype.modifyDate = function(date) {
     var date_moment;
     date_moment = moment(date);
     return moment(this.calendar.selectedDate).hours(date_moment.hours()).minutes(date_moment.minutes()).format(this.calendar.dateTimeFormat);
+  };
+
+  EventsController.prototype.showToast = function(message) {
+    return this.ionicToast.show(message, 'bottom', false, 3000);
   };
 
   EventsController.prototype.showIosAddButton = function() {

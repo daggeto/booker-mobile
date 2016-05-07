@@ -73,7 +73,7 @@ Event = (function() {
     });
     this.$new = {
       description: '',
-      status: '',
+      status: 'free',
       start_at: '',
       end_at: ''
     };

@@ -1,4 +1,13 @@
-app = angular.module('booker', ['ionic', 'ngResource', 'angularMoment', 'ion-datetime-picker'])
+app = angular.module(
+  'booker',
+  [
+    'ionic',
+    'ngResource',
+    'angularMoment',
+    'ion-datetime-picker',
+    'ionic-toast'
+  ]
+)
 .run(($rootScope, $state, AuthService, AUTH_EVENTS, $ionicPlatform, $locale, amMoment) ->
   $ionicPlatform.ready ->
     if window.cordova and window.cordova.plugins.Keyboard
