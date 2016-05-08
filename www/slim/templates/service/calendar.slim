@@ -1,13 +1,8 @@
-ion-view
+ion-view[can-swipe-back="true"]
   ion-header-bar[align-title="center" ]
     .buttons
       a.button.icon-left.ion-chevron-left.button-clear.button-dark[ng-click="vm.back()"] Back
     h1.title Calendar
-    .buttons
-      a.ion-ios-plus-outline.b-action-button.padding[
-        ui-sref="service.add_event({ id: vm.service.id, calendar: vm.calendar })"
-        ng-show="vm.showIosAddButton()"
-      ]
   ion-content.padding.calendar
     .row.calendar__month
       .col {{ vm.calendar.startOfWeek | amDateFormat: 'MMMM' }}
@@ -29,16 +24,16 @@ ion-view
       .col.col-center[ng-click="vm.calendar.nextWeek()"]
         .ion-chevron-right.calendar__arrow.pull-left
     .row
-      ion-lists.calendar__list.center[can-swipe="true"]
+      ion-lists.calendar__list.center
+        ion-item.calendar__event.calendar__event--add.col.col-center
+          .ion-ios-plus-empty[
+            ui-sref="service.calendar.add_event({ calendar: vm.calendar })"
+          ]
         ion-item.calendar__event.col.col-center[
           ng-repeat="event in vm.calendar.events"
-          class="calendar__event--{{event.status}}"
+          class="calendar__event calendar__event--{{event.status}}"
         ]
-          | {{event.start_at | amDateFormat: 'HH:mm' }} - 
+          | {{event.start_at | amDateFormat: 'HH:mm' }} -
           | {{event.end_at | amDateFormat: 'HH:mm' }}
-    button.button.button-float[
-      ng-click="vm.addEvent()"
-      ng-show="android"
-      ui-sref="service.add_event({ id: vm.service.id, calendar: vm.calendar })"
-      ]
-      i.icon.ion-plus-round
+
+          .ion-trash-b.pull-right[ng-click="vm.deleteEvent(event.id)"]

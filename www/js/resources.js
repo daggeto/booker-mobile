@@ -64,18 +64,21 @@ var Event;
 
 Event = (function() {
   function Event($resource, API_URL) {
-    this.$r = $resource(API_URL + "/api/v1/services/:service_id/events.json", {
-      service_id: '@service_id'
+    this.$r = $resource(API_URL + "/api/v1/services/:service_id/events/:id.json", {
+      service_id: '@service_id',
+      id: '@id'
     }, {
       update: {
         method: 'PUT'
       }
     });
-    this.$new = {
-      description: '',
-      status: 'free',
-      start_at: '',
-      end_at: ''
+    this.$new = function() {
+      return {
+        description: '',
+        status: 'free',
+        start_at: '',
+        end_at: ''
+      };
     };
     return this;
   }

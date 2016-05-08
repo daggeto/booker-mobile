@@ -9,6 +9,11 @@ CalendarController = (function() {
     this.Event = Event;
     this.calendar = new Calendar();
     this.loadService();
+    this.scope.$on('$ionicView.enter', (function(_this) {
+      return function(event, data) {
+        return _this.loadEvents(_this.calendar.selectedDate);
+      };
+    })(this));
     this;
   }
 
@@ -33,6 +38,19 @@ CalendarController = (function() {
       };
     })(this)), function(refejcted) {
       return console.log('rejected');
+    });
+  };
+
+  CalendarController.prototype.deleteEvent = function(id) {
+    return this.Event.$r["delete"]({
+      service_id: this.service.id,
+      id: id
+    }).$promise.then(((function(_this) {
+      return function(response) {
+        return _this.state.reload();
+      };
+    })(this)), function(refejcted) {
+      return console.log('not deleted');
     });
   };
 
@@ -82,7 +100,7 @@ EventsController = (function() {
     this.service_id = $stateParams.id;
     this.UserService = UserService;
     this.Event = Event;
-    this.event = Event.$new;
+    this.event = Event.$new();
     this.ionicToast = ionicToast;
     this.valid = false;
     this.bind();
@@ -111,9 +129,13 @@ EventsController = (function() {
     this.event.end_at = this.modifyDate(this.event.end_at);
     return this.Event.$r.save(this.event).$promise.then(((function(_this) {
       return function(response) {
-        return _this.state.go('service.calendar', {
+        return _this.state.transitionTo('service.calendar', {
           id: _this.service_id
-        }).reload();
+        }, {
+          reload: true,
+          inherit: true,
+          notify: true
+        });
       };
     })(this)), function(refejcted) {
       return console.log('rejected');
@@ -169,7 +191,7 @@ EventsController = (function() {
   };
 
   EventsController.prototype.showIosAddButton = function() {
-    return this.scope.ios && this.state.is('service.add_event');
+    return this.scope.ios && this.state.is('service.calendar.add_event');
   };
 
   return EventsController;

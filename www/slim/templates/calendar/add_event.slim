@@ -1,13 +1,15 @@
-ion-view[title="{{vm.calendar.selectedDate.format() | date }}"]
-  ion-nav-bar
-    ion-nav-back-button.button-clear
-    i.ion-arrow-left-c Back
+ion-view
+  ion-header-bar[align-title="center" ]
+    .buttons
+      a.button.icon-left.ion-chevron-left.button-clear.button-dark[
+        ng-click="vm.state.go('service.calendar', {id: vm.service_id})"] Back
+    h1.title {{vm.calendar.selectedDate.format() | date }}
 
-  ion-nav-buttons[side="right"]
-    a.ion-ios-plus-outline.b-action-button.padding[
-      ng-click="vm.save()"
-      ng-show="vm.showIosAddButton()"
-    ]
+    .buttons
+      a.ion-ios-plus-outline.b-action-button.padding[
+        ng-click="vm.save()"
+        ng-show="vm.showIosAddButton()"
+      ]
   ion-content[scroll="false"]
     .list
       label.item.item-input.padding

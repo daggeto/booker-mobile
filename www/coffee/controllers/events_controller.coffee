@@ -12,7 +12,7 @@ class EventsController
     @service_id = $stateParams.id
     @UserService = UserService
     @Event = Event
-    @event = Event.$new
+    @event = Event.$new()
     @ionicToast = ionicToast
 
     @valid = false
@@ -37,7 +37,11 @@ class EventsController
     @event.end_at = @modifyDate(@event.end_at)
 
     @Event.$r.save(@event).$promise.then(((response) =>
-      @state.go('service.calendar', {id: @service_id}).reload()
+      @state.transitionTo('service.calendar', {id: @service_id},
+        reload: true
+        inherit: true
+        notify: true
+      )
     ), (refejcted) ->
       console.log('rejected')
     )
@@ -84,6 +88,6 @@ class EventsController
     @ionicToast.show(message, 'bottom', false, 3000);
 
   showIosAddButton: ->
-    @scope.ios && @state.is('service.add_event')
+    @scope.ios && @state.is('service.calendar.add_event')
 
 app.controller('EventsController', EventsController)

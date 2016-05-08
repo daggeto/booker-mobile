@@ -9,6 +9,10 @@ class CalendarController
     @calendar = new Calendar()
     @loadService()
 
+    @scope.$on('$ionicView.enter', (event, data) =>
+      @loadEvents(@calendar.selectedDate)
+    )
+
     this
 
   loadService: ->
@@ -28,6 +32,16 @@ class CalendarController
     ), (refejcted) ->
       console.log('rejected')
     )
+
+  deleteEvent: (id) ->
+      @Event.$r.delete(
+        service_id: @service.id
+        id: id
+      ).$promise.then(((response) =>
+        @state.reload()
+      ), (refejcted) ->
+        console.log('not deleted')
+      )
 
   selectDate: (date) ->
     @calendar.selectDate(date)

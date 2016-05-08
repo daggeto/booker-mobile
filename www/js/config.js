@@ -27,18 +27,19 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
   }).state('service.calendar', {
     url: '/calendar',
     views: {
-      calendar: {
+      'calendar@service': {
         templateUrl: "templates/service/calendar.html",
         controller: 'CalendarController as vm'
       }
     }
-  }).state('service.add_event', {
+  }).state('service.calendar.add_event', {
+    cache: false,
     url: '/add_event',
     params: {
       calendar: {}
     },
     views: {
-      calendar: {
+      '@': {
         templateUrl: 'templates/calendar/add_event.html',
         controller: 'EventsController as vm'
       }
@@ -46,7 +47,7 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
   }).state('service.service_settings', {
     url: '/service_settings',
     views: {
-      service_settings: {
+      'service_settings@service': {
         templateUrl: "templates/service/service_settings.html",
         controller: 'ServiceSettingsController as vm'
       }
