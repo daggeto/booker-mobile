@@ -64,6 +64,21 @@ var Event;
 
 Event = (function() {
   function Event($resource, API_URL) {
+    this.FREE = 'free';
+    this.PENDING = 'pending';
+    this.BOOKED = 'booked';
+    this.statuses = [
+      {
+        value: this.FREE,
+        label: 'Free'
+      }, {
+        value: this.PENDING,
+        label: 'Pending'
+      }, {
+        value: this.BOOKED,
+        label: 'Booked'
+      }
+    ];
     this.$r = $resource(API_URL + "/api/v1/services/:service_id/events/:id.json", {
       service_id: '@service_id',
       id: '@id'

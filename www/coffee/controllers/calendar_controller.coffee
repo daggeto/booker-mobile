@@ -34,14 +34,32 @@ class CalendarController
     )
 
   deleteEvent: (id) ->
-      @Event.$r.delete(
-        service_id: @service.id
-        id: id
-      ).$promise.then(((response) =>
-        @state.reload()
-      ), (refejcted) ->
-        console.log('not deleted')
-      )
+    @Event.$r.delete(
+      service_id: @service.id
+      id: id
+    ).$promise.then(((response) =>
+      @state.reload()
+    ), (refejcted) ->
+      console.log('not deleted')
+    )
+
+  approveEvent: (event) ->
+    @changeStatus(event, @Event.BOOKED)
+
+  disApproveEvent: (event) ->
+    @changeStatus(event, @Event.FREE)
+
+  changeStatus: (event, status) =>
+    params = {}
+    params['status'] = status
+    params['service_id'] = @service.id
+    params['id'] = event.id
+
+    @Event.$r.update(params).$promise.then(((response) =>
+      event.status = status
+    ), (rejected) ->
+      console.log('wrong status change')
+    )
 
   selectDate: (date) ->
     @calendar.selectDate(date)

@@ -34,6 +34,8 @@
           <div class="ion-ios-plus-empty" ui-sref="service.calendar.add_event({ calendar: vm.calendar })"></div>
         </ion-item><ion-item class="calendar__event col col-center calendar__event calendar__event--{{event.status}}" ng-repeat="event in vm.calendar.events">{{event.start_at | amDateFormat: 'HH:mm' }} -{{event.end_at | amDateFormat: 'HH:mm' }}
           <div class="ion-trash-b pull-right" ng-click="vm.deleteEvent(event.id)"></div>
+          <div class="ion-checkmark-round pull-right" ng-click="vm.approveEvent(event)" ng-show="event.status == vm.Event.PENDING"></div>
+          <div class="ion-close-round pull-right" ng-click="vm.disApproveEvent(event)" ng-show="event.status == vm.Event.PENDING"></div>
         </ion-item></ion-lists>
     </div>
   </ion-content></ion-view>

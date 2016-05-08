@@ -37,3 +37,11 @@ ion-view[can-swipe-back="true"]
           | {{event.end_at | amDateFormat: 'HH:mm' }}
 
           .ion-trash-b.pull-right[ng-click="vm.deleteEvent(event.id)"]
+          .ion-checkmark-round.pull-right[
+            ng-show="event.status == vm.Event.PENDING"
+            ng-click="vm.approveEvent(event)"
+          ]
+          .ion-close-round.pull-right[
+            ng-show="event.status == vm.Event.PENDING"
+            ng-click="vm.disApproveEvent(event)"
+          ]

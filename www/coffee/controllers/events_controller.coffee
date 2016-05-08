@@ -1,10 +1,4 @@
 class EventsController
-  statuses: [
-    { value: 'free', label: 'Free' }
-    { value: 'pending', label: 'Pending' }
-    { value: 'booked', label: 'Booked' }
-  ]
-
   constructor: ($scope, $state, $stateParams, UserService, Event, ionicToast) ->
     @scope = $scope
     @state = $state
@@ -37,11 +31,7 @@ class EventsController
     @event.end_at = @modifyDate(@event.end_at)
 
     @Event.$r.save(@event).$promise.then(((response) =>
-      @state.transitionTo('service.calendar', {id: @service_id},
-        reload: true
-        inherit: true
-        notify: true
-      )
+      @state.transitionTo('service.calendar', {id: @service_id}, reload: true)
     ), (refejcted) ->
       console.log('rejected')
     )

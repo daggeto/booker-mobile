@@ -1,7 +1,9 @@
-var CalendarController;
+var CalendarController,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 CalendarController = (function() {
   function CalendarController($scope, $state, $locale, $stateParams, UserService, Event, Calendar) {
+    this.changeStatus = bind(this.changeStatus, this);
     this.scope = $scope;
     this.state = $state;
     this.stateParams = $stateParams;
@@ -54,6 +56,29 @@ CalendarController = (function() {
     });
   };
 
+  CalendarController.prototype.approveEvent = function(event) {
+    return this.changeStatus(event, this.Event.BOOKED);
+  };
+
+  CalendarController.prototype.disApproveEvent = function(event) {
+    return this.changeStatus(event, this.Event.FREE);
+  };
+
+  CalendarController.prototype.changeStatus = function(event, status) {
+    var params;
+    params = {};
+    params['status'] = status;
+    params['service_id'] = this.service.id;
+    params['id'] = event.id;
+    return this.Event.$r.update(params).$promise.then(((function(_this) {
+      return function(response) {
+        return event.status = status;
+      };
+    })(this)), function(rejected) {
+      return console.log('wrong status change');
+    });
+  };
+
   CalendarController.prototype.selectDate = function(date) {
     this.calendar.selectDate(date);
     return this.loadEvents(date);
@@ -77,19 +102,6 @@ var EventsController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 EventsController = (function() {
-  EventsController.prototype.statuses = [
-    {
-      value: 'free',
-      label: 'Free'
-    }, {
-      value: 'pending',
-      label: 'Pending'
-    }, {
-      value: 'booked',
-      label: 'Booked'
-    }
-  ];
-
   function EventsController($scope, $state, $stateParams, UserService, Event, ionicToast) {
     this.modifyDate = bind(this.modifyDate, this);
     this.save = bind(this.save, this);
@@ -132,9 +144,7 @@ EventsController = (function() {
         return _this.state.transitionTo('service.calendar', {
           id: _this.service_id
         }, {
-          reload: true,
-          inherit: true,
-          notify: true
+          reload: true
         });
       };
     })(this)), function(refejcted) {
