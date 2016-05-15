@@ -1,11 +1,15 @@
 class CalendarController
-  constructor: ($scope, $state, $locale, $stateParams, UserService, Event, Calendar) ->
+  constructor: (
+    $scope, $state, $locale, $stateParams,
+    UserService, Event, Calendar, ChangeEventStatus, AjaxInterceptor
+  ) ->
     @scope = $scope
     @state = $state
     @stateParams = $stateParams
     @UserService = UserService
     @Event = Event
-
+    @ChangeEventStatus = ChangeEventStatus
+    @AjaxInterceptor = AjaxInterceptor
     @calendar = new Calendar()
     @loadService()
 
@@ -50,23 +54,16 @@ class CalendarController
     @changeStatus(event, @Event.FREE)
 
   changeStatus: (event, status) =>
-    params = {}
-    params['status'] = status
-    params['service_id'] = @service.id
-    params['id'] = event.id
-
-    @Event.$r.update(params).$promise.then(((response) =>
+    @ChangeEventStatus(event.id, @service.id, status).then ->
       event.status = status
-    ), (rejected) ->
-      console.log('wrong status change')
-    )
 
   selectDate: (date) ->
     @calendar.selectDate(date)
     @loadEvents(date)
 
-  showIosAddButton: ->
-    @scope.ios && @state.is('service.calendar')
+
+  isPast: ->
+    @calendar.selectedDate.isSameOrAfter(@calendar.currentDate)
 
   back: ->
     @state.go('app.main')

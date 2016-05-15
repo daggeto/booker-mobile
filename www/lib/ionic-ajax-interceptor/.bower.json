@@ -1,0 +1,29 @@
+{
+  "name": "ionic-ajax-interceptor",
+  "description": "Ionic ajax interceptor",
+  "main": "gulpfile.js",
+  "authors": [
+    "Petru Isfan"
+  ],
+  "license": "Apache-2.0",
+  "keywords": [
+    "ionic",
+    "ajax",
+    "interceptor",
+    "http",
+    "loading"
+  ],
+  "homepage": "https://github.com/petruisfan/ionic-ajax-interceptor",
+  "moduleType": [],
+  "version": "1.1.0",
+  "_release": "1.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.1.0",
+    "commit": "ccc72f9dd848961b34dd5c12d94818e746ec7fa9"
+  },
+  "_source": "https://github.com/petruisfan/ionic-ajax-interceptor.git",
+  "_target": "^1.1.0",
+  "_originalSource": "ionic-ajax-interceptor",
+  "_direct": true
+}

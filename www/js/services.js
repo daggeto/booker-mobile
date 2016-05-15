@@ -69,6 +69,18 @@ app.service('AuthService', function($q, $http, $resource, USER_ROLES, API_URL) {
   };
 });
 
+app.factory('ChangeEventStatus', function(Event) {
+  return (function(_this) {
+    return function(event_id, service_id, status) {
+      return Event.$r.update({
+        id: event_id,
+        service_id: service_id,
+        status: status
+      }).$promise;
+    };
+  })(this);
+});
+
 app.factory('UserSession', function($resource, AuthService) {
   return $resource(API_URL + "//users/sign_in.json");
 });

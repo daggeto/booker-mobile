@@ -1,6 +1,11 @@
 var app;
 
-app = angular.module('booker', ['ionic', 'ngResource', 'angularMoment', 'ion-datetime-picker', 'ionic-toast']).run(function($rootScope, $state, AuthService, AUTH_EVENTS, $ionicPlatform, $locale, amMoment) {
+app = angular.module('booker', ['ionic', 'ngResource', 'angularMoment', 'ion-datetime-picker', 'ionic-toast', 'ionic-ajax-interceptor']).config(function(AjaxInterceptorProvider) {
+  return AjaxInterceptorProvider.config({
+    title: "Ups",
+    defaultMessage: "I crashed :("
+  });
+}).run(function($rootScope, $state, AuthService, AUTH_EVENTS, $ionicPlatform, $locale, amMoment, AjaxInterceptor) {
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -18,4 +23,5 @@ app = angular.module('booker', ['ionic', 'ngResource', 'angularMoment', 'ion-dat
       }
     }
   });
+  AjaxInterceptor.run();
 });

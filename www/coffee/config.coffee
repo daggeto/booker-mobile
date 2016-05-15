@@ -39,9 +39,29 @@ app.config ($stateProvider, $urlRouterProvider, $ionicConfigProvider) ->
         url: '/add_event'
         params:
           calendar: {}
+        resolve:
+          eventResource: 'Event'
+          event: (eventResource) ->
+            eventResource.$new()
         views:
           '@':
-            templateUrl: 'templates/calendar/add_event.html'
+            templateUrl: 'templates/calendar/event.html'
+            controller: 'EventsController as vm')
+
+      .state('service.calendar.edit_event'
+        cache: false
+        url: '/edit_event/:event_id'
+        params:
+          calendar: {}
+        resolve:
+          eventResource: 'Event'
+          event: (eventResource, $stateParams) ->
+            { id, event_id } = $stateParams
+
+            eventResource.$r.get(id: event_id, service_id: id).$promise
+        views:
+          '@':
+            templateUrl: 'templates/calendar/event.html'
             controller: 'EventsController as vm')
 
       .state('service.service_settings'

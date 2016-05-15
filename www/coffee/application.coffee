@@ -5,10 +5,18 @@ app = angular.module(
     'ngResource',
     'angularMoment',
     'ion-datetime-picker',
-    'ionic-toast'
+    'ionic-toast',
+    'ionic-ajax-interceptor'
   ]
 )
-.run(($rootScope, $state, AuthService, AUTH_EVENTS, $ionicPlatform, $locale, amMoment) ->
+.config((AjaxInterceptorProvider) ->
+  AjaxInterceptorProvider.config(
+    title: "Ups",
+    defaultMessage: "I crashed :("
+  )
+)
+.run(($rootScope, $state, AuthService, AUTH_EVENTS, $ionicPlatform,
+      $locale, amMoment, AjaxInterceptor) ->
   $ionicPlatform.ready ->
     if window.cordova and window.cordova.plugins.Keyboard
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -23,6 +31,8 @@ app = angular.module(
         event.preventDefault()
         $state.go('login')
   )
+
+  AjaxInterceptor.run()
 
   return
 )

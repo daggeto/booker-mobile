@@ -1,0 +1,29 @@
+<ion-view><ion-header-bar align-title="center">
+    <div class="buttons">
+      <a class="button icon-left ion-chevron-left button-clear button-dark" ng-click="vm.state.go(&#39;service.calendar&#39;, {id: vm.service_id})">Back</a>
+    </div>
+    <h1 class="title">
+      {{vm.calendar.selectedDate.format() | date }}
+    </h1>
+    <div class="buttons">
+      <a class="ion-ios-plus-outline b-action-button padding" ng-click="vm.save()" ng-show="ios"></a>
+    </div>
+  </ion-header-bar><ion-content scroll="false">
+    <div class="list">
+      <label class="item item-input padding"><span class="input-label">Description:</span><input ng-model="vm.event.description" type="text" /></label><label class="item item-select padding"><span class="input-label">Status:</span><select ng-model="vm.event.status" ng-options="status.value as status.label for status in vm.Event.statuses"></select></label><label class="item item-input padding" default-date="vm.calendar.selectedDate" ion-datetime-picker="" name="from" ng-model="vm.event.start_at" time="" title="Time From">
+        <div class="col input-label">
+          From:
+        </div>
+        <div class="col align-right">
+          {{ vm.event.start_at | date: "H:mm" }}
+        </div>
+      </label><label class="item item-input padding" default-date="vm.calendar.selectedDate" ion-datetime-picker="" name="to" ng-model="vm.event.end_at" time="" title="Time To">
+        <div class="col input-label">
+          To:
+        </div>
+        <div class="col align-right">
+          {{ vm.event.end_at | date: "H:mm" }}
+        </div>
+      </label>
+    </div>
+    <button class="button button-float" ng-click="vm.save()" ng-show="android"><i class="icon ion-checkmark-round"></i></button></ion-content></ion-view>

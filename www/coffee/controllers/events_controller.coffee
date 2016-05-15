@@ -1,12 +1,12 @@
 class EventsController
-  constructor: ($scope, $state, $stateParams, UserService, Event, ionicToast) ->
+  constructor: ($scope, $state, $stateParams, UserService, ionicToast, Event, event) ->
     @scope = $scope
     @state = $state
     @calendar = $stateParams.calendar
     @service_id = $stateParams.id
     @UserService = UserService
     @Event = Event
-    @event = Event.$new()
+    @event = event
     @ionicToast = ionicToast
 
     @valid = false
@@ -17,12 +17,6 @@ class EventsController
 
   bind: ->
 
-  validateTime: (event, params) =>
-    timePickerName = params.timePickerName
-
-    @validateTimeFrom(params.date) if timePickerName == 'from'
-    @validateTimeTo(moment(params.date)) if timePickerName == 'to'
-
   save: =>
     return unless @validateTime()
 
@@ -30,11 +24,18 @@ class EventsController
     @event.start_at = @modifyDate(@event.start_at)
     @event.end_at = @modifyDate(@event.end_at)
 
-    @Event.$r.save(@event).$promise.then(((response) =>
-      @state.transitionTo('service.calendar', {id: @service_id}, reload: true)
-    ), (refejcted) ->
-      console.log('rejected')
-    )
+    if @state.is('service.calendar.add_event')
+      @Event.$r.save(@event).$promise.then(@response, (refejcted) ->
+        console.log('rejected')
+      )
+
+    if @state.is('service.calendar.edit_event')
+      @Event.$r.update(@event).$promise.then(@response, (refejcted) ->
+        console.log('rejected')
+      )
+
+  response: (response) =>
+    @state.transitionTo('service.calendar', {id: @service_id}, reload: true)
 
   validateTime: ->
     return false unless @checkRequired(@event.start_at, 'Time From')
@@ -61,6 +62,8 @@ class EventsController
     newEventRange = moment.range(@event.start_at, @event.end_at)
 
     overlaps = _.find(@calendar.events, (event, i) =>
+      return false if @event.id == event.id
+
       eventRange = moment.range(event.start_at, event.end_at)
 
       newEventRange.contains(eventRange) || eventRange.contains(newEventRange)
@@ -76,8 +79,5 @@ class EventsController
 
   showToast: (message) ->
     @ionicToast.show(message, 'bottom', false, 3000);
-
-  showIosAddButton: ->
-    @scope.ios && @state.is('service.calendar.add_event')
 
 app.controller('EventsController', EventsController)
