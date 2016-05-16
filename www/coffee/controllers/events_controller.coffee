@@ -1,10 +1,10 @@
 class EventsController
-  constructor: ($scope, $state, $stateParams, UserService, ionicToast, Event, event) ->
+  constructor: ($scope, $state, $stateParams, ionicToast, EventsService, Event, event) ->
     @scope = $scope
     @state = $state
     @calendar = $stateParams.calendar
     @service_id = $stateParams.id
-    @UserService = UserService
+    @EventsService = EventsService
     @Event = Event
     @event = event
     @ionicToast = ionicToast
@@ -25,12 +25,12 @@ class EventsController
     @event.end_at = @modifyDate(@event.end_at)
 
     if @state.is('service.calendar.add_event')
-      @Event.$r.save(@event).$promise.then(@response, (refejcted) ->
+      @EventsService.save(@event).then(@response, (refejcted) ->
         console.log('rejected')
       )
 
     if @state.is('service.calendar.edit_event')
-      @Event.$r.update(@event).$promise.then(@response, (refejcted) ->
+      @EventsService.update(@event).then(@response, (refejcted) ->
         console.log('rejected')
       )
 

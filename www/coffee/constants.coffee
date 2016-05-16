@@ -8,4 +8,5 @@ app.constant('USER_ROLES'
   simple: 'public_role'
 )
 
-app.constant('API_URL', 'http://515459.s.dedikuoti.lt');
+#app.constant('API_URL', 'http://515459.s.dedikuoti.lt');
+app.constant('API_URL', 'http://localhost:3000');

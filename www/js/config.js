@@ -57,14 +57,9 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
       calendar: {}
     },
     resolve: {
-      eventResource: 'Event',
-      event: function(eventResource, $stateParams) {
-        var event_id, id;
-        id = $stateParams.id, event_id = $stateParams.event_id;
-        return eventResource.$r.get({
-          id: event_id,
-          service_id: id
-        }).$promise;
+      eventService: 'EventsService',
+      event: function(eventService, $stateParams) {
+        return eventService.findById($stateParams.event_id).$promise;
       }
     },
     views: {

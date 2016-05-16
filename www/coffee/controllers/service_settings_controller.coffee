@@ -1,9 +1,9 @@
 class ServiceSettingsController
-  constructor: ($scope, $state, $stateParams, UserService) ->
+  constructor: ($scope, $state, $stateParams, UserServicesService) ->
     @scope = $scope
     @state = $state
     @stateParams = $stateParams
-    @UserService = UserService
+    @UserServicesService = UserServicesService
 
     @loadService()
 
@@ -17,14 +17,14 @@ class ServiceSettingsController
   ]
 
   loadService: ->
-    @UserService.get(@stateParams).$promise.then(((response) =>
+    @UserServicesService.findById(@stateParams.id).then(((response) =>
       @service = response.service
     ), (refejcted) ->
       console.log('rejected')
     )
 
   save: ->
-    @UserService.update(@service).$promise.then(((response) =>
+    @UserServicesService.update(@service).then(((response) =>
       @state.go('service.calendar')
     ), (refejcted) -> console.log('rejected'))
 

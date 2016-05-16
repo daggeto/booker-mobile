@@ -69,17 +69,85 @@ app.service('AuthService', function($q, $http, $resource, USER_ROLES, API_URL) {
   };
 });
 
-app.factory('ChangeEventStatus', function(Event) {
-  return (function(_this) {
-    return function(event_id, service_id, status) {
-      return Event.$r.update({
-        id: event_id,
-        service_id: service_id,
-        status: status
-      }).$promise;
-    };
-  })(this);
-});
+var EventsService;
+
+EventsService = (function() {
+  'use strict';
+  function EventsService(Event, $cacheFactory) {
+    this.Event = Event;
+    this.cacheFactory = $cacheFactory;
+    this;
+  }
+
+  EventsService.prototype.findById = function(id) {
+    return this.Event.$r.get({
+      id: id
+    });
+  };
+
+  EventsService.prototype.save = function(params) {
+    return this.Event.$r.save(params).$promise;
+  };
+
+  EventsService.prototype.update = function(params) {
+    return this.Event.$r.update(params).$promise;
+  };
+
+  EventsService.prototype["delete"] = function(id) {
+    return this.Event.$r["delete"]({
+      id: id
+    }).$promise;
+  };
+
+  return EventsService;
+
+})();
+
+app.service('EventsService', EventsService);
+
+var UserServicesService;
+
+UserServicesService = (function() {
+  'use strict';
+  function UserServicesService(UserService, $cacheFactory) {
+    this.UserService = UserService;
+    this.cacheFactory = $cacheFactory;
+    this;
+  }
+
+  UserServicesService.prototype.events = function(params) {
+    return this.UserService.$events.query(params).$promise;
+  };
+
+  UserServicesService.prototype.findById = function(id) {
+    return this.UserService.$r.get({
+      id: id
+    }).$promise;
+  };
+
+  UserServicesService.prototype.find = function(params) {
+    return this.UserService.$r.query(params).$promise;
+  };
+
+  UserServicesService.prototype.save = function(params) {
+    return this.UserService.$r.save(params).$promise;
+  };
+
+  UserServicesService.prototype.update = function(params) {
+    return this.UserService.$r.update(params).$promise;
+  };
+
+  UserServicesService.prototype["delete"] = function(id) {
+    return this.UserService.$r["delete"]({
+      id: id
+    }).$promise;
+  };
+
+  return UserServicesService;
+
+})();
+
+app.service('UserServicesService', UserServicesService);
 
 app.factory('UserSession', function($resource, AuthService) {
   return $resource(API_URL + "//users/sign_in.json");

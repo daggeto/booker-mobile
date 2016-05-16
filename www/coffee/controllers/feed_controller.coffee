@@ -1,14 +1,14 @@
 class FeedController
-  constructor: ($scope, UserService) ->
+  constructor: ($scope, UserServicesService) ->
     @scope = $scope
-    @UserService = UserService
+    @UserServicesService = UserServicesService
 
     @loadServices()
 
     this
 
   loadServices: ->
-    @UserService.query().$promise.then(((response) =>
+    @UserServicesService.find().then(((response) =>
       @services = response
     ), (refejcted) ->
       console.log('rejected')

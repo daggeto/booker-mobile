@@ -1,4 +1,6 @@
 class Event
+  'use strict'
+
   constructor: ($resource, API_URL) ->
     @FREE = 'free'
     @PENDING = 'pending'
@@ -11,11 +13,7 @@ class Event
         { value: @BOOKED, label: 'Booked' }
       ]
 
-    @$r = $resource(
-      "#{API_URL}/api/v1/services/:service_id/events/:id.json",
-      { service_id: '@service_id', id: '@id' },
-      update: { method: 'PUT' }
-    )
+    @$r = $resource("#{API_URL}/api/v1/events/:id.json", { id: '@id' }, update: { method: 'PUT' })
 
     @$new = ->
       {

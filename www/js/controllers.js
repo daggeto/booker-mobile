@@ -2,15 +2,14 @@ var CalendarController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 CalendarController = (function() {
-  function CalendarController($scope, $state, $locale, $stateParams, UserService, Event, Calendar, ChangeEventStatus, AjaxInterceptor) {
+  function CalendarController($scope, $state, $locale, $stateParams, UserServicesService, Event, Calendar, EventsService) {
     this.changeStatus = bind(this.changeStatus, this);
     this.scope = $scope;
     this.state = $state;
     this.stateParams = $stateParams;
-    this.UserService = UserService;
+    this.UserServicesService = UserServicesService;
     this.Event = Event;
-    this.ChangeEventStatus = ChangeEventStatus;
-    this.AjaxInterceptor = AjaxInterceptor;
+    this.EventsService = EventsService;
     this.calendar = new Calendar();
     this.loadService();
     this.scope.$on('$ionicView.enter', (function(_this) {
@@ -22,10 +21,9 @@ CalendarController = (function() {
   }
 
   CalendarController.prototype.loadService = function() {
-    return this.UserService.get(this.stateParams).$promise.then(((function(_this) {
+    return this.UserServicesService.findById(this.stateParams.id).then(((function(_this) {
       return function(response) {
-        _this.service = response.service;
-        return _this.loadEvents(_this.calendar.selectedDate);
+        return _this.service = response.service;
       };
     })(this)), function(refejcted) {
       return console.log('rejected');
@@ -33,10 +31,10 @@ CalendarController = (function() {
   };
 
   CalendarController.prototype.loadEvents = function(date) {
-    return this.Event.$r.query({
+    return this.UserServicesService.events({
       service_id: this.service.id,
       start_at: date.format()
-    }).$promise.then(((function(_this) {
+    }).then(((function(_this) {
       return function(response) {
         return _this.calendar.events = response;
       };
@@ -46,10 +44,7 @@ CalendarController = (function() {
   };
 
   CalendarController.prototype.deleteEvent = function(id) {
-    return this.Event.$r["delete"]({
-      service_id: this.service.id,
-      id: id
-    }).$promise.then(((function(_this) {
+    return this.EventsService["delete"](id).then(((function(_this) {
       return function(response) {
         return _this.state.reload();
       };
@@ -67,7 +62,10 @@ CalendarController = (function() {
   };
 
   CalendarController.prototype.changeStatus = function(event, status) {
-    return this.ChangeEventStatus(event.id, this.service.id, status).then(function() {
+    return this.EventsService.update({
+      id: event.id,
+      starus: status
+    }).then(function() {
       return event.status = status;
     });
   };
@@ -95,7 +93,7 @@ var EventsController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 EventsController = (function() {
-  function EventsController($scope, $state, $stateParams, UserService, ionicToast, Event, event) {
+  function EventsController($scope, $state, $stateParams, ionicToast, EventsService, Event, event) {
     this.modifyDate = bind(this.modifyDate, this);
     this.response = bind(this.response, this);
     this.save = bind(this.save, this);
@@ -103,7 +101,7 @@ EventsController = (function() {
     this.state = $state;
     this.calendar = $stateParams.calendar;
     this.service_id = $stateParams.id;
-    this.UserService = UserService;
+    this.EventsService = EventsService;
     this.Event = Event;
     this.event = event;
     this.ionicToast = ionicToast;
@@ -122,12 +120,12 @@ EventsController = (function() {
     this.event.start_at = this.modifyDate(this.event.start_at);
     this.event.end_at = this.modifyDate(this.event.end_at);
     if (this.state.is('service.calendar.add_event')) {
-      this.Event.$r.save(this.event).$promise.then(this.response, function(refejcted) {
+      this.EventsService.save(this.event).then(this.response, function(refejcted) {
         return console.log('rejected');
       });
     }
     if (this.state.is('service.calendar.edit_event')) {
-      return this.Event.$r.update(this.event).$promise.then(this.response, function(refejcted) {
+      return this.EventsService.update(this.event).then(this.response, function(refejcted) {
         return console.log('rejected');
       });
     }
@@ -201,15 +199,15 @@ app.controller('EventsController', EventsController);
 var FeedController;
 
 FeedController = (function() {
-  function FeedController($scope, UserService) {
+  function FeedController($scope, UserServicesService) {
     this.scope = $scope;
-    this.UserService = UserService;
+    this.UserServicesService = UserServicesService;
     this.loadServices();
     this;
   }
 
   FeedController.prototype.loadServices = function() {
-    return this.UserService.query().$promise.then(((function(_this) {
+    return this.UserServicesService.find().then(((function(_this) {
       return function(response) {
         return _this.services = response;
       };
@@ -277,11 +275,11 @@ app.controller('MainController', function($scope, $state, $ionicPopup, $ionicSli
 var ServiceSettingsController;
 
 ServiceSettingsController = (function() {
-  function ServiceSettingsController($scope, $state, $stateParams, UserService) {
+  function ServiceSettingsController($scope, $state, $stateParams, UserServicesService) {
     this.scope = $scope;
     this.state = $state;
     this.stateParams = $stateParams;
-    this.UserService = UserService;
+    this.UserServicesService = UserServicesService;
     this.loadService();
     this;
   }
@@ -303,7 +301,7 @@ ServiceSettingsController = (function() {
   ];
 
   ServiceSettingsController.prototype.loadService = function() {
-    return this.UserService.get(this.stateParams).$promise.then(((function(_this) {
+    return this.UserServicesService.findById(this.stateParams.id).then(((function(_this) {
       return function(response) {
         return _this.service = response.service;
       };
@@ -313,7 +311,7 @@ ServiceSettingsController = (function() {
   };
 
   ServiceSettingsController.prototype.save = function() {
-    return this.UserService.update(this.service).$promise.then(((function(_this) {
+    return this.UserServicesService.update(this.service).then(((function(_this) {
       return function(response) {
         return _this.state.go('service.calendar');
       };

@@ -54,11 +54,9 @@ app.config ($stateProvider, $urlRouterProvider, $ionicConfigProvider) ->
         params:
           calendar: {}
         resolve:
-          eventResource: 'Event'
-          event: (eventResource, $stateParams) ->
-            { id, event_id } = $stateParams
-
-            eventResource.$r.get(id: event_id, service_id: id).$promise
+          eventService: 'EventsService'
+          event: (eventService, $stateParams) ->
+            eventService.findById($stateParams.event_id).$promise
         views:
           '@':
             templateUrl: 'templates/calendar/event.html'

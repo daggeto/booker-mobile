@@ -63,6 +63,7 @@ app.factory('Calendar', function(moment) {
 var Event;
 
 Event = (function() {
+  'use strict';
   function Event($resource, API_URL) {
     this.FREE = 'free';
     this.PENDING = 'pending';
@@ -79,8 +80,7 @@ Event = (function() {
         label: 'Booked'
       }
     ];
-    this.$r = $resource(API_URL + "/api/v1/services/:service_id/events/:id.json", {
-      service_id: '@service_id',
+    this.$r = $resource(API_URL + "/api/v1/events/:id.json", {
       id: '@id'
     }, {
       update: {
@@ -104,12 +104,26 @@ Event = (function() {
 
 app.factory('Event', Event);
 
-app.factory('UserService', function($resource, API_URL) {
-  return $resource(API_URL + "/api/v1/services/:id.json", {
-    id: '@id'
-  }, {
-    update: {
-      method: 'PUT'
-    }
-  });
-});
+var UserService;
+
+UserService = (function() {
+  'use strict';
+  function UserService($resource, API_URL) {
+    this.$r = $resource(API_URL + "/api/v1/services/:id.json", {
+      id: '@id'
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    });
+    this.$events = $resource(API_URL + "/api/v1/services/:service_id/events.json", {
+      service_id: '@service_id'
+    });
+    return this;
+  }
+
+  return UserService;
+
+})();
+
+app.factory('UserService', UserService);
