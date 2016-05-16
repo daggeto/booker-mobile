@@ -54,7 +54,7 @@ angular.module("ion-datetime-picker", ["ionic"])
                 };
 
                 $scope.processModel = function() {
-                    var date = $scope.modelDate instanceof Date ? $scope.modelDate : new Date();
+                    var date = parseModelDate();
                     $scope.year = $scope.dateEnabled ? date.getFullYear() : 0;
                     $scope.month = $scope.dateEnabled ? date.getMonth() : 0;
                     $scope.day = $scope.dateEnabled ? date.getDate() : 0;
@@ -64,6 +64,20 @@ angular.module("ion-datetime-picker", ["ionic"])
 
                     changeViewData();
                 };
+
+                var parseModelDate = function () {
+                  if($scope.modelDate == "") {
+                    return new Date();
+                  }
+
+                  if(typeof $scope.modelDate == 'string') {
+                    return new Date($scope.modelDate);
+                  }
+
+                  if($scope.modelDate instanceof Date) {
+                    return $scope.modelDate;
+                  }
+                }
 
                 var changeViewData = function() {
                     var date = new Date($scope.year, $scope.month, $scope.day, $scope.hour, $scope.minute, $scope.second);
@@ -113,8 +127,6 @@ angular.module("ion-datetime-picker", ["ionic"])
                     }
                 };
                 $scope.change = function(unit) {
-                  $scope.$emit('timeChanged', { target: this });
-
                     var value = $scope.bind[unit];
                     if (value && unit === "meridiem") {
                         value = value.toUpperCase();
@@ -186,7 +198,7 @@ angular.module("ion-datetime-picker", ["ionic"])
                   if ($scope.timeEnabled) {
                     date = moment($scope.defaultDate).hours($scope.hour).minutes($scope.minute)
                     $scope.modelDate = date.toDate()
-                    $scope.$emit('timeChanged', { timePickerName: $scope.name, date: date});
+                    $scope.$emit('timeCommited', { timePickerName: $scope.name, date: date.toDate()});
                   }
 
                     ngModelCtrl.$setViewValue($scope.modelDate);
