@@ -18,7 +18,7 @@ class ServiceSettingsController
 
   loadService: ->
     @UserServicesService.findById(@stateParams.id).then(((response) =>
-      @service = response.service
+      @service = response
     ), (refejcted) ->
       console.log('rejected')
     )

@@ -1,4 +1,4 @@
-app.service('AuthService', function($q, $http, $resource, USER_ROLES, API_URL) {
+app.service('AuthService', function($q, $http, UsersService, USER_ROLES, API_URL, LOCAL_CURRENT_USER_ID) {
   var LOCAL_EMAIL_KEY, LOCAL_TOKEN_KEY, authToke, destroyUserCredentials, isAuthenticated, loadUserCredentials, login, logout, role, storeUserCredentials, useCredentials, username;
   LOCAL_TOKEN_KEY = 'authToken';
   LOCAL_EMAIL_KEY = 'authEmail';
@@ -20,6 +20,7 @@ app.service('AuthService', function($q, $http, $resource, USER_ROLES, API_URL) {
   storeUserCredentials = function(user) {
     window.localStorage.setItem(LOCAL_TOKEN_KEY, user.authentication_token);
     window.localStorage.setItem(LOCAL_EMAIL_KEY, user.email);
+    window.localStorage.setItem(LOCAL_CURRENT_USER_ID, user.id);
     return useCredentials(user);
   };
   useCredentials = function(user) {
@@ -37,13 +38,8 @@ app.service('AuthService', function($q, $http, $resource, USER_ROLES, API_URL) {
   };
   login = function(data) {
     return $q(function(resolve, reject) {
-      var Session, session_request;
-      Session = $resource(API_URL + "/users/sign_in.json");
-      session_request = new Session({
-        user: data
-      });
-      return session_request.$save((function(data) {
-        storeUserCredentials(data);
+      return UsersService.login(data).then((function(user) {
+        storeUserCredentials(user);
         return resolve('Login success.');
       }), function(err) {
         return reject('Login failed');
@@ -149,6 +145,31 @@ UserServicesService = (function() {
 
 app.service('UserServicesService', UserServicesService);
 
-app.factory('UserSession', function($resource, AuthService) {
-  return $resource(API_URL + "//users/sign_in.json");
-});
+var UsersService;
+
+UsersService = (function() {
+  'use strict';
+  function UsersService(User, $cacheFactory) {
+    this.User = User;
+    this.cacheFactory = $cacheFactory;
+    this;
+  }
+
+  UsersService.prototype.findById = function(id) {
+    return this.User.$r.get({
+      id: id
+    }).$promise;
+  };
+
+  UsersService.prototype.login = function(data) {
+    return this.User.$session.save({
+      action: 'sign_in',
+      user: data
+    }).$promise;
+  };
+
+  return UsersService;
+
+})();
+
+app.service('UsersService', UsersService);

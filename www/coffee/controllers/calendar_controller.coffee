@@ -17,14 +17,19 @@ class CalendarController
 
     this
 
+  eventUrl: (event) ->
+    view = 'edit_event'
+    view = 'preview_event' if @isPast()
+    @state.go("service.calendar.#{view}", event_id: event.id, calendar: @calendar)
+
   loadService: ->
     @UserServicesService.findById(@stateParams.id).then(((response) =>
-      @service = response.service
+      @service = response
     ), (refejcted) ->
       console.log('rejected')
     )
 
-  loadEvents: (date) ->
+  loadEvents: (date) =>
     @UserServicesService.events(
       service_id: @service.id
       start_at: date.format()
@@ -48,7 +53,7 @@ class CalendarController
     @changeStatus(event, @Event.FREE)
 
   changeStatus: (event, status) =>
-    @EventsService.update(id: event.id, starus: status).then ->
+    @EventsService.update(id: event.id, status: status).then ->
       event.status = status
 
   selectDate: (date) ->
@@ -57,7 +62,7 @@ class CalendarController
 
 
   isPast: ->
-    @calendar.selectedDate.isSameOrAfter(@calendar.currentDate)
+    @calendar.selectedDate.isBefore(@calendar.currentDate)
 
   back: ->
     @state.go('app.main')

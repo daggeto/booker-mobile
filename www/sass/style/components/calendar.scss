@@ -34,9 +34,10 @@ $event-add-color: #387ef5;
 
   &--event {
     height: $event_height;
-    margin: $size-default 0;
-    padding: $size-default;
-    margin: $size-micro;
+    margin: $r-size-nano 0;
+    padding: $r-size-micro;
+    display: flex;
+    flex-wrap: nowrap;
 
     &--free {
       background-color: $event-free-color;
@@ -53,9 +54,10 @@ $event-add-color: #387ef5;
     &--add {
       padding: $size-default;
       font-size: $font-huge;
-      text-align: center;
       color: $event-add-color;
       border-color: $event-add-color;
+      align-items: center;
+      justify-content: center;
     }
 
     &--past {
@@ -64,21 +66,24 @@ $event-add-color: #387ef5;
   }
 
   &--title {
-    display: inline-block;
+    flex-grow: 2;
+  }
+
+  &--actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+
+    i {
+      font-size: $font-big;
+      margin-left: $r-size-micro;
+    }
   }
 
   &--time {
     font-size: $font-default;
     font-weight: bold;
-  }
-
-  &--actions {
-    padding: $size-small;
-
-    i {
-      font-size: $font-big;
-      margin-left: $size-small;
-    }
   }
 
   &__arrow {

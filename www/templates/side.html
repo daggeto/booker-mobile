@@ -1,5 +1,8 @@
-<ion-view><ion-content><img class="profile-picture" src="img/default_profile.png" /><ion-lists can-swipe="true" class="side-list"><ion-toggle class="side-list__item">
-        <div class="enable-pointer-events list-item" ui-sref="service.calendar({id: 1})">
+<ion-view><ion-content><img class="profile-picture" src="img/default_profile.png" /><ion-lists can-swipe="true" class="side-list"><ion-toggle class="side-list__item" ng-model="vm.currentUser.provider">
+        <div class="enable-pointer-events list-item" ng-show="vm.currentUser.provider" ui-sref="service.calendar({id: 1})">
           Provider Settings
         </div>
-      </ion-toggle><ion-item>Profile Settings</ion-item></ion-lists></ion-content></ion-view>
+        <div class="enable-pointer-events list-item" ng-hide="vm.currentUser.provider">
+          Became Provider
+        </div>
+      </ion-toggle><ion-item>Profile Settings</ion-item><ion-item ng-click="logout()">Logout</ion-item></ion-lists></ion-content></ion-view>

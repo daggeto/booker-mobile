@@ -10,6 +10,14 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     templateUrl: 'templates/app.html'
   }).state('app.main', {
     url: '/main',
+    resolve: {
+      UsersService: 'UsersService',
+      currentUser: function($window, UsersService, LOCAL_CURRENT_USER_ID) {
+        var currentUserId;
+        currentUserId = $window.localStorage.getItem(LOCAL_CURRENT_USER_ID);
+        return UsersService.findById(currentUserId);
+      }
+    },
     views: {
       side: {
         templateUrl: 'templates/side.html',
@@ -23,7 +31,13 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
   }).state('service', {
     abstract: true,
     url: '/service/:id',
-    templateUrl: 'templates/service.html'
+    templateUrl: 'templates/service.html',
+    resolve: {
+      UserServicesService: 'UserServicesService',
+      service: function(UserServicesService, $stateParams) {
+        return UserServicesService.findById($stateParams.id);
+      }
+    }
   }).state('service.calendar', {
     url: '/calendar',
     views: {
@@ -51,20 +65,36 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
       }
     }
   }).state('service.calendar.edit_event', {
-    cache: false,
     url: '/edit_event/:event_id',
     params: {
       calendar: {}
     },
     resolve: {
-      eventService: 'EventsService',
-      event: function(eventService, $stateParams) {
-        return eventService.findById($stateParams.event_id).$promise;
+      eventsService: 'EventsService',
+      event: function(eventsService, $stateParams) {
+        return eventsService.findById($stateParams.event_id).$promise;
       }
     },
     views: {
       '@': {
         templateUrl: 'templates/calendar/event.html',
+        controller: 'EventsController as vm'
+      }
+    }
+  }).state('service.calendar.preview_event', {
+    url: '/preview_event/:event_id',
+    params: {
+      calendar: {}
+    },
+    resolve: {
+      eventsService: 'EventsService',
+      event: function(eventsService, $stateParams) {
+        return eventsService.findById($stateParams.event_id).$promise;
+      }
+    },
+    views: {
+      '@': {
+        templateUrl: 'templates/calendar/preview_event.html',
         controller: 'EventsController as vm'
       }
     }
@@ -77,7 +107,7 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
       }
     }
   });
-  return $urlRouterProvider.otherwise('/service/1/calendar');
+  return $urlRouterProvider.otherwise('/app/main');
 });
 
 app.factory('AuthInterceptor', function($rootScope, $q, AUTH_EVENTS) {

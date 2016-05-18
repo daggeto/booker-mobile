@@ -65,9 +65,10 @@
 
 .calendar--event {
   height: 60px;
-  margin: 10px 0;
-  padding: 10px;
-  margin: 3px; }
+  margin: 0.1em 0;
+  padding: 0.5em;
+  display: flex;
+  flex-wrap: nowrap; }
   .calendar--event--free {
     background-color: #8BC34A; }
   .calendar--event--pending {
@@ -77,24 +78,28 @@
   .calendar--event--add {
     padding: 10px;
     font-size: 3em;
-    text-align: center;
     color: #387ef5;
-    border-color: #387ef5; }
+    border-color: #387ef5;
+    align-items: center;
+    justify-content: center; }
   .calendar--event--past {
     opacity: 0.4; }
 
 .calendar--title {
-  display: inline-block; }
+  flex-grow: 2; }
+
+.calendar--actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-grow: 1; }
+  .calendar--actions i {
+    font-size: 2em;
+    margin-left: 0.5em; }
 
 .calendar--time {
   font-size: 1.5em;
   font-weight: bold; }
-
-.calendar--actions {
-  padding: 5px; }
-  .calendar--actions i {
-    font-size: 2em;
-    margin-left: 5px; }
 
 .calendar__arrow {
   font-size: 1.5em; }

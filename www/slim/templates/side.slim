@@ -2,6 +2,12 @@ ion-view
   ion-content
     img.profile-picture[src="img/default_profile.png"]
     ion-lists.side-list[can-swipe="true"]
-      ion-toggle.side-list__item
-        .enable-pointer-events.list-item[ui-sref="service.calendar({id: 1})"] Provider Settings
+      ion-toggle.side-list__item[ng-model="vm.currentUser.provider"]
+        .enable-pointer-events.list-item[
+          ng-show="vm.currentUser.provider"
+          ui-sref="service.calendar({id: 1})"]
+          | Provider Settings
+        .enable-pointer-events.list-item[ng-hide="vm.currentUser.provider"] Became Provider
+
       ion-item Profile Settings
+      ion-item[ng-click="logout()"] Logout

@@ -104,6 +104,27 @@ Event = (function() {
 
 app.factory('Event', Event);
 
+var User;
+
+User = (function() {
+  'use strict';
+  function User($resource, API_URL) {
+    this.$r = $resource(API_URL + "/api/v1/users/:id.json", {
+      id: '@id'
+    });
+    this.$session = $resource(API_URL + "/users/:action.json", {
+      id: '@id',
+      action: '@action'
+    });
+    return this;
+  }
+
+  return User;
+
+})();
+
+app.factory('User', User);
+
 var UserService;
 
 UserService = (function() {

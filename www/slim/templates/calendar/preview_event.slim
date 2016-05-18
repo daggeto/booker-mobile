@@ -1,0 +1,23 @@
+ion-view
+  ion-header-bar[align-title="center" ]
+    .buttons
+      a.button.icon-left.ion-chevron-left.button-clear.button-dark[
+        ng-click="vm.state.go('service.calendar', {id: vm.service.id})"] Back
+    h1.title {{vm.calendar.selectedDate.format() | date }}
+  ion-content[scroll="false"]
+    .list
+      label.item.item-input.padding
+        .col.input-label Description:
+        .col.align-right {{vm.event.description}}
+
+      label.item.item-input.padding
+        .col.input-label Status:
+        .col.align-right{{vm.event.status}}
+
+      label.item.item-input.padding
+        .col.input-label From:
+        .col.align-right {{ vm.event.start_at | date: "H:mm" }}
+
+      label.item.item-input.padding
+        .col.input-label To:
+        .col.align-right {{ vm.event.end_at | date: "H:mm" }}

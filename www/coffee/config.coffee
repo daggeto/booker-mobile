@@ -14,6 +14,11 @@ app.config ($stateProvider, $urlRouterProvider, $ionicConfigProvider) ->
 
       .state('app.main'
         url: '/main'
+        resolve:
+          UsersService: 'UsersService'
+          currentUser: ($window, UsersService, LOCAL_CURRENT_USER_ID) ->
+            currentUserId = $window.localStorage.getItem(LOCAL_CURRENT_USER_ID)
+            UsersService.findById(currentUserId)
         views:
           side:
             templateUrl: 'templates/side.html'
@@ -25,7 +30,11 @@ app.config ($stateProvider, $urlRouterProvider, $ionicConfigProvider) ->
       .state('service'
         abstract: true
         url: '/service/:id'
-        templateUrl: 'templates/service.html')
+        templateUrl: 'templates/service.html'
+        resolve:
+          UserServicesService: 'UserServicesService'
+          service: (UserServicesService, $stateParams) ->
+            UserServicesService.findById($stateParams.id))
 
       .state('service.calendar'
         url: '/calendar'
@@ -33,7 +42,6 @@ app.config ($stateProvider, $urlRouterProvider, $ionicConfigProvider) ->
           'calendar@service':
             templateUrl: "templates/service/calendar.html"
             controller: 'CalendarController as vm')
-
       .state('service.calendar.add_event'
         cache: false
         url: '/add_event'
@@ -49,19 +57,29 @@ app.config ($stateProvider, $urlRouterProvider, $ionicConfigProvider) ->
             controller: 'EventsController as vm')
 
       .state('service.calendar.edit_event'
-        cache: false
         url: '/edit_event/:event_id'
         params:
           calendar: {}
         resolve:
-          eventService: 'EventsService'
-          event: (eventService, $stateParams) ->
-            eventService.findById($stateParams.event_id).$promise
+          eventsService: 'EventsService'
+          event: (eventsService, $stateParams) ->
+            eventsService.findById($stateParams.event_id).$promise
         views:
           '@':
             templateUrl: 'templates/calendar/event.html'
             controller: 'EventsController as vm')
-
+      .state('service.calendar.preview_event'
+        url: '/preview_event/:event_id'
+        params:
+          calendar: {}
+        resolve:
+          eventsService: 'EventsService'
+          event: (eventsService, $stateParams) ->
+            eventsService.findById($stateParams.event_id).$promise
+        views:
+          '@':
+            templateUrl: 'templates/calendar/preview_event.html'
+            controller: 'EventsController as vm')
       .state('service.service_settings'
         url: '/service_settings'
         views:
@@ -69,7 +87,7 @@ app.config ($stateProvider, $urlRouterProvider, $ionicConfigProvider) ->
             templateUrl: "templates/service/service_settings.html"
             controller: 'ServiceSettingsController as vm')
 
-  $urlRouterProvider.otherwise('/service/1/calendar')
+  $urlRouterProvider.otherwise('/app/main')
 
 app.factory('AuthInterceptor', ($rootScope, $q, AUTH_EVENTS) ->
   { responseError: (response) ->

@@ -27,23 +27,24 @@ ion-view[can-swipe-back="true"]
       ion-lists.calendar__list.center
         ion-item.calendar--event[ng-show="vm.loading"]
           ion-spinner[icon="spiral"]
-        ion-item.calendar--event.calendar--event--add.col.col-center[ng-show="vm.isPast()"]
-          .ion-ios-plus-empty[
+        ion-item.calendar--event.calendar--event--add.col[ng-hide="vm.isPast()"]
+          i.ion-ios-plus-empty[
             ui-sref="service.calendar.add_event({ calendar: vm.calendar })"
           ]
         ion-item.calendar--event.col.col-center[
           ng-repeat="event in vm.calendar.events track by event.id"
-          ui-sref="service.calendar.edit_event({ event_id: event.id, calendar: vm.calendar })"
           class="calendar--event--{{event.status}}"
-          ng-class="{'calendar--event--past' : !vm.isPast()}"
+          ng-class="{'calendar--event--past' : vm.isPast()}"
         ]
-          .calendar--title
+          .calendar--title[
+            ng-click="vm.eventUrl(event)"
+          ]
             .calendar--time
               | {{event.start_at | amDateFormat: 'HH:mm' }}
                 - {{event.end_at | amDateFormat: 'HH:mm' }}
             .calendar--descritpion
               | {{event.description}}
-          .calendar--actions.pull-right[ng-show="vm.isPast()"]
+          .calendar--actions[ng-hide="vm.isPast()"]
             i.ion-checkmark-round[
               ng-show="event.status == vm.Event.PENDING"
               ng-click="vm.approveEvent(event)"

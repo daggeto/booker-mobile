@@ -30,10 +30,8 @@
       </div>
     </div>
     <div class="row">
-      <ion-lists class="calendar__list center"><ion-item class="calendar--event" ng-show="vm.loading"><ion-spinner icon="spiral"></ion-spinner></ion-item><ion-item class="calendar--event calendar--event--add col col-center" ng-show="vm.isPast()">
-          <div class="ion-ios-plus-empty" ui-sref="service.calendar.add_event({ calendar: vm.calendar })"></div>
-        </ion-item><ion-item class="calendar--event col col-center calendar--event--{{event.status}}" ng-class="{&#39;calendar--event--past&#39; : !vm.isPast()}" ng-repeat="event in vm.calendar.events track by event.id" ui-sref="service.calendar.edit_event({ event_id: event.id, calendar: vm.calendar })">
-          <div class="calendar--title">
+      <ion-lists class="calendar__list center"><ion-item class="calendar--event" ng-show="vm.loading"><ion-spinner icon="spiral"></ion-spinner></ion-item><ion-item class="calendar--event calendar--event--add col" ng-hide="vm.isPast()"><i class="ion-ios-plus-empty" ui-sref="service.calendar.add_event({ calendar: vm.calendar })"></i></ion-item><ion-item class="calendar--event col col-center calendar--event--{{event.status}}" ng-class="{&#39;calendar--event--past&#39; : vm.isPast()}" ng-repeat="event in vm.calendar.events track by event.id">
+          <div class="calendar--title" ng-click="vm.eventUrl(event)">
             <div class="calendar--time">
               {{event.start_at | amDateFormat: 'HH:mm' }}
               - {{event.end_at | amDateFormat: 'HH:mm' }}
@@ -42,7 +40,7 @@
               {{event.description}}
             </div>
           </div>
-          <div class="calendar--actions pull-right" ng-show="vm.isPast()">
+          <div class="calendar--actions" ng-hide="vm.isPast()">
             <i class="ion-checkmark-round" ng-click="vm.approveEvent(event)" ng-show="event.status == vm.Event.PENDING"></i><i class="ion-close-round" ng-click="vm.disApproveEvent(event)" ng-show="event.status == vm.Event.PENDING"></i><i class="ion-trash-b" ng-click="vm.deleteEvent(event.id)"></i>
           </div>
         </ion-item></ion-lists>

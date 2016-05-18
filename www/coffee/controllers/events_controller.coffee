@@ -1,41 +1,46 @@
 class EventsController
-  constructor: ($scope, $state, $stateParams, ionicToast, EventsService, Event, event) ->
+  constructor: ($scope, $state, $stateParams, ionicToast, EventsService, Event, event, service) ->
     @scope = $scope
     @state = $state
     @calendar = $stateParams.calendar
-    @service_id = $stateParams.id
+    @ionicToast = ionicToast
     @EventsService = EventsService
     @Event = Event
     @event = event
-    @ionicToast = ionicToast
-
-    @valid = false
+    @service = service
 
     @bind()
 
     this
 
   bind: ->
+    @scope.$on 'timeCommited', @changeEndDate if @isAddState()
+
+  changeEndDate: (event, params) =>
+    return unless params.timePickerName == 'from'
+    return if @event.end_at && moment(params.date).isBefore(@event.end_at)
+
+    @event.end_at = moment(params.date).add(@service.duration, 'minutes').toDate()
 
   save: =>
     return unless @validateTime()
 
-    @event['service_id'] = @service_id
+    @event['service_id'] = @service.id
     @event.start_at = @modifyDate(@event.start_at)
     @event.end_at = @modifyDate(@event.end_at)
 
-    if @state.is('service.calendar.add_event')
+    if @isAddState()
       @EventsService.save(@event).then(@response, (refejcted) ->
         console.log('rejected')
       )
 
-    if @state.is('service.calendar.edit_event')
+    if @isEditState()
       @EventsService.update(@event).then(@response, (refejcted) ->
         console.log('rejected')
       )
 
   response: (response) =>
-    @state.transitionTo('service.calendar', {id: @service_id}, reload: true)
+    @state.transitionTo('service.calendar', {id: @service.id}, reload: true)
 
   validateTime: ->
     return false unless @checkRequired(@event.start_at, 'Time From')
@@ -79,5 +84,11 @@ class EventsController
 
   showToast: (message) ->
     @ionicToast.show(message, 'bottom', false, 3000);
+
+  isAddState: ->
+    @state.is('service.calendar.add_event')
+
+  isEditState: ->
+    @state.is('service.calendar.edit_event')
 
 app.controller('EventsController', EventsController)

@@ -8,4 +8,6 @@ app.constant('USER_ROLES', {
   simple: 'public_role'
 });
 
+app.constant('LOCAL_CURRENT_USER_ID', 'currentUserId');
+
 app.constant('API_URL', 'http://localhost:3000');

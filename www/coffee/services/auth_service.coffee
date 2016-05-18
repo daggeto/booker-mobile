@@ -1,4 +1,4 @@
-app.service('AuthService', ($q, $http, $resource, USER_ROLES, API_URL) ->
+app.service('AuthService', ($q, $http, UsersService, USER_ROLES, API_URL, LOCAL_CURRENT_USER_ID) ->
   LOCAL_TOKEN_KEY = 'authToken';
   LOCAL_EMAIL_KEY = 'authEmail';
   username = '';
@@ -15,6 +15,7 @@ app.service('AuthService', ($q, $http, $resource, USER_ROLES, API_URL) ->
   storeUserCredentials = (user) ->
     window.localStorage.setItem(LOCAL_TOKEN_KEY, user.authentication_token)
     window.localStorage.setItem(LOCAL_EMAIL_KEY, user.email)
+    window.localStorage.setItem(LOCAL_CURRENT_USER_ID, user.id)
 
     useCredentials(user)
 
@@ -33,14 +34,12 @@ app.service('AuthService', ($q, $http, $resource, USER_ROLES, API_URL) ->
 
   login = (data) ->
     $q((resolve, reject) ->
-      Session = $resource("#{API_URL}/users/sign_in.json")
-      session_request = new Session(user: data)
-
-      session_request.$save  ((data) ->
-        storeUserCredentials(data)
+      UsersService.login(data).then(((user) ->
+        storeUserCredentials(user)
         resolve('Login success.'))
       , (err) ->
         reject('Login failed')
+      )
     )
 
   logout = ->

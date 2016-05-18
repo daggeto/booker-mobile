@@ -1,10 +1,12 @@
 class SideController
-  constructor: ($scope, $state, $ionicSlideBoxDelegate) ->
+  constructor: ($scope, $state, $ionicSlideBoxDelegate, currentUser) ->
     @page= 'Side'
 
     @scope = $scope
     @state = $state
     @ionicSlideBoxDelegate = $ionicSlideBoxDelegate
+
+    @currentUser = currentUser
 
     this
 

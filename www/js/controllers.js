@@ -4,6 +4,7 @@ var CalendarController,
 CalendarController = (function() {
   function CalendarController($scope, $state, $locale, $stateParams, UserServicesService, Event, Calendar, EventsService) {
     this.changeStatus = bind(this.changeStatus, this);
+    this.loadEvents = bind(this.loadEvents, this);
     this.scope = $scope;
     this.state = $state;
     this.stateParams = $stateParams;
@@ -20,10 +21,22 @@ CalendarController = (function() {
     this;
   }
 
+  CalendarController.prototype.eventUrl = function(event) {
+    var view;
+    view = 'edit_event';
+    if (this.isPast()) {
+      view = 'preview_event';
+    }
+    return this.state.go("service.calendar." + view, {
+      event_id: event.id,
+      calendar: this.calendar
+    });
+  };
+
   CalendarController.prototype.loadService = function() {
     return this.UserServicesService.findById(this.stateParams.id).then(((function(_this) {
       return function(response) {
-        return _this.service = response.service;
+        return _this.service = response;
       };
     })(this)), function(refejcted) {
       return console.log('rejected');
@@ -64,7 +77,7 @@ CalendarController = (function() {
   CalendarController.prototype.changeStatus = function(event, status) {
     return this.EventsService.update({
       id: event.id,
-      starus: status
+      status: status
     }).then(function() {
       return event.status = status;
     });
@@ -76,7 +89,7 @@ CalendarController = (function() {
   };
 
   CalendarController.prototype.isPast = function() {
-    return this.calendar.selectedDate.isSameOrAfter(this.calendar.currentDate);
+    return this.calendar.selectedDate.isBefore(this.calendar.currentDate);
   };
 
   CalendarController.prototype.back = function() {
@@ -93,38 +106,52 @@ var EventsController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 EventsController = (function() {
-  function EventsController($scope, $state, $stateParams, ionicToast, EventsService, Event, event) {
+  function EventsController($scope, $state, $stateParams, ionicToast, EventsService, Event, event, service) {
     this.modifyDate = bind(this.modifyDate, this);
     this.response = bind(this.response, this);
     this.save = bind(this.save, this);
+    this.changeEndDate = bind(this.changeEndDate, this);
     this.scope = $scope;
     this.state = $state;
     this.calendar = $stateParams.calendar;
-    this.service_id = $stateParams.id;
+    this.ionicToast = ionicToast;
     this.EventsService = EventsService;
     this.Event = Event;
     this.event = event;
-    this.ionicToast = ionicToast;
-    this.valid = false;
+    this.service = service;
     this.bind();
     this;
   }
 
-  EventsController.prototype.bind = function() {};
+  EventsController.prototype.bind = function() {
+    if (this.isAddState()) {
+      return this.scope.$on('timeCommited', this.changeEndDate);
+    }
+  };
+
+  EventsController.prototype.changeEndDate = function(event, params) {
+    if (params.timePickerName !== 'from') {
+      return;
+    }
+    if (this.event.end_at && moment(params.date).isBefore(this.event.end_at)) {
+      return;
+    }
+    return this.event.end_at = moment(params.date).add(this.service.duration, 'minutes').toDate();
+  };
 
   EventsController.prototype.save = function() {
     if (!this.validateTime()) {
       return;
     }
-    this.event['service_id'] = this.service_id;
+    this.event['service_id'] = this.service.id;
     this.event.start_at = this.modifyDate(this.event.start_at);
     this.event.end_at = this.modifyDate(this.event.end_at);
-    if (this.state.is('service.calendar.add_event')) {
+    if (this.isAddState()) {
       this.EventsService.save(this.event).then(this.response, function(refejcted) {
         return console.log('rejected');
       });
     }
-    if (this.state.is('service.calendar.edit_event')) {
+    if (this.isEditState()) {
       return this.EventsService.update(this.event).then(this.response, function(refejcted) {
         return console.log('rejected');
       });
@@ -133,7 +160,7 @@ EventsController = (function() {
 
   EventsController.prototype.response = function(response) {
     return this.state.transitionTo('service.calendar', {
-      id: this.service_id
+      id: this.service.id
     }, {
       reload: true
     });
@@ -188,6 +215,14 @@ EventsController = (function() {
 
   EventsController.prototype.showToast = function(message) {
     return this.ionicToast.show(message, 'bottom', false, 3000);
+  };
+
+  EventsController.prototype.isAddState = function() {
+    return this.state.is('service.calendar.add_event');
+  };
+
+  EventsController.prototype.isEditState = function() {
+    return this.state.is('service.calendar.edit_event');
   };
 
   return EventsController;
@@ -303,7 +338,7 @@ ServiceSettingsController = (function() {
   ServiceSettingsController.prototype.loadService = function() {
     return this.UserServicesService.findById(this.stateParams.id).then(((function(_this) {
       return function(response) {
-        return _this.service = response.service;
+        return _this.service = response;
       };
     })(this)), function(refejcted) {
       return console.log('rejected');
@@ -337,11 +372,12 @@ app.controller('ServiceSettingsController', ServiceSettingsController);
 var SideController;
 
 SideController = (function() {
-  function SideController($scope, $state, $ionicSlideBoxDelegate) {
+  function SideController($scope, $state, $ionicSlideBoxDelegate, currentUser) {
     this.page = 'Side';
     this.scope = $scope;
     this.state = $state;
     this.ionicSlideBoxDelegate = $ionicSlideBoxDelegate;
+    this.currentUser = currentUser;
     this;
   }
 
