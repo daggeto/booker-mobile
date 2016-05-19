@@ -112,6 +112,10 @@ User = (function() {
     this.$r = $resource(API_URL + "/api/v1/users/:id.json", {
       id: '@id'
     });
+    this.$action = $resource(API_URL + "/api/v1/users/:id/:action.json", {
+      id: '@id',
+      action: '@action'
+    });
     this.$session = $resource(API_URL + "/users/:action.json", {
       id: '@id',
       action: '@action'

@@ -369,17 +369,45 @@ ServiceSettingsController = (function() {
 
 app.controller('ServiceSettingsController', ServiceSettingsController);
 
-var SideController;
+var SideController,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 SideController = (function() {
-  function SideController($scope, $state, $ionicSlideBoxDelegate, currentUser) {
+  function SideController($scope, $state, $ionicSlideBoxDelegate, $ionicPopup, currentUser, UsersService) {
+    this.toggleChange = bind(this.toggleChange, this);
     this.page = 'Side';
     this.scope = $scope;
     this.state = $state;
     this.ionicSlideBoxDelegate = $ionicSlideBoxDelegate;
+    this.ionicPopup = $ionicPopup;
     this.currentUser = currentUser;
+    this.UsersService = UsersService;
     this;
   }
+
+  SideController.prototype.providerSettingsClicked = function() {
+    if (!this.currentUser.service) {
+      return this.showAlert();
+    }
+    return this.state.go('service.calendar', {
+      id: this.currentUser.service.id
+    });
+  };
+
+  SideController.prototype.showAlert = function() {
+    return this.ionicPopup.alert({
+      title: 'Hey!',
+      template: 'You must enable provider toggle first'
+    });
+  };
+
+  SideController.prototype.toggleChange = function() {
+    return this.UsersService.toggleProviderSettings(this.currentUser.id, this.currentUser.provider).then((function(_this) {
+      return function(data) {
+        return _this.currentUser = data.user;
+      };
+    })(this));
+  };
 
   SideController.prototype.slideTo = function(index, view) {
     this.ionicSlideBoxDelegate.slide(index);

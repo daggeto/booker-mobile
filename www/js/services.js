@@ -149,9 +149,10 @@ var UsersService;
 
 UsersService = (function() {
   'use strict';
-  function UsersService(User, $cacheFactory) {
-    this.User = User;
+  function UsersService($q, $cacheFactory, User) {
+    this.q = $q;
     this.cacheFactory = $cacheFactory;
+    this.User = User;
     this;
   }
 
@@ -166,6 +167,31 @@ UsersService = (function() {
       action: 'sign_in',
       user: data
     }).$promise;
+  };
+
+  UsersService.prototype.toggleProviderSettings = function(user_id, provider_flag) {
+    return this.q((function(_this) {
+      return function(resolve, reject) {
+        return _this.User.$action.save({
+          id: user_id,
+          provider_flag: provider_flag,
+          action: 'toggle_provider_settings'
+        }).$promise.then(function(data) {
+          if (data.success) {
+            return resolve(data);
+          } else {
+            return reject(data);
+          }
+        });
+      };
+    })(this));
+  };
+
+  UsersService.prototype.disableProviding = function(user) {
+    return this.User.$service.remove({
+      user_id: user.id,
+      id: user.service_id
+    });
   };
 
   return UsersService;
