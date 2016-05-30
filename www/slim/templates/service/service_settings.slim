@@ -8,7 +8,18 @@ ion-view
         ng-click="vm.save()"
         ng-show="vm.showIosSaveButton()"
       ]
-  ion-content[scroll="false"]
+  ion-content
+    ion-slide-box[
+      on-slide-changed="slideHasChanged($index)"
+      active-slide="0"]
+      ion-slide.add-photo[ng-show="vm.showAddPhoto()" ng-click="vm.addNewPhoto()"]
+        i.ion-ios-plus-empty
+
+      ion-slide[ng-repeat="photo in vm.service.service_photos"]
+        ng-include[src="'templates/service/photo_actions.html'"]
+
+        img.profile-picture[src="{{photo.preview_url}}"]
+
     .list
       label.item.item-input.item-stacked-label.padding
         span.input-label Name

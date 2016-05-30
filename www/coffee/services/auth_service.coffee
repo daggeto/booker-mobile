@@ -4,7 +4,7 @@ app.service('AuthService', ($q, $http, UsersService, USER_ROLES, API_URL, LOCAL_
   username = '';
   isAuthenticated = false;
   role = '';
-  authToke = undefined;
+  authToken = undefined;
 
   loadUserCredentials = ->
     token = window.localStorage.getItem(LOCAL_TOKEN_KEY)

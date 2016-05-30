@@ -2,6 +2,7 @@ app = angular.module(
   'booker',
   [
     'ionic',
+    'ngCordova',
     'ngResource',
     'angularMoment',
     'ion-datetime-picker',
@@ -15,13 +16,14 @@ app = angular.module(
     defaultMessage: "I crashed :("
   )
 )
-.run(($rootScope, $state, AuthService, AUTH_EVENTS, $ionicPlatform,
-      $locale, amMoment, AjaxInterceptor) ->
+.run(($rootScope, $state, $ionicPlatform, $ionicPopup,
+      $locale, amMoment, AjaxInterceptor,  AuthService, AUTH_EVENTS, SERVER_EVENTS) ->
   $ionicPlatform.ready ->
     if window.cordova and window.cordova.plugins.Keyboard
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 
       cordova.plugins.Keyboard.disableScroll(true);
+
     if window.StatusBar
       StatusBar.styleDefault();
 
@@ -29,8 +31,30 @@ app = angular.module(
     if !AuthService.isAuthenticated()
       if next.name != 'login'
         event.preventDefault()
-        $state.go('login')
+        $state.transitionTo('login')
   )
+
+  $rootScope.$on(AUTH_EVENTS.notAuthorized, (event) ->
+    alertPopup = $ionicPopup.alert(
+      title: 'Unauthorized!'
+      template: 'You are not allowed to access this resource.')
+	)
+
+  $rootScope.$on(AUTH_EVENTS.notAuthenticated, (event) ->
+    AuthService.logout()
+    $state.go('login')
+    alertPopup = $ionicPopup.alert(
+      title: 'Session Lost!'
+      template: 'Sorry, You have to login again.')
+	)
+
+  $rootScope.$on(SERVER_EVENTS.not_found, (event) ->
+    # AuthService.logout()
+    # $state.go('login')
+    alertPopup = $ionicPopup.alert(
+      title: 'Ups! Little problems.'
+      template: 'Try to login again')
+	)
 
   AjaxInterceptor.run()
 

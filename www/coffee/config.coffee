@@ -29,6 +29,7 @@ app.config ($stateProvider, $urlRouterProvider, $ionicConfigProvider) ->
 
       .state('service'
         abstract: true
+        controller: 'UserServiceController as vm'
         url: '/service/:id'
         templateUrl: 'templates/service.html'
         resolve:
@@ -85,15 +86,19 @@ app.config ($stateProvider, $urlRouterProvider, $ionicConfigProvider) ->
         views:
           'service_settings@service':
             templateUrl: "templates/service/service_settings.html"
-            controller: 'ServiceSettingsController as vm')
+            controller: 'ServiceSettingsController')
 
-  $urlRouterProvider.otherwise('/app/main')
+  $urlRouterProvider.otherwise( ($injector, $location) ->
+    $state = $injector.get("$state")
+    $state.go('service.service_settings', id: 10)
+  )
 
-app.factory('AuthInterceptor', ($rootScope, $q, AUTH_EVENTS) ->
+app.factory('AuthInterceptor', ($rootScope, $q, AUTH_EVENTS, SERVER_EVENTS) ->
   { responseError: (response) ->
     $rootScope.$broadcast {
       401: AUTH_EVENTS.notAuthenticated
       403: AUTH_EVENTS.notAuthorized
+      404: SERVER_EVENTS.not_found
     }[response.status], response
     $q.reject response
  }

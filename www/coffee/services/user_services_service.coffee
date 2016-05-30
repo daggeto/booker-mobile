@@ -1,14 +1,14 @@
 class UserServicesService
   'use strict'
 
-  constructor: (UserService, $cacheFactory) ->
-    @UserService = UserService
-    @cacheFactory = $cacheFactory
+  constructor: ($cacheFactory, UserService) ->
+    [@cacheFactory, @UserService] = arguments
 
     this
 
   events: (params) ->
     @UserService.$events.query(params).$promise
+
   findById: (id) ->
     @UserService.$r.get(id: id).$promise
 

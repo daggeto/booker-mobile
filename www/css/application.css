@@ -47,6 +47,26 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4) !important;
   background: #e42112 !important; }
 
+.photo-actions {
+  position: absolute;
+  width: 100%;
+  background: rgba(222, 222, 222, 0.5);
+  padding: 0.5em; }
+  .photo-actions__top {
+    top: 0; }
+  .photo-actions__bottom {
+    bottom: 0; }
+  .photo-actions--button {
+    color: #fff;
+    font-size: 3em;
+    margin: 0 0.1em; }
+
+.add-photo {
+  font-size: 5em;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
 .calendar__month {
   text-align: center; }
 

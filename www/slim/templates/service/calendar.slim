@@ -25,8 +25,6 @@ ion-view[can-swipe-back="true"]
         .ion-chevron-right.calendar__arrow.pull-left
     .row
       ion-lists.calendar__list.center
-        ion-item.calendar--event[ng-show="vm.loading"]
-          ion-spinner[icon="spiral"]
         ion-item.calendar--event.calendar--event--add.col[ng-hide="vm.isPast()"]
           i.ion-ios-plus-empty[
             ui-sref="service.calendar.add_event({ calendar: vm.calendar })"

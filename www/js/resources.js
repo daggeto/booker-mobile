@@ -104,6 +104,27 @@ Event = (function() {
 
 app.factory('Event', Event);
 
+var ServicePhoto;
+
+ServicePhoto = (function() {
+  'use strict';
+  function ServicePhoto($resource, API_URL) {
+    this.$r = $resource(API_URL + "/api/v1/services/:service_id/service_photos.json", {
+      service_id: '@service_id'
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    });
+    return this;
+  }
+
+  return ServicePhoto;
+
+})();
+
+app.factory('ServicePhoto', ServicePhoto);
+
 var User;
 
 User = (function() {

@@ -1,11 +1,26 @@
 class ServiceSettingsController
-  constructor: ($scope, $state, $stateParams, UserServicesService) ->
-    @scope = $scope
-    @state = $state
-    @stateParams = $stateParams
-    @UserServicesService = UserServicesService
+  constructor:( $scope,
+                $state,
+                $stateParams,
+                $ionicPopup,
+                service,
+                UserServicesService,
+                ServicePhotosService,
+                CameraService,
+                $window) ->
+    [
+      @scope,
+      @state,
+      @stateParams,
+      @ionicPopup,
+      @service,
+      @UserServicesService,
+      @ServicePhotosService,
+      @CameraService,
+      @window
+    ] = arguments
 
-    @loadService()
+    @scope.vm = this
 
     this
 
@@ -16,12 +31,42 @@ class ServiceSettingsController
       { value: 60, label: '60 min' }
   ]
 
-  loadService: ->
-    @UserServicesService.findById(@stateParams.id).then(((response) =>
-      @service = response
-    ), (refejcted) ->
-      console.log('rejected')
+  addNewPhoto: ->
+    @showTakePhotoPopup()
+
+  showTakePhotoPopup: (photo_id) ->
+    @scope.photo_id = photo_id
+
+    @takePhotoPopup = @ionicPopup.show(
+      title: 'Select method'
+      templateUrl: 'templates/service/upload_photo_popup.html'
+      scope: @scope
+      buttons: [
+        { text: 'Cancel' }
+      ]
     )
+
+  takePhoto: (index)->
+    @CameraService.takePhoto().then(@photoTaken, @error)
+
+  selectPhoto: (index)->
+    @CameraService.selectPhoto().then(@photoTaken, @error)
+
+  deletePhoto: (index)->
+    alert(index)
+
+  photoTaken: (photo_uri) =>
+    @ServicePhotosService.save({ service_id: @stateParams.id, photo_uri: photo_uri })
+      .then(@photoUploaded, @error, @progress)
+
+  photoUploaded: (data) =>
+    @takePhotoPopup.close()
+    @window.location.reload(true)
+
+  progress: (progress) ->
+
+  error: (error) ->
+    alert(error.body)
 
   save: ->
     @UserServicesService.update(@service).then(((response) =>
@@ -30,6 +75,9 @@ class ServiceSettingsController
 
   showIosSaveButton: ->
     @scope.ios && @state.is('service.service_settings')
+
+  showAddPhoto: ->
+    @service.service_photos.length <= 5
 
   back: ->
     @state.go('app.main')

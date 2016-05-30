@@ -1,11 +1,11 @@
 app.service('AuthService', function($q, $http, UsersService, USER_ROLES, API_URL, LOCAL_CURRENT_USER_ID) {
-  var LOCAL_EMAIL_KEY, LOCAL_TOKEN_KEY, authToke, destroyUserCredentials, isAuthenticated, loadUserCredentials, login, logout, role, storeUserCredentials, useCredentials, username;
+  var LOCAL_EMAIL_KEY, LOCAL_TOKEN_KEY, authToken, destroyUserCredentials, isAuthenticated, loadUserCredentials, login, logout, role, storeUserCredentials, useCredentials, username;
   LOCAL_TOKEN_KEY = 'authToken';
   LOCAL_EMAIL_KEY = 'authEmail';
   username = '';
   isAuthenticated = false;
   role = '';
-  authToke = void 0;
+  authToken = void 0;
   loadUserCredentials = function() {
     var email, token;
     token = window.localStorage.getItem(LOCAL_TOKEN_KEY);
@@ -29,7 +29,6 @@ app.service('AuthService', function($q, $http, UsersService, USER_ROLES, API_URL
     return $http.defaults.headers.common['X-User-Email'] = user.email;
   };
   destroyUserCredentials = function() {
-    var authToken;
     authToken = void 0;
     username = '';
     isAuthenticated = false;
@@ -64,6 +63,42 @@ app.service('AuthService', function($q, $http, UsersService, USER_ROLES, API_URL
     }
   };
 });
+
+var CameraService;
+
+CameraService = (function() {
+  'use strict';
+  function CameraService($cordovaCamera) {
+    this.cordovaCamera = $cordovaCamera;
+  }
+
+  CameraService.prototype.takePhoto = function() {
+    return this.loadPhoto(Camera.PictureSourceType.CAMERA);
+  };
+
+  CameraService.prototype.selectPhoto = function() {
+    return this.loadPhoto(Camera.PictureSourceType.PHOTOLIBRARY);
+  };
+
+  CameraService.prototype.loadPhoto = function(sourceType) {
+    var options;
+    options = {
+      quality: 50,
+      destinationType: Camera.DestinationType.FILE_URI,
+      sourceType: sourceType,
+      encodingType: Camera.EncodingType.JPEG,
+      popoverOptions: CameraPopoverOptions,
+      saveToPhotoAlbum: false,
+      correctOrientation: true
+    };
+    return this.cordovaCamera.getPicture(options);
+  };
+
+  return CameraService;
+
+})();
+
+app.service('CameraService', CameraService);
 
 var EventsService;
 
@@ -101,13 +136,69 @@ EventsService = (function() {
 
 app.service('EventsService', EventsService);
 
+var FileUploadService;
+
+FileUploadService = (function() {
+  'use strict';
+  function FileUploadService($cordovaFileTransfer, $http, API_URL) {
+    this.cordovaFileTransfer = $cordovaFileTransfer;
+    this.API_URL = API_URL;
+    this.options = {
+      'X-User-Token': $http.defaults.headers.common['X-User-Token'],
+      'X-User-Email': $http.defaults.headers.common['X-User-Email']
+    };
+    this;
+  }
+
+  FileUploadService.prototype.upload = function(service_id, file_uri) {
+    var path;
+    path = this.upload_path(service_id);
+    return this.cordovaFileTransfer.upload(path, file_uri, {
+      headers: this.options
+    });
+  };
+
+  FileUploadService.prototype.upload_path = function(service_id) {
+    return this.API_URL + "/api/v1/services/" + service_id + "/service_photos.json";
+  };
+
+  return FileUploadService;
+
+})();
+
+app.service('FileUploadService', FileUploadService);
+
+var ServicePhotosService;
+
+ServicePhotosService = (function() {
+  'use strict';
+  function ServicePhotosService($cacheFactory, FileUploadService) {
+    this.cacheFactory = arguments[0], this.FileUploadService = arguments[1];
+    this;
+  }
+
+  ServicePhotosService.prototype.save = function(params) {
+    return this.FileUploadService.upload(params.service_id, params.photo_uri);
+  };
+
+  ServicePhotosService.prototype["delete"] = function(id) {
+    return this.UserService.$r["delete"]({
+      id: id
+    }).$promise;
+  };
+
+  return ServicePhotosService;
+
+})();
+
+app.service('ServicePhotosService', ServicePhotosService);
+
 var UserServicesService;
 
 UserServicesService = (function() {
   'use strict';
-  function UserServicesService(UserService, $cacheFactory) {
-    this.UserService = UserService;
-    this.cacheFactory = $cacheFactory;
+  function UserServicesService($cacheFactory, UserService) {
+    this.cacheFactory = arguments[0], this.UserService = arguments[1];
     this;
   }
 

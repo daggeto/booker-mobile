@@ -71,7 +71,7 @@ class EventsController
 
       eventRange = moment.range(event.start_at, event.end_at)
 
-      newEventRange.contains(eventRange) || eventRange.contains(newEventRange)
+      newEventRange.intersect(eventRange) 
     )
 
   modifyDate: (date) =>

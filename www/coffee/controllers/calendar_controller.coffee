@@ -1,15 +1,13 @@
 class CalendarController
   constructor: (
-    $scope, $state, $locale, $stateParams, UserServicesService, Event, Calendar, EventsService
-    ) ->
+    $scope, $state, $locale, UserServicesService, Event, Calendar, EventsService, service) ->
     @scope = $scope
     @state = $state
-    @stateParams = $stateParams
     @UserServicesService = UserServicesService
     @Event = Event
     @EventsService = EventsService
     @calendar = new Calendar()
-    @loadService()
+    @service = service
 
     @scope.$on('$ionicView.enter', (event, data) =>
       @loadEvents(@calendar.selectedDate)
@@ -21,13 +19,6 @@ class CalendarController
     view = 'edit_event'
     view = 'preview_event' if @isPast()
     @state.go("service.calendar.#{view}", event_id: event.id, calendar: @calendar)
-
-  loadService: ->
-    @UserServicesService.findById(@stateParams.id).then(((response) =>
-      @service = response
-    ), (refejcted) ->
-      console.log('rejected')
-    )
 
   loadEvents: (date) =>
     @UserServicesService.events(

@@ -1,0 +1,31 @@
+$background: rgba(222, 222, 222, .5);
+$action-button-color: #fff;
+$add-photo-font-size: 5em;
+
+.photo-actions {
+  position: absolute;
+  width: 100%;
+  background: $background;
+  padding: $r-size-micro;
+
+  &__top {
+      top: 0;
+  }
+
+  &__bottom {
+    bottom: 0;
+  }
+
+  &--button{
+    color: $action-button-color;
+    font-size: $font-huge;
+    margin: 0 $r-size-nano;
+  }
+}
+
+.add-photo {
+  font-size: $add-photo-font-size;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -2,17 +2,16 @@ var CalendarController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 CalendarController = (function() {
-  function CalendarController($scope, $state, $locale, $stateParams, UserServicesService, Event, Calendar, EventsService) {
+  function CalendarController($scope, $state, $locale, UserServicesService, Event, Calendar, EventsService, service) {
     this.changeStatus = bind(this.changeStatus, this);
     this.loadEvents = bind(this.loadEvents, this);
     this.scope = $scope;
     this.state = $state;
-    this.stateParams = $stateParams;
     this.UserServicesService = UserServicesService;
     this.Event = Event;
     this.EventsService = EventsService;
     this.calendar = new Calendar();
-    this.loadService();
+    this.service = service;
     this.scope.$on('$ionicView.enter', (function(_this) {
       return function(event, data) {
         return _this.loadEvents(_this.calendar.selectedDate);
@@ -30,16 +29,6 @@ CalendarController = (function() {
     return this.state.go("service.calendar." + view, {
       event_id: event.id,
       calendar: this.calendar
-    });
-  };
-
-  CalendarController.prototype.loadService = function() {
-    return this.UserServicesService.findById(this.stateParams.id).then(((function(_this) {
-      return function(response) {
-        return _this.service = response;
-      };
-    })(this)), function(refejcted) {
-      return console.log('rejected');
     });
   };
 
@@ -202,7 +191,7 @@ EventsController = (function() {
           return false;
         }
         eventRange = moment.range(event.start_at, event.end_at);
-        return newEventRange.contains(eventRange) || eventRange.contains(newEventRange);
+        return newEventRange.intersect(eventRange);
       };
     })(this));
   };
@@ -263,36 +252,13 @@ app.controller('LoginController', function($scope, $state, $ionicPopup, AuthServ
     return AuthService.login(data).then((function(authenticated) {
       $state.go('app.main', {});
       $scope.setCurrentUsername(data.username);
-    }), function(err) {
-      var alertPopup;
-      return alertPopup = $ionicPopup.alert({
-        title: 'Login failed!',
-        template: 'Please check your credentials!'
-      });
-    });
+    }));
   };
 });
 
-app.controller('MainController', function($scope, $state, $ionicPopup, $ionicSlideBoxDelegate, AuthService, AUTH_EVENTS) {
-  $scope.username = AuthService.username();
+app.controller('MainController', function($scope, $state, $ionicSlideBoxDelegate) {
   $scope.android = ionic.Platform.isAndroid();
   $scope.ios = ionic.Platform.isIOS();
-  $scope.$on(AUTH_EVENTS.notAuthorized, function(event) {
-    var alertPopup;
-    return alertPopup = $ionicPopup.alert({
-      title: 'Unauthorized!',
-      template: 'You are not allowed to access this resource.'
-    });
-  });
-  $scope.$on(AUTH_EVENTS.notAuthenticated, function(event) {
-    var alertPopup;
-    AuthService.logout();
-    $state.go('login');
-    return alertPopup = $ionicPopup.alert({
-      title: 'Session Lost!',
-      template: 'Sorry, You have to login again.'
-    });
-  });
   $scope.setCurrentUsername = function(name) {
     return $scope.username = name;
   };
@@ -307,15 +273,15 @@ app.controller('MainController', function($scope, $state, $ionicPopup, $ionicSli
   };
 });
 
-var ServiceSettingsController;
+var ServiceSettingsController,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 ServiceSettingsController = (function() {
-  function ServiceSettingsController($scope, $state, $stateParams, UserServicesService) {
-    this.scope = $scope;
-    this.state = $state;
-    this.stateParams = $stateParams;
-    this.UserServicesService = UserServicesService;
-    this.loadService();
+  function ServiceSettingsController($scope, $state, $stateParams, $ionicPopup, service, UserServicesService, ServicePhotosService, CameraService, $window) {
+    this.photoUploaded = bind(this.photoUploaded, this);
+    this.photoTaken = bind(this.photoTaken, this);
+    this.scope = arguments[0], this.state = arguments[1], this.stateParams = arguments[2], this.ionicPopup = arguments[3], this.service = arguments[4], this.UserServicesService = arguments[5], this.ServicePhotosService = arguments[6], this.CameraService = arguments[7], this.window = arguments[8];
+    this.scope.vm = this;
     this;
   }
 
@@ -335,14 +301,52 @@ ServiceSettingsController = (function() {
     }
   ];
 
-  ServiceSettingsController.prototype.loadService = function() {
-    return this.UserServicesService.findById(this.stateParams.id).then(((function(_this) {
-      return function(response) {
-        return _this.service = response;
-      };
-    })(this)), function(refejcted) {
-      return console.log('rejected');
+  ServiceSettingsController.prototype.addNewPhoto = function() {
+    return this.showTakePhotoPopup();
+  };
+
+  ServiceSettingsController.prototype.showTakePhotoPopup = function(photo_id) {
+    this.scope.photo_id = photo_id;
+    return this.takePhotoPopup = this.ionicPopup.show({
+      title: 'Select method',
+      templateUrl: 'templates/service/upload_photo_popup.html',
+      scope: this.scope,
+      buttons: [
+        {
+          text: 'Cancel'
+        }
+      ]
     });
+  };
+
+  ServiceSettingsController.prototype.takePhoto = function(index) {
+    return this.CameraService.takePhoto().then(this.photoTaken, this.error);
+  };
+
+  ServiceSettingsController.prototype.selectPhoto = function(index) {
+    return this.CameraService.selectPhoto().then(this.photoTaken, this.error);
+  };
+
+  ServiceSettingsController.prototype.deletePhoto = function(index) {
+    return alert(index);
+  };
+
+  ServiceSettingsController.prototype.photoTaken = function(photo_uri) {
+    return this.ServicePhotosService.save({
+      service_id: this.stateParams.id,
+      photo_uri: photo_uri
+    }).then(this.photoUploaded, this.error, this.progress);
+  };
+
+  ServiceSettingsController.prototype.photoUploaded = function(data) {
+    this.takePhotoPopup.close();
+    return this.window.location.reload(true);
+  };
+
+  ServiceSettingsController.prototype.progress = function(progress) {};
+
+  ServiceSettingsController.prototype.error = function(error) {
+    return alert(error.body);
   };
 
   ServiceSettingsController.prototype.save = function() {
@@ -357,6 +361,10 @@ ServiceSettingsController = (function() {
 
   ServiceSettingsController.prototype.showIosSaveButton = function() {
     return this.scope.ios && this.state.is('service.service_settings');
+  };
+
+  ServiceSettingsController.prototype.showAddPhoto = function() {
+    return this.service.service_photos.length <= 5;
   };
 
   ServiceSettingsController.prototype.back = function() {
@@ -421,3 +429,17 @@ SideController = (function() {
 })();
 
 app.controller('SideController', SideController);
+
+var UserServiceController;
+
+UserServiceController = (function() {
+  function UserServiceController(service) {
+    this.service = service;
+    this;
+  }
+
+  return UserServiceController;
+
+})();
+
+app.controller('UserServiceController', UserServiceController);

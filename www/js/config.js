@@ -30,6 +30,7 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     }
   }).state('service', {
     abstract: true,
+    controller: 'UserServiceController as vm',
     url: '/service/:id',
     templateUrl: 'templates/service.html',
     resolve: {
@@ -103,19 +104,26 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     views: {
       'service_settings@service': {
         templateUrl: "templates/service/service_settings.html",
-        controller: 'ServiceSettingsController as vm'
+        controller: 'ServiceSettingsController'
       }
     }
   });
-  return $urlRouterProvider.otherwise('/app/main');
+  return $urlRouterProvider.otherwise(function($injector, $location) {
+    var $state;
+    $state = $injector.get("$state");
+    return $state.go('service.service_settings', {
+      id: 10
+    });
+  });
 });
 
-app.factory('AuthInterceptor', function($rootScope, $q, AUTH_EVENTS) {
+app.factory('AuthInterceptor', function($rootScope, $q, AUTH_EVENTS, SERVER_EVENTS) {
   return {
     responseError: function(response) {
       $rootScope.$broadcast({
         401: AUTH_EVENTS.notAuthenticated,
-        403: AUTH_EVENTS.notAuthorized
+        403: AUTH_EVENTS.notAuthorized,
+        404: SERVER_EVENTS.not_found
       }[response.status], response);
       return $q.reject(response);
     }
