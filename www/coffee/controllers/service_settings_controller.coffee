@@ -52,8 +52,8 @@ class ServiceSettingsController
   selectPhoto: (index)->
     @CameraService.selectPhoto().then(@photoTaken, @error)
 
-  deletePhoto: (index)->
-    alert(index)
+  deletePhoto: (id)->
+    @ServicePhotosService.delete(id).then(@reloadPage, @error)
 
   photoTaken: (photo_uri) =>
     @ServicePhotosService.save({ service_id: @stateParams.id, photo_uri: photo_uri })
@@ -61,9 +61,12 @@ class ServiceSettingsController
 
   photoUploaded: (data) =>
     @takePhotoPopup.close()
-    @window.location.reload(true)
+    @reloadPage()
 
   progress: (progress) ->
+
+  reloadPage: ->
+    @window.location.reload(true)
 
   error: (error) ->
     alert(error.body)

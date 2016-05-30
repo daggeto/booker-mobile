@@ -172,8 +172,8 @@ var ServicePhotosService;
 
 ServicePhotosService = (function() {
   'use strict';
-  function ServicePhotosService($cacheFactory, FileUploadService) {
-    this.cacheFactory = arguments[0], this.FileUploadService = arguments[1];
+  function ServicePhotosService($cacheFactory, ServicePhoto, FileUploadService) {
+    this.cacheFactory = arguments[0], this.ServicePhoto = arguments[1], this.FileUploadService = arguments[2];
     this;
   }
 
@@ -182,7 +182,7 @@ ServicePhotosService = (function() {
   };
 
   ServicePhotosService.prototype["delete"] = function(id) {
-    return this.UserService.$r["delete"]({
+    return this.ServicePhoto.$r["delete"]({
       id: id
     }).$promise;
   };

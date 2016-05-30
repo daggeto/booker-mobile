@@ -109,7 +109,7 @@ var ServicePhoto;
 ServicePhoto = (function() {
   'use strict';
   function ServicePhoto($resource, API_URL) {
-    this.$r = $resource(API_URL + "/api/v1/services/:service_id/service_photos.json", {
+    this.$r = $resource(API_URL + "/api/v1/service_photos/:id.json", {
       service_id: '@service_id'
     }, {
       update: {

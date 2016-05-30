@@ -1,8 +1,8 @@
 class ServicePhotosService
   'use strict'
 
-  constructor: ($cacheFactory, FileUploadService) ->
-    [@cacheFactory, @FileUploadService] = arguments
+  constructor: ($cacheFactory, ServicePhoto, FileUploadService) ->
+    [@cacheFactory, @ServicePhoto, @FileUploadService] = arguments
 
     this
 
@@ -10,6 +10,6 @@ class ServicePhotosService
     @FileUploadService.upload(params.service_id, params.photo_uri)
 
   delete: (id) ->
-    @UserService.$r.delete(id: id).$promise
+    @ServicePhoto.$r.delete(id: id).$promise
 
 app.service('ServicePhotosService', ServicePhotosService)

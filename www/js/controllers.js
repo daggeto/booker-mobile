@@ -327,8 +327,8 @@ ServiceSettingsController = (function() {
     return this.CameraService.selectPhoto().then(this.photoTaken, this.error);
   };
 
-  ServiceSettingsController.prototype.deletePhoto = function(index) {
-    return alert(index);
+  ServiceSettingsController.prototype.deletePhoto = function(id) {
+    return this.ServicePhotosService["delete"](id).then(this.reloadPage, this.error);
   };
 
   ServiceSettingsController.prototype.photoTaken = function(photo_uri) {
@@ -340,10 +340,14 @@ ServiceSettingsController = (function() {
 
   ServiceSettingsController.prototype.photoUploaded = function(data) {
     this.takePhotoPopup.close();
-    return this.window.location.reload(true);
+    return this.reloadPage();
   };
 
   ServiceSettingsController.prototype.progress = function(progress) {};
+
+  ServiceSettingsController.prototype.reloadPage = function() {
+    return this.window.location.reload(true);
+  };
 
   ServiceSettingsController.prototype.error = function(error) {
     return alert(error.body);

@@ -1,4 +1,4 @@
 .photo-actions.photo-actions__top
   a.pull-left.ion-camera.photo-actions--button[ng-click="vm.takePhoto($index)"]
   a.pull-left.ion-images.photo-actions--button[ng-click="vm.selectPhoto($index)"]
-  a.pull-right.ion-trash-b.photo-actions--button[ng-click="vm.deletePhoto($index)"]
+  a.pull-right.ion-trash-b.photo-actions--button[ng-click="vm.deletePhoto(photo.id)"]
