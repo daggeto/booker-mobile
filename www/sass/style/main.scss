@@ -30,3 +30,15 @@ $default-padding: 16px;
   margin-right: auto;
   display: block;
 }
+
+.flexbox {
+  display: flex;
+}
+
+.center {
+  justify-content: center;
+}
+
+.middle {
+  align-items: center;
+}

@@ -24,3 +24,10 @@ $assertive :#ef473a;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4) !important;
     background: darken($assertive, 10%) !important;
 }
+
+.save-button {
+  margin: $r-size-micro;
+  color: $light;
+  font-weight: bold;
+  background-color: $accent-color;
+}

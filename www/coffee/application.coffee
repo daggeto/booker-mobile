@@ -49,8 +49,8 @@ app = angular.module(
 	)
 
   $rootScope.$on(SERVER_EVENTS.not_found, (event) ->
-    # AuthService.logout()
-    # $state.go('login')
+    AuthService.logout()
+    $state.go('login')
     alertPopup = $ionicPopup.alert(
       title: 'Ups! Little problems.'
       template: 'Try to login again')

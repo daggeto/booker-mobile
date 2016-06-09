@@ -23,9 +23,19 @@ $add-photo-font-size: 5em;
   }
 }
 
-.add-photo {
+.add-photo-slide {
+  height: $r-size-giant;
+  color: $accent-color;
   font-size: $add-photo-font-size;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.take-photo-buttons {
+  font-size: $add-photo-font-size;
+
+  i {
+    margin: 0 $r-size-nano;
+  }
 }

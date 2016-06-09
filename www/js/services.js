@@ -72,15 +72,15 @@ CameraService = (function() {
     this.cordovaCamera = $cordovaCamera;
   }
 
-  CameraService.prototype.takePhoto = function() {
-    return this.loadPhoto(Camera.PictureSourceType.CAMERA);
+  CameraService.prototype.capturePhoto = function() {
+    return this.takePhoto(Camera.PictureSourceType.CAMERA);
   };
 
   CameraService.prototype.selectPhoto = function() {
-    return this.loadPhoto(Camera.PictureSourceType.PHOTOLIBRARY);
+    return this.takePhoto(Camera.PictureSourceType.PHOTOLIBRARY);
   };
 
-  CameraService.prototype.loadPhoto = function(sourceType) {
+  CameraService.prototype.takePhoto = function(sourceType) {
     var options;
     options = {
       quality: 50,
@@ -140,26 +140,20 @@ var FileUploadService;
 
 FileUploadService = (function() {
   'use strict';
-  function FileUploadService($cordovaFileTransfer, $http, API_URL) {
+  function FileUploadService($cordovaFileTransfer, $http) {
     this.cordovaFileTransfer = $cordovaFileTransfer;
-    this.API_URL = API_URL;
-    this.options = {
+    this.header = {
       'X-User-Token': $http.defaults.headers.common['X-User-Token'],
       'X-User-Email': $http.defaults.headers.common['X-User-Email']
     };
     this;
   }
 
-  FileUploadService.prototype.upload = function(service_id, file_uri) {
-    var path;
-    path = this.upload_path(service_id);
-    return this.cordovaFileTransfer.upload(path, file_uri, {
-      headers: this.options
+  FileUploadService.prototype.upload = function(method, upload_path, file_uri) {
+    return this.cordovaFileTransfer.upload(upload_path, file_uri, {
+      httpMethod: method,
+      headers: this.header
     });
-  };
-
-  FileUploadService.prototype.upload_path = function(service_id) {
-    return this.API_URL + "/api/v1/services/" + service_id + "/service_photos.json";
   };
 
   return FileUploadService;
@@ -172,13 +166,29 @@ var ServicePhotosService;
 
 ServicePhotosService = (function() {
   'use strict';
-  function ServicePhotosService($cacheFactory, ServicePhoto, FileUploadService) {
-    this.cacheFactory = arguments[0], this.ServicePhoto = arguments[1], this.FileUploadService = arguments[2];
+  function ServicePhotosService($cacheFactory, ServicePhoto, FileUploadService, API_URL) {
+    this.cacheFactory = arguments[0], this.ServicePhoto = arguments[1], this.FileUploadService = arguments[2], this.API_URL = arguments[3];
     this;
   }
 
   ServicePhotosService.prototype.save = function(params) {
-    return this.FileUploadService.upload(params.service_id, params.photo_uri);
+    var path;
+    path = this.save_path(params.service_id);
+    return this.FileUploadService.upload('POST', path, params.photo_uri);
+  };
+
+  ServicePhotosService.prototype.update = function(params) {
+    var path;
+    path = this.update_path(params.service_id, params.photo_id);
+    return this.FileUploadService.upload('PUT', path, params.photo_uri);
+  };
+
+  ServicePhotosService.prototype.save_path = function(service_id) {
+    return this.API_URL + "/api/v1/services/" + service_id + "/service_photos.json";
+  };
+
+  ServicePhotosService.prototype.update_path = function(service_id, photo_id) {
+    return this.API_URL + "/api/v1/services/" + service_id + "/service_photos/" + photo_id + ".json";
   };
 
   ServicePhotosService.prototype["delete"] = function(id) {
@@ -204,6 +214,10 @@ UserServicesService = (function() {
 
   UserServicesService.prototype.events = function(params) {
     return this.UserService.$events.query(params).$promise;
+  };
+
+  UserServicesService.prototype.service_photos = function(params) {
+    return this.UserService.$service_photos.query(params).$promise;
   };
 
   UserServicesService.prototype.findById = function(id) {

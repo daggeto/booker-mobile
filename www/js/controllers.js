@@ -277,10 +277,10 @@ var ServiceSettingsController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 ServiceSettingsController = (function() {
-  function ServiceSettingsController($scope, $state, $stateParams, $ionicPopup, service, UserServicesService, ServicePhotosService, CameraService, $window) {
+  function ServiceSettingsController($scope, $state, $stateParams, $ionicPopup, $q, service, UserServicesService, ServicePhotosService, CameraService, $window) {
     this.photoUploaded = bind(this.photoUploaded, this);
     this.photoTaken = bind(this.photoTaken, this);
-    this.scope = arguments[0], this.state = arguments[1], this.stateParams = arguments[2], this.ionicPopup = arguments[3], this.service = arguments[4], this.UserServicesService = arguments[5], this.ServicePhotosService = arguments[6], this.CameraService = arguments[7], this.window = arguments[8];
+    this.scope = arguments[0], this.state = arguments[1], this.stateParams = arguments[2], this.ionicPopup = arguments[3], this.q = arguments[4], this.service = arguments[5], this.UserServicesService = arguments[6], this.ServicePhotosService = arguments[7], this.CameraService = arguments[8], this.window = arguments[9];
     this.scope.vm = this;
     this;
   }
@@ -319,28 +319,57 @@ ServiceSettingsController = (function() {
     });
   };
 
-  ServiceSettingsController.prototype.takePhoto = function(index) {
-    return this.CameraService.takePhoto().then(this.photoTaken, this.error);
-  };
-
-  ServiceSettingsController.prototype.selectPhoto = function(index) {
-    return this.CameraService.selectPhoto().then(this.photoTaken, this.error);
-  };
-
   ServiceSettingsController.prototype.deletePhoto = function(id) {
     return this.ServicePhotosService["delete"](id).then(this.reloadPage, this.error);
   };
 
-  ServiceSettingsController.prototype.photoTaken = function(photo_uri) {
-    return this.ServicePhotosService.save({
-      service_id: this.stateParams.id,
-      photo_uri: photo_uri
-    }).then(this.photoUploaded, this.error, this.progress);
+  ServiceSettingsController.prototype.takePhoto = function(photo_id) {
+    return this.promisePhoto(Camera.PictureSourceType.CAMERA, photo_id).then(this.photoTaken, this.error);
+  };
+
+  ServiceSettingsController.prototype.selectPhoto = function(photo_id) {
+    return this.promisePhoto(Camera.PictureSourceType.PHOTOLIBRARY, photo_id).then(this.photoTaken, this.error);
+  };
+
+  ServiceSettingsController.prototype.promisePhoto = function(method, photo_id) {
+    return this.q((function(_this) {
+      return function(resolve, reject) {
+        return _this.CameraService.takePhoto(method).then(function(photo_uri) {
+          return resolve({
+            photo_uri: photo_uri,
+            photo_id: photo_id
+          });
+        }, function(error) {
+          return reject(error);
+        });
+      };
+    })(this));
+  };
+
+  ServiceSettingsController.prototype.photoTaken = function(response) {
+    if (response.photo_id) {
+      return this.ServicePhotosService.update({
+        service_id: this.stateParams.id,
+        photo_id: response.photo_id,
+        photo_uri: response.photo_uri
+      }).then(this.photoUploaded, this.error, this.progress);
+    } else {
+      return this.ServicePhotosService.save({
+        service_id: this.stateParams.id,
+        photo_uri: response.photo_uri
+      }).then(this.photoUploaded, this.error, this.progress);
+    }
   };
 
   ServiceSettingsController.prototype.photoUploaded = function(data) {
     this.takePhotoPopup.close();
-    return this.reloadPage();
+    return this.UserServicesService.service_photos({
+      service_id: this.service.id
+    }).then((function(_this) {
+      return function(service_photos) {
+        return _this.service.service_photos = service_photos;
+      };
+    })(this));
   };
 
   ServiceSettingsController.prototype.progress = function(progress) {};
@@ -368,7 +397,7 @@ ServiceSettingsController = (function() {
   };
 
   ServiceSettingsController.prototype.showAddPhoto = function() {
-    return this.service.service_photos.length <= 5;
+    return this.service.service_photos.length < 5;
   };
 
   ServiceSettingsController.prototype.back = function() {

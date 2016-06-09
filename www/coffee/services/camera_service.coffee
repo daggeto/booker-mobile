@@ -4,13 +4,13 @@ class CameraService
   constructor: ($cordovaCamera) ->
     @cordovaCamera = $cordovaCamera
 
-  takePhoto: ->
-    @loadPhoto(Camera.PictureSourceType.CAMERA)
+  capturePhoto: ->
+    @takePhoto(Camera.PictureSourceType.CAMERA)
 
   selectPhoto: ->
-    @loadPhoto(Camera.PictureSourceType.PHOTOLIBRARY)
+    @takePhoto(Camera.PictureSourceType.PHOTOLIBRARY)
 
-  loadPhoto: (sourceType) ->
+  takePhoto: (sourceType) ->
     options = {
       quality: 50
       destinationType: Camera.DestinationType.FILE_URI

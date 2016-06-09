@@ -41,6 +41,8 @@ app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMome
   });
   $rootScope.$on(SERVER_EVENTS.not_found, function(event) {
     var alertPopup;
+    AuthService.logout();
+    $state.go('login');
     return alertPopup = $ionicPopup.alert({
       title: 'Ups! Little problems.',
       template: 'Try to login again'

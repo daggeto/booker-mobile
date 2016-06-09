@@ -111,9 +111,7 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
   return $urlRouterProvider.otherwise(function($injector, $location) {
     var $state;
     $state = $injector.get("$state");
-    return $state.go('service.service_settings', {
-      id: 10
-    });
+    return $state.go('app.main');
   });
 });
 

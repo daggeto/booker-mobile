@@ -9,6 +9,9 @@ class UserServicesService
   events: (params) ->
     @UserService.$events.query(params).$promise
 
+  service_photos: (params) ->
+    @UserService.$service_photos.query(params).$promise
+
   findById: (id) ->
     @UserService.$r.get(id: id).$promise
 

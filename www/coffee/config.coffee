@@ -90,7 +90,7 @@ app.config ($stateProvider, $urlRouterProvider, $ionicConfigProvider) ->
 
   $urlRouterProvider.otherwise( ($injector, $location) ->
     $state = $injector.get("$state")
-    $state.go('service.service_settings', id: 10)
+    $state.go('app.main')
   )
 
 app.factory('AuthInterceptor', ($rootScope, $q, AUTH_EVENTS, SERVER_EVENTS) ->

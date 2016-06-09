@@ -21,6 +21,15 @@
   margin-right: auto;
   display: block; }
 
+.flexbox {
+  display: flex; }
+
+.center {
+  justify-content: center; }
+
+.middle {
+  align-items: center; }
+
 .b-action-button {
   font-size: 1.8em;
   padding: 5px; }
@@ -47,6 +56,12 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4) !important;
   background: #e42112 !important; }
 
+.save-button {
+  margin: 0.5em;
+  color: #fde9e7;
+  font-weight: bold;
+  background-color: #ef473a; }
+
 .photo-actions {
   position: absolute;
   width: 100%;
@@ -61,11 +76,18 @@
     font-size: 3em;
     margin: 0 0.1em; }
 
-.add-photo {
+.add-photo-slide {
+  height: 5em;
+  color: #ef473a;
   font-size: 5em;
   display: flex;
   justify-content: center;
   align-items: center; }
+
+.take-photo-buttons {
+  font-size: 5em; }
+  .take-photo-buttons i {
+    margin: 0 0.1em; }
 
 .calendar__month {
   text-align: center; }

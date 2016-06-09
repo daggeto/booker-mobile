@@ -3,6 +3,7 @@ class ServiceSettingsController
                 $state,
                 $stateParams,
                 $ionicPopup,
+                $q,
                 service,
                 UserServicesService,
                 ServicePhotosService,
@@ -13,6 +14,7 @@ class ServiceSettingsController
       @state,
       @stateParams,
       @ionicPopup,
+      @q,
       @service,
       @UserServicesService,
       @ServicePhotosService,
@@ -46,22 +48,41 @@ class ServiceSettingsController
       ]
     )
 
-  takePhoto: (index)->
-    @CameraService.takePhoto().then(@photoTaken, @error)
-
-  selectPhoto: (index)->
-    @CameraService.selectPhoto().then(@photoTaken, @error)
-
   deletePhoto: (id)->
     @ServicePhotosService.delete(id).then(@reloadPage, @error)
 
-  photoTaken: (photo_uri) =>
-    @ServicePhotosService.save({ service_id: @stateParams.id, photo_uri: photo_uri })
-      .then(@photoUploaded, @error, @progress)
+  takePhoto: (photo_id)->
+    @promisePhoto(Camera.PictureSourceType.CAMERA, photo_id).then(@photoTaken, @error)
+
+  selectPhoto: (photo_id)->
+    @promisePhoto(Camera.PictureSourceType.PHOTOLIBRARY, photo_id).then(@photoTaken, @error)
+
+  promisePhoto: (method, photo_id) ->
+    @q((resolve, reject) =>
+      @CameraService.takePhoto(method).then( (photo_uri) =>
+        resolve(photo_uri: photo_uri, photo_id: photo_id)
+      , (error) ->
+        reject(error)
+      )
+    )
+
+  photoTaken: (response) =>
+    if response.photo_id
+      @ServicePhotosService
+        .update(
+          service_id: @stateParams.id,
+          photo_id: response.photo_id,
+          photo_uri: response.photo_uri
+        ).then(@photoUploaded, @error, @progress)
+    else
+      @ServicePhotosService
+        .save(service_id: @stateParams.id, photo_uri: response.photo_uri)
+        .then(@photoUploaded, @error, @progress)
 
   photoUploaded: (data) =>
     @takePhotoPopup.close()
-    @reloadPage()
+    @UserServicesService.service_photos(service_id: @service.id).then (service_photos) =>
+      @service.service_photos = service_photos
 
   progress: (progress) ->
 
@@ -80,7 +101,7 @@ class ServiceSettingsController
     @scope.ios && @state.is('service.service_settings')
 
   showAddPhoto: ->
-    @service.service_photos.length <= 5
+    @service.service_photos.length < 5
 
   back: ->
     @state.go('app.main')
