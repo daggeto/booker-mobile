@@ -15,7 +15,7 @@ class SideController
   providerSettingsClicked: ->
     return @showAlert() unless @currentUser.service
 
-    @state.go('service.calendar', id: @currentUser.service.id)
+    @state.go('service.service_settings', id: @currentUser.service.id)
 
   showAlert: ->
     @ionicPopup.alert

@@ -55,6 +55,9 @@ class CalendarController
   isPast: ->
     @calendar.selectedDate.isBefore(@calendar.currentDate)
 
+  goToAddEvent: ->
+    @state.go('service.calendar.add_event', calendar: @calendar)
+
   back: ->
     @state.go('app.main')
 

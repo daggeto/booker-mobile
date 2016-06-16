@@ -4,21 +4,18 @@ ion-view
       a.button.icon-left.ion-chevron-left.button-clear.button-dark[ng-click="vm.back()"] Back
     h1.title Settings
     .buttons
-      a.ion-ios-checkmark-outline.b-action-button.padding[
-        ng-click="vm.save()"
-        ng-show="vm.showIosSaveButton()"
-      ]
+      button.button.save-button.pull-right[ng-click="vm.save()"] Save
   ion-content
     ion-slide-box.photos-slider[
       on-slide-changed="slideHasChanged($index)"
       active-slide="0"]
-      ion-slide.add-photo-slide[ng-if="vm.showAddPhoto()" ng-click="vm.addNewPhoto()"]
-        i.ion-plus-circled
-
       ion-slide[ng-repeat="photo in vm.service.service_photos"]
         ng-include[src="'templates/service/photo_actions.html'"]
 
         img.profile-picture[src="{{photo.preview_url}}"]
+
+      ion-slide.add-photo-slide[ng-if="vm.showAddPhoto()" ng-click="vm.addNewPhoto()"]
+        i.ion-plus-circled
 
     .list
       label.item.item-input.item-stacked-label.padding
@@ -41,5 +38,3 @@ ion-view
       label.item.item-input.item-stacked-label.padding
         span.input-label Address
         input[type="text" ng-model="vm.service.address"]
-
-      button.button.save-button.pull-right[ng-click="vm.save()" ng-show="android"] Save

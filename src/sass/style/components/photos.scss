@@ -5,7 +5,6 @@ $add-photo-font-size: 5em;
 .photo-actions {
   position: absolute;
   width: 100%;
-  background: $background;
   padding: $r-size-micro;
 
   &__top {
@@ -17,8 +16,9 @@ $add-photo-font-size: 5em;
   }
 
   &--button{
-    color: $action-button-color;
-    font-size: $font-huge;
+    padding: $size-small;
+    color: $accent-color;
+    font-size: $font-default;
     margin: 0 $r-size-nano;
   }
 }

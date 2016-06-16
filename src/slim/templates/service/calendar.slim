@@ -7,7 +7,7 @@ ion-view[can-swipe-back="true"]
     .row.calendar__month
       .col {{ vm.calendar.startOfWeek | amDateFormat: 'MMMM' }}
     .row
-      .col.col-center[ng-click="vm.calendar.previousWeek()"]
+      .col-center[ng-click="vm.calendar.previousWeek()"]
         .ion-chevron-left.calendar__arrow.pull-right
       .col
         .button-bar
@@ -21,14 +21,15 @@ ion-view[can-swipe-back="true"]
           ]
             | {{ day.number }}
 
-      .col.col-center[ng-click="vm.calendar.nextWeek()"]
+      .col-center[ng-click="vm.calendar.nextWeek()"]
         .ion-chevron-right.calendar__arrow.pull-left
     .row
       ion-lists.calendar__list.center
-        ion-item.calendar--event.calendar--event--add.col[ng-hide="vm.isPast()"]
-          i.ion-ios-plus-empty[
-            ui-sref="service.calendar.add_event({ calendar: vm.calendar })"
-          ]
+        ion-item.calendar--event.calendar--event--add.col[
+          ng-hide="vm.isPast()"
+          ng-click="vm.goToAddEvent()"]
+          i.ion-ios-plus-empty
+
         ion-item.calendar--event.col.col-center[
           ng-repeat="event in vm.calendar.events track by event.id"
           class="calendar--event--{{event.status}}"

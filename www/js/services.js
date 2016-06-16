@@ -94,6 +94,10 @@ CameraService = (function() {
     return this.cordovaCamera.getPicture(options);
   };
 
+  CameraService.prototype.cleanup = function() {
+    return this.cordovaCamera.cleanup(console.log, console.log);
+  };
+
   return CameraService;
 
 })();

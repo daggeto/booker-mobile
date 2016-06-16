@@ -1,4 +1,4 @@
-$day-width: 40px;
+$day-width: 20px;
 $day-padding: 0 5px !important;
 $list-width: 95%;
 $event_height: 60px;
@@ -87,6 +87,6 @@ $event-add-color: #387ef5;
   }
 
   &__arrow {
-    font-size: $font-default
+    font-size: $font-big
   }
 }

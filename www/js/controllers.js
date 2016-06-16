@@ -81,6 +81,12 @@ CalendarController = (function() {
     return this.calendar.selectedDate.isBefore(this.calendar.currentDate);
   };
 
+  CalendarController.prototype.goToAddEvent = function() {
+    return this.state.go('service.calendar.add_event', {
+      calendar: this.calendar
+    });
+  };
+
   CalendarController.prototype.back = function() {
     return this.state.go('app.main');
   };
@@ -277,10 +283,11 @@ var ServiceSettingsController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 ServiceSettingsController = (function() {
-  function ServiceSettingsController($scope, $state, $stateParams, $ionicPopup, $q, service, UserServicesService, ServicePhotosService, CameraService, $window) {
+  function ServiceSettingsController($scope, $state, $stateParams, $ionicPopup, $q, service, UserServicesService, ServicePhotosService, CameraService, $ionicSlideBoxDelegate, $window) {
+    this.reloadPhotos = bind(this.reloadPhotos, this);
     this.photoUploaded = bind(this.photoUploaded, this);
     this.photoTaken = bind(this.photoTaken, this);
-    this.scope = arguments[0], this.state = arguments[1], this.stateParams = arguments[2], this.ionicPopup = arguments[3], this.q = arguments[4], this.service = arguments[5], this.UserServicesService = arguments[6], this.ServicePhotosService = arguments[7], this.CameraService = arguments[8], this.window = arguments[9];
+    this.scope = arguments[0], this.state = arguments[1], this.stateParams = arguments[2], this.ionicPopup = arguments[3], this.q = arguments[4], this.service = arguments[5], this.UserServicesService = arguments[6], this.ServicePhotosService = arguments[7], this.CameraService = arguments[8], this.ionicSlideBoxDelegate = arguments[9], this.window = arguments[10];
     this.scope.vm = this;
     this;
   }
@@ -320,7 +327,7 @@ ServiceSettingsController = (function() {
   };
 
   ServiceSettingsController.prototype.deletePhoto = function(id) {
-    return this.ServicePhotosService["delete"](id).then(this.reloadPage, this.error);
+    return this.ServicePhotosService["delete"](id).then(this.reloadPhotos, this.error);
   };
 
   ServiceSettingsController.prototype.takePhoto = function(photo_id) {
@@ -363,19 +370,21 @@ ServiceSettingsController = (function() {
 
   ServiceSettingsController.prototype.photoUploaded = function(data) {
     this.takePhotoPopup.close();
-    return this.UserServicesService.service_photos({
-      service_id: this.service.id
-    }).then((function(_this) {
-      return function(service_photos) {
-        return _this.service.service_photos = service_photos;
-      };
-    })(this));
+    this.CameraService.cleanup();
+    return this.reloadPhotos();
   };
 
   ServiceSettingsController.prototype.progress = function(progress) {};
 
-  ServiceSettingsController.prototype.reloadPage = function() {
-    return this.window.location.reload(true);
+  ServiceSettingsController.prototype.reloadPhotos = function() {
+    return this.UserServicesService.service_photos({
+      service_id: this.service.id
+    }).then((function(_this) {
+      return function(service_photos) {
+        _this.service.service_photos = service_photos;
+        return _this.ionicSlideBoxDelegate.update();
+      };
+    })(this));
   };
 
   ServiceSettingsController.prototype.error = function(error) {
@@ -385,7 +394,7 @@ ServiceSettingsController = (function() {
   ServiceSettingsController.prototype.save = function() {
     return this.UserServicesService.update(this.service).then(((function(_this) {
       return function(response) {
-        return _this.state.go('service.calendar');
+        return _this.state.go('app.main');
       };
     })(this)), function(refejcted) {
       return console.log('rejected');
@@ -430,7 +439,7 @@ SideController = (function() {
     if (!this.currentUser.service) {
       return this.showAlert();
     }
-    return this.state.go('service.calendar', {
+    return this.state.go('service.service_settings', {
       id: this.currentUser.service.id
     });
   };

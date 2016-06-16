@@ -23,4 +23,7 @@ class CameraService
 
     @cordovaCamera.getPicture(options)
 
+  cleanup: ->
+    @cordovaCamera.cleanup(console.log, console.log);
+
 app.service('CameraService', CameraService)

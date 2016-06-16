@@ -8,6 +8,7 @@ class ServiceSettingsController
                 UserServicesService,
                 ServicePhotosService,
                 CameraService,
+                $ionicSlideBoxDelegate,
                 $window) ->
     [
       @scope,
@@ -19,6 +20,7 @@ class ServiceSettingsController
       @UserServicesService,
       @ServicePhotosService,
       @CameraService,
+      @ionicSlideBoxDelegate,
       @window
     ] = arguments
 
@@ -49,7 +51,7 @@ class ServiceSettingsController
     )
 
   deletePhoto: (id)->
-    @ServicePhotosService.delete(id).then(@reloadPage, @error)
+    @ServicePhotosService.delete(id).then(@reloadPhotos, @error)
 
   takePhoto: (photo_id)->
     @promisePhoto(Camera.PictureSourceType.CAMERA, photo_id).then(@photoTaken, @error)
@@ -81,20 +83,22 @@ class ServiceSettingsController
 
   photoUploaded: (data) =>
     @takePhotoPopup.close()
-    @UserServicesService.service_photos(service_id: @service.id).then (service_photos) =>
-      @service.service_photos = service_photos
+    @CameraService.cleanup()
+    @reloadPhotos()
 
   progress: (progress) ->
 
-  reloadPage: ->
-    @window.location.reload(true)
+  reloadPhotos: =>
+    @UserServicesService.service_photos(service_id: @service.id).then (service_photos) =>
+      @service.service_photos = service_photos
+      @ionicSlideBoxDelegate.update()
 
   error: (error) ->
     alert(error.body)
 
   save: ->
     @UserServicesService.update(@service).then(((response) =>
-      @state.go('service.calendar')
+      @state.go('app.main')
     ), (refejcted) -> console.log('rejected'))
 
   showIosSaveButton: ->

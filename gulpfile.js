@@ -12,22 +12,22 @@ var coffee = require('gulp-coffee');
 var slim = require("gulp-slim");
 
 var paths = {
-  sass: ['./www/sass/**/*.scss'],
-  coffee: ['./www/coffee/**/*.coffee'],
-  slim: ['./www/slim/**/*.slim'],
+  sass: ['./src/sass/**/*.scss'],
+  coffee: ['./src/coffee/**/*.coffee'],
+  slim: ['./src/slim/**/*.slim'],
 };
 
 var coffee_paths = {
-  root: ['./www/coffee/*.coffee'],
-  controllers: ['./www/coffee/controllers/*.coffee'],
-  services: ['./www/coffee/services/*.coffee'],
-  resources: ['./www/coffee/resources/*.coffee']
+  root: ['./src/coffee/*.coffee'],
+  controllers: ['./src/coffee/controllers/*.coffee'],
+  services: ['./src/coffee/services/*.coffee'],
+  resources: ['./src/coffee/resources/*.coffee']
 }
 
-gulp.task('default', ['sass']);
+gulp.task('default', ['sass', 'coffee', 'slim']);
 
 gulp.task('sass', function(done) {
-  gulp.src('./www/sass/*.scss')
+  gulp.src('./src/sass/*.scss')
     .pipe(sass())
     .on('error', sass.logError)
     .pipe(gulp.dest('./www/css/'))
@@ -66,7 +66,7 @@ gulp.task('coffee', function(done) {
 });
 
 gulp.task('slim', function(done){
-  gulp.src("./www/slim/**/*.slim")
+  gulp.src("./src/slim/**/*.slim")
     .pipe(changed("./www", {extension: '.html'}))
     .pipe(slim({pretty: true, options: "attr_list_delims={'(' => ')', '[' => ']'}"}))
     .pipe(gulp.dest("./www"))
