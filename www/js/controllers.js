@@ -232,18 +232,39 @@ FeedController = (function() {
   function FeedController($scope, UserServicesService) {
     this.scope = $scope;
     this.UserServicesService = UserServicesService;
-    this.loadServices();
+    this.refreshServices();
     this;
   }
 
-  FeedController.prototype.loadServices = function() {
-    return this.UserServicesService.find().then(((function(_this) {
+  FeedController.prototype.refreshServices = function() {
+    this.currentPage = 1;
+    return this.loadServices((function(_this) {
       return function(response) {
-        return _this.services = response;
+        _this.services = response.services;
+        _this.anyMoreServices = response.more;
+        return _this.scope.$broadcast('scroll.refreshComplete');
       };
-    })(this)), function(refejcted) {
-      return console.log('rejected');
-    });
+    })(this));
+  };
+
+  FeedController.prototype.loadMoreServices = function() {
+    this.currentPage++;
+    return this.loadServices((function(_this) {
+      return function(response) {
+        _this.services = _this.services.concat(response.services);
+        _this.anyMoreServices = response.more;
+        return _this.scope.$broadcast('scroll.infiniteScrollComplete');
+      };
+    })(this));
+  };
+
+  FeedController.prototype.loadServices = function(handleResponse) {
+    var params;
+    params = {
+      per_page: 3,
+      page: this.currentPage
+    };
+    return this.UserServicesService.findWithGet(params).then(handleResponse, this.scope.error);
   };
 
   return FeedController;
@@ -279,15 +300,122 @@ app.controller('MainController', function($scope, $state, $ionicSlideBoxDelegate
   };
 });
 
-var ServiceSettingsController,
+var ServicePhotosController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-ServiceSettingsController = (function() {
-  function ServiceSettingsController($scope, $state, $stateParams, $ionicPopup, $q, service, UserServicesService, ServicePhotosService, CameraService, $ionicSlideBoxDelegate, $window) {
+ServicePhotosController = (function() {
+  function ServicePhotosController($scope, $state, $stateParams, $ionicPopup, $q, $ionicSlideBoxDelegate, $window, $ionicLoading, UserServicesService, ServicePhotosService, CameraService, service) {
+    this.error = bind(this.error, this);
     this.reloadPhotos = bind(this.reloadPhotos, this);
     this.photoUploaded = bind(this.photoUploaded, this);
     this.photoTaken = bind(this.photoTaken, this);
-    this.scope = arguments[0], this.state = arguments[1], this.stateParams = arguments[2], this.ionicPopup = arguments[3], this.q = arguments[4], this.service = arguments[5], this.UserServicesService = arguments[6], this.ServicePhotosService = arguments[7], this.CameraService = arguments[8], this.ionicSlideBoxDelegate = arguments[9], this.window = arguments[10];
+    this.scope = arguments[0], this.state = arguments[1], this.stateParams = arguments[2], this.ionicPopup = arguments[3], this.q = arguments[4], this.ionicSlideBoxDelegate = arguments[5], this.window = arguments[6], this.ionicLoading = arguments[7], this.UserServicesService = arguments[8], this.ServicePhotosService = arguments[9], this.CameraService = arguments[10], this.service = arguments[11];
+    this.scope.vm = this;
+    this;
+  }
+
+  ServicePhotosController.prototype.addNewPhoto = function() {
+    return this.showTakePhotoPopup();
+  };
+
+  ServicePhotosController.prototype.showTakePhotoPopup = function(photo_id) {
+    this.scope.photo_id = photo_id;
+    return this.takePhotoPopup = this.ionicPopup.show({
+      title: 'Select method',
+      templateUrl: 'templates/service/upload_photo_popup.html',
+      scope: this.scope,
+      buttons: [
+        {
+          text: 'Cancel'
+        }
+      ]
+    });
+  };
+
+  ServicePhotosController.prototype.deletePhoto = function(id) {
+    return this.ServicePhotosService["delete"](id).then(this.reloadPhotos, this.error);
+  };
+
+  ServicePhotosController.prototype.takePhoto = function(photo_id) {
+    return this.promisePhoto(Camera.PictureSourceType.CAMERA, photo_id).then(this.photoTaken, this.error);
+  };
+
+  ServicePhotosController.prototype.selectPhoto = function(photo_id) {
+    return this.promisePhoto(Camera.PictureSourceType.PHOTOLIBRARY, photo_id).then(this.photoTaken, this.error);
+  };
+
+  ServicePhotosController.prototype.promisePhoto = function(method, photo_id) {
+    this.ionicLoading.show();
+    this.takePhotoPopup.close();
+    return this.q((function(_this) {
+      return function(resolve, reject) {
+        return _this.CameraService.takePhoto(method).then(function(photo_uri) {
+          return resolve({
+            photo_uri: photo_uri,
+            photo_id: photo_id
+          });
+        }, function(error) {
+          return reject(error);
+        });
+      };
+    })(this));
+  };
+
+  ServicePhotosController.prototype.photoTaken = function(response) {
+    if (response.photo_id) {
+      return this.ServicePhotosService.update({
+        service_id: this.stateParams.id,
+        photo_id: response.photo_id,
+        photo_uri: response.photo_uri
+      }).then(this.photoUploaded, this.error, this.progress);
+    } else {
+      return this.ServicePhotosService.save({
+        service_id: this.stateParams.id,
+        photo_uri: response.photo_uri
+      }).then(this.photoUploaded, this.error, this.progress);
+    }
+  };
+
+  ServicePhotosController.prototype.photoUploaded = function(data) {
+    this.takePhotoPopup.close();
+    this.CameraService.cleanup();
+    this.reloadPhotos();
+    return this.ionicLoading.hide();
+  };
+
+  ServicePhotosController.prototype.progress = function(progress) {};
+
+  ServicePhotosController.prototype.reloadPhotos = function() {
+    return this.UserServicesService.service_photos({
+      service_id: this.service.id
+    }).then((function(_this) {
+      return function(service_photos) {
+        _this.service.service_photos = service_photos;
+        return _this.ionicSlideBoxDelegate.update();
+      };
+    })(this));
+  };
+
+  ServicePhotosController.prototype.showAddPhoto = function() {
+    return this.service.service_photos.length < 5;
+  };
+
+  ServicePhotosController.prototype.error = function(error) {
+    this.ionicLoading.hide();
+    return alert(error.body);
+  };
+
+  return ServicePhotosController;
+
+})();
+
+app.controller('ServicePhotosController', ServicePhotosController);
+
+var ServiceSettingsController;
+
+ServiceSettingsController = (function() {
+  function ServiceSettingsController($scope, $state, service, UserServicesService) {
+    this.scope = arguments[0], this.state = arguments[1], this.service = arguments[2], this.UserServicesService = arguments[3];
     this.scope.vm = this;
     this;
   }
@@ -308,89 +436,6 @@ ServiceSettingsController = (function() {
     }
   ];
 
-  ServiceSettingsController.prototype.addNewPhoto = function() {
-    return this.showTakePhotoPopup();
-  };
-
-  ServiceSettingsController.prototype.showTakePhotoPopup = function(photo_id) {
-    this.scope.photo_id = photo_id;
-    return this.takePhotoPopup = this.ionicPopup.show({
-      title: 'Select method',
-      templateUrl: 'templates/service/upload_photo_popup.html',
-      scope: this.scope,
-      buttons: [
-        {
-          text: 'Cancel'
-        }
-      ]
-    });
-  };
-
-  ServiceSettingsController.prototype.deletePhoto = function(id) {
-    return this.ServicePhotosService["delete"](id).then(this.reloadPhotos, this.error);
-  };
-
-  ServiceSettingsController.prototype.takePhoto = function(photo_id) {
-    return this.promisePhoto(Camera.PictureSourceType.CAMERA, photo_id).then(this.photoTaken, this.error);
-  };
-
-  ServiceSettingsController.prototype.selectPhoto = function(photo_id) {
-    return this.promisePhoto(Camera.PictureSourceType.PHOTOLIBRARY, photo_id).then(this.photoTaken, this.error);
-  };
-
-  ServiceSettingsController.prototype.promisePhoto = function(method, photo_id) {
-    return this.q((function(_this) {
-      return function(resolve, reject) {
-        return _this.CameraService.takePhoto(method).then(function(photo_uri) {
-          return resolve({
-            photo_uri: photo_uri,
-            photo_id: photo_id
-          });
-        }, function(error) {
-          return reject(error);
-        });
-      };
-    })(this));
-  };
-
-  ServiceSettingsController.prototype.photoTaken = function(response) {
-    if (response.photo_id) {
-      return this.ServicePhotosService.update({
-        service_id: this.stateParams.id,
-        photo_id: response.photo_id,
-        photo_uri: response.photo_uri
-      }).then(this.photoUploaded, this.error, this.progress);
-    } else {
-      return this.ServicePhotosService.save({
-        service_id: this.stateParams.id,
-        photo_uri: response.photo_uri
-      }).then(this.photoUploaded, this.error, this.progress);
-    }
-  };
-
-  ServiceSettingsController.prototype.photoUploaded = function(data) {
-    this.takePhotoPopup.close();
-    this.CameraService.cleanup();
-    return this.reloadPhotos();
-  };
-
-  ServiceSettingsController.prototype.progress = function(progress) {};
-
-  ServiceSettingsController.prototype.reloadPhotos = function() {
-    return this.UserServicesService.service_photos({
-      service_id: this.service.id
-    }).then((function(_this) {
-      return function(service_photos) {
-        _this.service.service_photos = service_photos;
-        return _this.ionicSlideBoxDelegate.update();
-      };
-    })(this));
-  };
-
-  ServiceSettingsController.prototype.error = function(error) {
-    return alert(error.body);
-  };
-
   ServiceSettingsController.prototype.save = function() {
     return this.UserServicesService.update(this.service).then(((function(_this) {
       return function(response) {
@@ -403,10 +448,6 @@ ServiceSettingsController = (function() {
 
   ServiceSettingsController.prototype.showIosSaveButton = function() {
     return this.scope.ios && this.state.is('service.service_settings');
-  };
-
-  ServiceSettingsController.prototype.showAddPhoto = function() {
-    return this.service.service_photos.length < 5;
   };
 
   ServiceSettingsController.prototype.back = function() {
@@ -453,8 +494,8 @@ SideController = (function() {
 
   SideController.prototype.toggleChange = function() {
     return this.UsersService.toggleProviderSettings(this.currentUser.id, this.currentUser.provider).then((function(_this) {
-      return function(data) {
-        return _this.currentUser = data.user;
+      return function(user) {
+        return _this.currentUser = user;
       };
     })(this));
   };

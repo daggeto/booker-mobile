@@ -1,11 +1,11 @@
 var app;
 
-app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMoment', 'ion-datetime-picker', 'ionic-toast', 'ionic-ajax-interceptor']).config(function(AjaxInterceptorProvider) {
+app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMoment', 'ion-datetime-picker', 'ionic-toast', 'ionic-ajax-interceptor', 'ionicLazyLoad']).config(function(AjaxInterceptorProvider) {
   return AjaxInterceptorProvider.config({
     title: "Ups",
     defaultMessage: "I crashed :("
   });
-}).run(function($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, amMoment, AjaxInterceptor, AuthService, AUTH_EVENTS, SERVER_EVENTS) {
+}).run(function($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log, amMoment, AjaxInterceptor, AuthService, AUTH_EVENTS, SERVER_EVENTS) {
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -48,5 +48,11 @@ app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMome
       template: 'Try to login again'
     });
   });
+  $rootScope.error = function(message) {
+    $ionicPopup.alert({
+      template: 'Ups! Little problems.'
+    });
+    return $log.error(message);
+  };
   AjaxInterceptor.run();
 });

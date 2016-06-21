@@ -1,6 +1,6 @@
-$background: rgba(222, 222, 222, .5);
 $action-button-color: #fff;
 $add-photo-font-size: 5em;
+$photo-slide-height: 23em;
 
 .photo-actions {
   position: absolute;
@@ -23,13 +23,17 @@ $add-photo-font-size: 5em;
   }
 }
 
-.add-photo-slide {
-  height: $r-size-giant;
-  color: $accent-color;
-  font-size: $add-photo-font-size;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.photo-slider {
+  height: $photo-slide-height;
+
+  &__add {
+    height: 100%;
+    color: $accent-color;
+    font-size: $add-photo-font-size;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .take-photo-buttons {

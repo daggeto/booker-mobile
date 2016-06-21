@@ -23,8 +23,8 @@ class SideController
      template: 'You must enable provider toggle first'
 
   toggleChange: =>
-    @UsersService.toggleProviderSettings(@currentUser.id, @currentUser.provider).then (data) =>
-      @currentUser = data.user
+    @UsersService.toggleProviderSettings(@currentUser.id, @currentUser.provider).then (user) =>
+      @currentUser = user
 
   slideTo: (index, view) ->
     @ionicSlideBoxDelegate.slide(index)

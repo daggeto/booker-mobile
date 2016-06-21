@@ -6,9 +6,9 @@
       Settings
     </h1>
     <div class="buttons">
-      <button class="button save-button pull-right" ng-click="vm.save()">Save</button>
+      <button class="button accent-button pull-right" ng-click="vm.save()">Save</button>
     </div>
-  </ion-header-bar><ion-content><ion-slide-box active-slide="0" class="photos-slider" on-slide-changed="slideHasChanged($index)"><ion-slide ng-repeat="photo in vm.service.service_photos"><ng-include src="&#39;templates/service/photo_actions.html&#39;"></ng-include><img class="profile-picture" src="{{photo.preview_url}}" /></ion-slide><ion-slide class="add-photo-slide" ng-click="vm.addNewPhoto()" ng-if="vm.showAddPhoto()"><i class="ion-plus-circled"></i></ion-slide></ion-slide-box>
+  </ion-header-bar><ion-content><ui-view name="photos"></ui-view>
     <div class="list">
       <label class="item item-input item-stacked-label padding"><span class="input-label">Name</span><input ng-model="vm.service.name" type="text" /></label><label class="item item-select padding"><span class="input-label">Duration</span><select ng-model="vm.service.duration" ng-options="dur.value as dur.label for dur in vm.durations"></select></label><label class="item item-input item-stacked-label padding"><span class="input-label">Price</span><input ng-model="vm.service.price" type="text" /></label><label class="item item-input item-stacked-label padding"><span class="input-label">Phone Number</span><input ng-model="vm.service.phone" type="text" /></label><label class="item item-input item-stacked-label padding"><span class="input-label">Address</span><input ng-model="vm.service.address" type="text" /></label>
     </div>

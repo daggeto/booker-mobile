@@ -234,6 +234,10 @@ UserServicesService = (function() {
     return this.UserService.$r.query(params).$promise;
   };
 
+  UserServicesService.prototype.findWithGet = function(params) {
+    return this.UserService.$r.get(params).$promise;
+  };
+
   UserServicesService.prototype.save = function(params) {
     return this.UserService.$r.save(params).$promise;
   };

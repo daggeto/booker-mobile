@@ -18,6 +18,9 @@ class UserServicesService
   find: (params) ->
     @UserService.$r.query(params).$promise
 
+  findWithGet: (params) ->
+    @UserService.$r.get(params).$promise
+
   save: (params) ->
     @UserService.$r.save(params).$promise
 

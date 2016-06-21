@@ -1,4 +1,11 @@
 ion-view[view-title="Feed"]
-  ion-content.padding
-    div[ng-repeat="service in vm.services"]
-      | {{ service.name }}
+  ion-content.feed[lazy-scroll]
+    ion-refresher[on-refresh="vm.refreshServices()"]
+    ion-list
+      ion-item.service[
+        ng-repeat="service in vm.services"
+        ng-include="'templates/feed/service.html'"]
+    ion-infinite-scroll[
+      ng-if="vm.anyMoreServices"
+      on-infinite="vm.loadMoreServices()"
+      distance="5%"]

@@ -6,10 +6,7 @@ ion-view
     h1.title {{vm.calendar.selectedDate.format() | date }}
 
     .buttons
-      a.ion-ios-plus-outline.b-action-button.padding[
-        ng-click="vm.save()"
-        ng-show="ios"
-      ]
+      button.button.accent-button.pull-right[ng-click="vm.save()"] Save
   ion-content[scroll="false"]
     .list
       label.item.item-input.padding
@@ -41,6 +38,3 @@ ion-view
       ]
         .col.input-label To:
         .col.align-right {{ vm.event.end_at | date: "H:mm" }}
-
-    button.button.button-float[ng-click="vm.save()" ng-show="android"]
-      i.icon.ion-checkmark-round

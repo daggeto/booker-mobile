@@ -7,7 +7,8 @@ app = angular.module(
     'angularMoment',
     'ion-datetime-picker',
     'ionic-toast',
-    'ionic-ajax-interceptor'
+    'ionic-ajax-interceptor',
+    'ionicLazyLoad'
   ]
 )
 .config((AjaxInterceptorProvider) ->
@@ -17,7 +18,7 @@ app = angular.module(
   )
 )
 .run(($rootScope, $state, $ionicPlatform, $ionicPopup,
-      $locale, amMoment, AjaxInterceptor,  AuthService, AUTH_EVENTS, SERVER_EVENTS) ->
+      $locale, $log, amMoment, AjaxInterceptor,  AuthService, AUTH_EVENTS, SERVER_EVENTS) ->
   $ionicPlatform.ready ->
     if window.cordova and window.cordova.plugins.Keyboard
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -55,6 +56,10 @@ app = angular.module(
       title: 'Ups! Little problems.'
       template: 'Try to login again')
 	)
+
+  $rootScope.error = (message) ->
+    $ionicPopup.alert(template: 'Ups! Little problems.')
+    $log.error(message)
 
   AjaxInterceptor.run()
 

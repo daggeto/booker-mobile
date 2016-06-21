@@ -1,0 +1,49 @@
+$service-width: 100%;
+$service-height: 450px;
+$service-details-height: 6em;
+$service-details-background: rgba(255, 255, 255, 0.7);
+$description-height: 2em;
+$description-line-height: 1em;
+$address-text-color: #2aa9d4;
+
+.service {
+  padding: 0;
+
+  &__thumbnail {
+    width: $service-width;
+  }
+
+  &__details {
+    bottom: 0px;
+    width: 100%;
+    background: $service-details-background;
+    height: $service-details-height;
+  }
+
+  &__description {
+    height: $description-height;
+    padding: $r-size-nano;
+    font-size: $font-default;
+    line-height: $description-line-height;
+    white-space: normal;
+    overflow: hidden;
+  }
+
+  &__price {
+    font-size: $font-small;
+    text-align: center;
+  }
+
+  &__address {
+    font-size: $font-small;
+    color: $address-text-color;
+  }
+
+  .image-loader-container {
+    width: $service-width;
+    height: $service-height;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

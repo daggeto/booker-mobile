@@ -4,19 +4,9 @@ ion-view
       a.button.icon-left.ion-chevron-left.button-clear.button-dark[ng-click="vm.back()"] Back
     h1.title Settings
     .buttons
-      button.button.save-button.pull-right[ng-click="vm.save()"] Save
+      button.button.accent-button.pull-right[ng-click="vm.save()"] Save
   ion-content
-    ion-slide-box.photos-slider[
-      on-slide-changed="slideHasChanged($index)"
-      active-slide="0"]
-      ion-slide[ng-repeat="photo in vm.service.service_photos"]
-        ng-include[src="'templates/service/photo_actions.html'"]
-
-        img.profile-picture[src="{{photo.preview_url}}"]
-
-      ion-slide.add-photo-slide[ng-if="vm.showAddPhoto()" ng-click="vm.addNewPhoto()"]
-        i.ion-plus-circled
-
+    ui-view[name="photos"]
     .list
       label.item.item-input.item-stacked-label.padding
         span.input-label Name
