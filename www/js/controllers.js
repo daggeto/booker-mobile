@@ -1,3 +1,33 @@
+var BookEventController,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+BookEventController = (function() {
+  function BookEventController($scope, $state, service, BookingService) {
+    this.bookEvent = bind(this.bookEvent, this);
+    this.scope = arguments[0], this.state = arguments[1], this.service = arguments[2], this.BookingService = arguments[3];
+    this.bindListeners();
+    this.scope.vm = this;
+    this;
+  }
+
+  BookEventController.prototype.bindListeners = function() {
+    return this.scope.$on('bookEvent', this.bookEvent);
+  };
+
+  BookEventController.prototype.bookEvent = function(_, data) {
+    return this.BookingService.book(data.event);
+  };
+
+  BookEventController.prototype.back = function() {
+    return this.state.go('app.main');
+  };
+
+  return BookEventController;
+
+})();
+
+app.controller('BookEventController', BookEventController);
+
 var CalendarController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
@@ -229,12 +259,16 @@ app.controller('EventsController', EventsController);
 var FeedController;
 
 FeedController = (function() {
-  function FeedController($scope, UserServicesService) {
-    this.scope = $scope;
-    this.UserServicesService = UserServicesService;
+  function FeedController($scope, $state, UserServicesService) {
+    this.scope = arguments[0], this.state = arguments[1], this.UserServicesService = arguments[2];
+    this.bindListeners();
     this.refreshServices();
     this;
   }
+
+  FeedController.prototype.bindListeners = function() {
+    return this.scope.$on('booked', function(event, data) {});
+  };
 
   FeedController.prototype.refreshServices = function() {
     this.currentPage = 1;
@@ -265,6 +299,10 @@ FeedController = (function() {
       page: this.currentPage
     };
     return this.UserServicesService.findWithGet(params).then(handleResponse, this.scope.error);
+  };
+
+  FeedController.prototype.goTo = function(state, params) {
+    return this.state.go(state, params);
   };
 
   return FeedController;
@@ -299,6 +337,72 @@ app.controller('MainController', function($scope, $state, $ionicSlideBoxDelegate
     return $state.go('app.main');
   };
 });
+
+var PhotosCarouselController;
+
+PhotosCarouselController = (function() {
+  function PhotosCarouselController($scope) {
+    this.scope = arguments[0];
+    this;
+  }
+
+  return PhotosCarouselController;
+
+})();
+
+app.controller('PhotosCarouselController', PhotosCarouselController);
+
+var ServiceCalendarController,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+ServiceCalendarController = (function() {
+  'use strict';
+  function ServiceCalendarController($scope, UserServicesService, Calendar, Event) {
+    this.selectDate = bind(this.selectDate, this);
+    this.loadEvents = bind(this.loadEvents, this);
+    this.scope = arguments[0], this.UserServicesService = arguments[1], this.Calendar = arguments[2], this.Event = arguments[3];
+    this.calendar = new Calendar();
+    this.loadEvents(this.calendar.selectedDate);
+    this;
+  }
+
+  ServiceCalendarController.prototype.loadEvents = function(date) {
+    return this.UserServicesService.events({
+      service_id: this.service.id,
+      start_at: date.format(),
+      'status[]': [this.Event.FREE, this.Event.PENDING]
+    }).then(((function(_this) {
+      return function(events) {
+        return _this.calendar.events = events;
+      };
+    })(this)), function(rejected) {
+      return console.log(rejected);
+    });
+  };
+
+  ServiceCalendarController.prototype.selectDate = function(date) {
+    if (this.isPast(date)) {
+      return;
+    }
+    this.calendar.selectDate(date);
+    return this.loadEvents(date);
+  };
+
+  ServiceCalendarController.prototype.isPast = function(date) {
+    return date.isBefore(this.calendar.currentDate);
+  };
+
+  ServiceCalendarController.prototype.eventClick = function(event) {
+    return this.scope.$emit('bookEvent', {
+      event: event
+    });
+  };
+
+  return ServiceCalendarController;
+
+})();
+
+app.controller('ServiceCalendarController', ServiceCalendarController);
 
 var ServicePhotosController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };

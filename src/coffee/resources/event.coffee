@@ -13,7 +13,16 @@ class Event
         { value: @BOOKED, label: 'Booked' }
       ]
 
-    @$r = $resource("#{API_URL}/api/v1/events/:id.json", { id: '@id' }, update: { method: 'PUT' })
+    URL = "#{API_URL}/api/v1/events/:id/:action.json"
+    params =
+      id: '@id'
+      action: '@action'
+    methods =
+      update:
+        method: 'PUT'
+      post:
+        method: 'POST'
+    @$r = $resource(URL, params, methods)
 
     @$new = ->
       {

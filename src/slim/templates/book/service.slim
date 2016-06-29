@@ -1,0 +1,8 @@
+ion-view[can-swipe-back="true"]
+  ion-header-bar[align-title="center" ]
+    .buttons
+      a.button.icon-left.ion-chevron-left.button-clear.button-dark[ng-click="vm.back()"] Back
+    h1.title {{vm.service.name}}
+  ion-content.has-header
+    photos-carousel[photos='vm.service.service_photos']
+    calendar[service='vm.service']

@@ -65,8 +65,13 @@ $event-add-color: #387ef5;
     }
   }
 
-  &--title {
+  &__title {
     flex-grow: 2;
+
+    &--center {
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   &--actions {

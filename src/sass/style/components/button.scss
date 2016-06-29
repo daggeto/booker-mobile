@@ -1,5 +1,9 @@
 $assertive :#ef473a;
 
+$book-button-font-size: 0.8em;
+$book-button-line-height: 1.2rem;
+$book-button-padding: 0 0.3rem;
+
 .button-float{
   background: $assertive !important;
   color:white !important;
@@ -29,4 +33,10 @@ $assertive :#ef473a;
   color: $light;
   font-weight: bold;
   background-color: $accent-color;
+}
+
+.book-button {
+  font-size: $book-button-font-size;
+  line-height: $book-button-line-height;
+  padding: $book-button-padding;
 }

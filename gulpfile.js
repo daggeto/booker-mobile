@@ -21,7 +21,9 @@ var coffee_paths = {
   root: ['./src/coffee/*.coffee'],
   controllers: ['./src/coffee/controllers/*.coffee'],
   services: ['./src/coffee/services/*.coffee'],
-  resources: ['./src/coffee/resources/*.coffee']
+  resources: ['./src/coffee/resources/*.coffee'],
+  components: ['./src/coffee/components/*.coffee'],
+  filters: ['./src/coffee/filters/*.coffee']
 }
 
 gulp.task('default', ['sass', 'coffee', 'slim']);
@@ -61,6 +63,18 @@ gulp.task('coffee', function(done) {
     .pipe(coffee({bare: true})
     .on('error', gutil.log.bind(gutil, 'Coffee Error')))
     .pipe(concat('resources.js'))
+    .pipe(gulp.dest('./www/js'))
+
+  gulp.src(coffee_paths.filters)
+    .pipe(coffee({bare: true})
+    .on('error', gutil.log.bind(gutil, 'Coffee Error')))
+    .pipe(concat('filters.js'))
+    .pipe(gulp.dest('./www/js'))
+
+  gulp.src(coffee_paths.components)
+    .pipe(coffee({bare: true})
+    .on('error', gutil.log.bind(gutil, 'Coffee Error')))
+    .pipe(concat('components.js'))
     .pipe(gulp.dest('./www/js'))
     .on('end', done)
 });

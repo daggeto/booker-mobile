@@ -1,14 +1,9 @@
 ion-slide-box.photo-slider[
   on-slide-changed="slideHasChanged($index)"
   active-slide="0"]
-  ion-slide[ng-repeat="photo in vm.service.service_photos"]
-    ng-include[src="'templates/service/photo_actions.html'"]
-
+  ion-slide[ng-repeat="photo in vm.photos"]
     img.profile-picture[
       image-lazy-src="{{photo.preview_url}}"
       lazy-scroll-resize="true"
       image-lazy-loader="ios"
     ]
-
-  ion-slide.photo-slider__add[ng-if="vm.showAddPhoto()" ng-click="vm.addNewPhoto()"]
-    i.ion-plus-circled

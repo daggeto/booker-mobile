@@ -65,6 +65,7 @@ var Event;
 Event = (function() {
   'use strict';
   function Event($resource, API_URL) {
+    var URL, methods, params;
     this.FREE = 'free';
     this.PENDING = 'pending';
     this.BOOKED = 'booked';
@@ -80,13 +81,20 @@ Event = (function() {
         label: 'Booked'
       }
     ];
-    this.$r = $resource(API_URL + "/api/v1/events/:id.json", {
-      id: '@id'
-    }, {
+    URL = API_URL + "/api/v1/events/:id/:action.json";
+    params = {
+      id: '@id',
+      action: '@action'
+    };
+    methods = {
       update: {
         method: 'PUT'
+      },
+      post: {
+        method: 'POST'
       }
-    });
+    };
+    this.$r = $resource(URL, params, methods);
     this.$new = function() {
       return {
         description: '',

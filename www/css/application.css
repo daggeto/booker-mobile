@@ -64,6 +64,11 @@
   font-weight: bold;
   background-color: #ef473a; }
 
+.book-button {
+  font-size: 0.8em;
+  line-height: 1.2rem;
+  padding: 0 0.3rem; }
+
 .photo-actions {
   position: absolute;
   width: 100%;
@@ -131,8 +136,11 @@
   .calendar--event--past {
     opacity: 0.4; }
 
-.calendar--title {
+.calendar__title {
   flex-grow: 2; }
+  .calendar__title--center {
+    align-items: center;
+    justify-content: center; }
 
 .calendar--actions {
   display: flex;

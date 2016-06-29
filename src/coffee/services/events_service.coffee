@@ -19,4 +19,7 @@ class EventsService
   delete: (id) ->
     @Event.$r.delete(id: id).$promise
 
+  book: (id) ->
+    @Event.$r.post(id: id, action: 'book').$promise
+
 app.service('EventsService', EventsService)

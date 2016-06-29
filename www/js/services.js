@@ -64,6 +64,46 @@ app.service('AuthService', function($q, $http, UsersService, USER_ROLES, API_URL
   };
 });
 
+var BookingService,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+BookingService = (function() {
+  'use strict';
+  function BookingService(ionicToast, EventsService, Event) {
+    this.afterEventBook = bind(this.afterEventBook, this);
+    this.ionicToast = arguments[0], this.EventsService = arguments[1], this.Event = arguments[2];
+  }
+
+  BookingService.prototype.book = function(event) {
+    if (event.status !== this.Event.FREE) {
+      return;
+    }
+    return this.EventsService.book(event.id).then(this.afterEventBook);
+  };
+
+  BookingService.prototype.afterEventBook = function(response) {
+    return this.ionicToast.show(this.resolveResponse(response.response_code), 'bottom', false, 3000);
+  };
+
+  BookingService.prototype.resolveResponse = function(response_code) {
+    switch (response_code) {
+      case 1:
+        return "Event can't be booked.";
+      case 2:
+        return 'It overlaps with your current reservations.';
+      case 3:
+        return 'It overlaps with your service events.';
+      default:
+        return 'Event booked. Wait for approval!';
+    }
+  };
+
+  return BookingService;
+
+})();
+
+app.service('BookingService', BookingService);
+
 var CameraService;
 
 CameraService = (function() {
@@ -131,6 +171,13 @@ EventsService = (function() {
   EventsService.prototype["delete"] = function(id) {
     return this.Event.$r["delete"]({
       id: id
+    }).$promise;
+  };
+
+  EventsService.prototype.book = function(id) {
+    return this.Event.$r.post({
+      id: id,
+      action: 'book'
     }).$promise;
   };
 

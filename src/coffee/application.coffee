@@ -18,7 +18,7 @@ app = angular.module(
   )
 )
 .run(($rootScope, $state, $ionicPlatform, $ionicPopup,
-      $locale, $log, amMoment, AjaxInterceptor,  AuthService, AUTH_EVENTS, SERVER_EVENTS) ->
+      $locale, $log, amMoment, AjaxInterceptor, AuthService, AUTH_EVENTS, SERVER_EVENTS) ->
   $ionicPlatform.ready ->
     if window.cordova and window.cordova.plugins.Keyboard
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);

@@ -1,13 +1,15 @@
 img.service__thumbnail[
+  ng-click="vm.goTo('book_service', {id: service.id})"
   image-lazy-src="{{service.main_photo.preview_url}}"
   lazy-scroll-resize="true"
   image-lazy-loader="ios"
   ]
 .service__details
   .row
-    .col-80.service__description {{service.name}}
+    .col-75.service__description[ng-click="vm.goTo('book_service', {id: service.id})"]
+      | {{service.name}}
     .col.service__book-button
-      button.button.accent-button.pull-right 7:00
+      book-button[ng-if='service.nearest_event' event="service.nearest_event"]
   .row
-    .col-80.service__address {{service.address}}
+    .col-75.service__address {{service.address}}
     .col.service__price {{service.price | currency}}
