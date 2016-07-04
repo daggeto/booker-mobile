@@ -33,6 +33,12 @@
 .middle {
   align-items: center; }
 
+.green-text {
+  color: #47d147; }
+
+.red-text {
+  color: #ff3333; }
+
 .b-action-button {
   font-size: 1.8em;
   padding: 5px; }

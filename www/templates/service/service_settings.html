@@ -1,6 +1,6 @@
 <ion-view><ion-header-bar align-title="center">
     <div class="buttons">
-      <a class="button icon-left ion-chevron-left button-clear button-dark" ng-click="vm.back()">Back</a>
+      <a class="button icon-left ion-chevron-left button-clear button-dark" ng-click="navigator.go(&#39;app.main&#39;)">Back</a>
     </div>
     <h1 class="title">
       Settings
@@ -10,6 +10,6 @@
     </div>
   </ion-header-bar><ion-content><ui-view name="photos"></ui-view>
     <div class="list">
-      <label class="item item-input item-stacked-label padding"><span class="input-label">Name</span><input ng-model="vm.service.name" type="text" /></label><label class="item item-select padding"><span class="input-label">Duration</span><select ng-model="vm.service.duration" ng-options="dur.value as dur.label for dur in vm.durations"></select></label><label class="item item-input item-stacked-label padding"><span class="input-label">Price</span><input ng-model="vm.service.price" type="text" /></label><label class="item item-input item-stacked-label padding"><span class="input-label">Phone Number</span><input ng-model="vm.service.phone" type="text" /></label><label class="item item-input item-stacked-label padding"><span class="input-label">Address</span><input ng-model="vm.service.address" type="text" /></label>
+      <ion-toggle ng-model="vm.service.published">Provider Settings</ion-toggle><label class="item item-input item-stacked-label padding"><span class="input-label">Name</span><input ng-model="vm.service.name" type="text" /></label><label class="item item-select padding"><span class="input-label">Duration</span><select ng-model="vm.service.duration" ng-options="dur.value as dur.label for dur in vm.durations"></select></label><label class="item item-input item-stacked-label padding"><span class="input-label">Price</span><input ng-model="vm.service.price" type="text" /></label><label class="item item-input item-stacked-label padding"><span class="input-label">Phone Number</span><input ng-model="vm.service.phone" type="text" /></label><label class="item item-input item-stacked-label padding"><span class="input-label">Address</span><input ng-model="vm.service.address" type="text" /></label>
     </div>
   </ion-content></ion-view>

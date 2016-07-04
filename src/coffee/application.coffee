@@ -17,8 +17,8 @@ app = angular.module(
     defaultMessage: "I crashed :("
   )
 )
-.run(($rootScope, $state, $ionicPlatform, $ionicPopup,
-      $locale, $log, amMoment, AjaxInterceptor, AuthService, AUTH_EVENTS, SERVER_EVENTS) ->
+.run(($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log,
+      Navigator, amMoment, AjaxInterceptor, AuthService, AUTH_EVENTS, SERVER_EVENTS) ->
   $ionicPlatform.ready ->
     if window.cordova and window.cordova.plugins.Keyboard
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -60,6 +60,8 @@ app = angular.module(
   $rootScope.error = (message) ->
     $ionicPopup.alert(template: 'Ups! Little problems.')
     $log.error(message)
+
+  $rootScope.navigator = Navigator
 
   AjaxInterceptor.run()
 

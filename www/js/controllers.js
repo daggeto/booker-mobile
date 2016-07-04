@@ -15,7 +15,11 @@ BookEventController = (function() {
   };
 
   BookEventController.prototype.bookEvent = function(_, data) {
-    return this.BookingService.book(data.event);
+    return this.BookingService.book(data.event).then((function(_this) {
+      return function() {
+        return _this.scope.$broadcast('reloadEvents');
+      };
+    })(this));
   };
 
   BookEventController.prototype.back = function() {
@@ -44,22 +48,14 @@ CalendarController = (function() {
     this.service = service;
     this.scope.$on('$ionicView.enter', (function(_this) {
       return function(event, data) {
-        return _this.loadEvents(_this.calendar.selectedDate);
+        return _this.reloadEvents();
       };
     })(this));
     this;
   }
 
-  CalendarController.prototype.eventUrl = function(event) {
-    var view;
-    view = 'edit_event';
-    if (this.isPast()) {
-      view = 'preview_event';
-    }
-    return this.state.go("service.calendar." + view, {
-      event_id: event.id,
-      calendar: this.calendar
-    });
+  CalendarController.prototype.reloadEvents = function() {
+    return this.loadEvents(this.calendar.selectedDate);
   };
 
   CalendarController.prototype.loadEvents = function(date) {
@@ -86,19 +82,30 @@ CalendarController = (function() {
   };
 
   CalendarController.prototype.approveEvent = function(event) {
-    return this.changeStatus(event, this.Event.BOOKED);
+    return this.changeStatus('approve', event);
   };
 
-  CalendarController.prototype.disApproveEvent = function(event) {
-    return this.changeStatus(event, this.Event.FREE);
+  CalendarController.prototype.disapproveEvent = function(event) {
+    return this.changeStatus('disapprove', event);
   };
 
-  CalendarController.prototype.changeStatus = function(event, status) {
-    return this.EventsService.update({
-      id: event.id,
-      status: status
-    }).then(function() {
-      return event.status = status;
+  CalendarController.prototype.changeStatus = function(action, event) {
+    return this.EventsService["do"](action, event.id).then((function(_this) {
+      return function(response) {
+        return _this.reloadEvents();
+      };
+    })(this));
+  };
+
+  CalendarController.prototype.eventUrl = function(event) {
+    var view;
+    view = 'edit_event';
+    if (this.isPast()) {
+      view = 'preview_event';
+    }
+    return this.scope.navigator.go("service.calendar." + view, {
+      event_id: event.id,
+      calendar: this.calendar
     });
   };
 
@@ -256,18 +263,26 @@ EventsController = (function() {
 
 app.controller('EventsController', EventsController);
 
-var FeedController;
+var FeedController,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 FeedController = (function() {
-  function FeedController($scope, $state, UserServicesService) {
-    this.scope = arguments[0], this.state = arguments[1], this.UserServicesService = arguments[2];
+  function FeedController($scope, $state, UserServicesService, BookingService) {
+    this.reloadService = bind(this.reloadService, this);
+    this.scope = arguments[0], this.state = arguments[1], this.UserServicesService = arguments[2], this.BookingService = arguments[3];
     this.bindListeners();
     this.refreshServices();
     this;
   }
 
   FeedController.prototype.bindListeners = function() {
-    return this.scope.$on('booked', function(event, data) {});
+    return this.scope.$on('bookEvent', (function(_this) {
+      return function(_, data) {
+        return _this.BookingService.book(data.event).then(function(response) {
+          return _this.reloadService(response.service, data.index);
+        });
+      };
+    })(this));
   };
 
   FeedController.prototype.refreshServices = function() {
@@ -299,6 +314,10 @@ FeedController = (function() {
       page: this.currentPage
     };
     return this.UserServicesService.findWithGet(params).then(handleResponse, this.scope.error);
+  };
+
+  FeedController.prototype.reloadService = function(service, index) {
+    return this.services[index].nearest_event = service.nearest_event;
   };
 
   FeedController.prototype.goTo = function(state, params) {
@@ -360,11 +379,21 @@ ServiceCalendarController = (function() {
   function ServiceCalendarController($scope, UserServicesService, Calendar, Event) {
     this.selectDate = bind(this.selectDate, this);
     this.loadEvents = bind(this.loadEvents, this);
+    this.reloadEvents = bind(this.reloadEvents, this);
     this.scope = arguments[0], this.UserServicesService = arguments[1], this.Calendar = arguments[2], this.Event = arguments[3];
     this.calendar = new Calendar();
-    this.loadEvents(this.calendar.selectedDate);
+    this.bindEvents();
+    this.reloadEvents();
     this;
   }
+
+  ServiceCalendarController.prototype.bindEvents = function() {
+    return this.scope.$on('reloadEvents', this.reloadEvents);
+  };
+
+  ServiceCalendarController.prototype.reloadEvents = function() {
+    return this.loadEvents(this.calendar.selectedDate);
+  };
 
   ServiceCalendarController.prototype.loadEvents = function(date) {
     return this.UserServicesService.events({
@@ -515,12 +544,13 @@ ServicePhotosController = (function() {
 
 app.controller('ServicePhotosController', ServicePhotosController);
 
-var ServiceSettingsController;
+var ServiceSettingsController,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 ServiceSettingsController = (function() {
   function ServiceSettingsController($scope, $state, service, UserServicesService) {
+    this.afterSave = bind(this.afterSave, this);
     this.scope = arguments[0], this.state = arguments[1], this.service = arguments[2], this.UserServicesService = arguments[3];
-    this.scope.vm = this;
     this;
   }
 
@@ -541,21 +571,13 @@ ServiceSettingsController = (function() {
   ];
 
   ServiceSettingsController.prototype.save = function() {
-    return this.UserServicesService.update(this.service).then(((function(_this) {
-      return function(response) {
-        return _this.state.go('app.main');
-      };
-    })(this)), function(refejcted) {
-      return console.log('rejected');
+    return this.UserServicesService.update(this.service).then(this.afterSave, this.scope.error);
+  };
+
+  ServiceSettingsController.prototype.afterSave = function(response) {
+    return this.scope.navigator.home({
+      reload: true
     });
-  };
-
-  ServiceSettingsController.prototype.showIosSaveButton = function() {
-    return this.scope.ios && this.state.is('service.service_settings');
-  };
-
-  ServiceSettingsController.prototype.back = function() {
-    return this.state.go('app.main');
   };
 
   return ServiceSettingsController;
@@ -568,15 +590,10 @@ var SideController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 SideController = (function() {
-  function SideController($scope, $state, $ionicSlideBoxDelegate, $ionicPopup, currentUser, UsersService) {
-    this.toggleChange = bind(this.toggleChange, this);
-    this.page = 'Side';
-    this.scope = $scope;
-    this.state = $state;
-    this.ionicSlideBoxDelegate = $ionicSlideBoxDelegate;
-    this.ionicPopup = $ionicPopup;
-    this.currentUser = currentUser;
-    this.UsersService = UsersService;
+  function SideController($scope, $state, $ionicSlideBoxDelegate, $ionicPopup, currentUser, UserServicesService) {
+    this.goToService = bind(this.goToService, this);
+    this.createService = bind(this.createService, this);
+    this.scope = arguments[0], this.state = arguments[1], this.ionicSlideBoxDelegate = arguments[2], this.ionicPopup = arguments[3], this.currentUser = arguments[4], this.UserServicesService = arguments[5];
     this;
   }
 
@@ -584,24 +601,38 @@ SideController = (function() {
     if (!this.currentUser.service) {
       return this.showAlert();
     }
-    return this.state.go('service.service_settings', {
+    return this.scope.navigator.go('service.service_settings', {
       id: this.currentUser.service.id
     });
   };
 
   SideController.prototype.showAlert = function() {
-    return this.ionicPopup.alert({
-      title: 'Hey!',
-      template: 'You must enable provider toggle first'
+    var popup;
+    popup = this.ionicPopup.confirm({
+      title: 'Start to sell your time!',
+      template: 'Here you can setup your service information and your time when you are available.',
+      okText: 'Create Service'
     });
-  };
-
-  SideController.prototype.toggleChange = function() {
-    return this.UsersService.toggleProviderSettings(this.currentUser.id, this.currentUser.provider).then((function(_this) {
-      return function(user) {
-        return _this.currentUser = user;
+    return popup.then((function(_this) {
+      return function(confirmed) {
+        if (confirmed) {
+          return _this.createService();
+        }
       };
     })(this));
+  };
+
+  SideController.prototype.createService = function() {
+    return this.UserServicesService.save({
+      confirmed: true
+    }).then(this.goToService, this.scope.error);
+  };
+
+  SideController.prototype.goToService = function(service) {
+    this.currentUser.service = service;
+    return this.scope.navigator.go('service.service_settings', {
+      id: service.id
+    });
   };
 
   SideController.prototype.slideTo = function(index, view) {
@@ -609,6 +640,17 @@ SideController = (function() {
     return this.state.go(view, {
       movieid: 1
     });
+  };
+
+  SideController.prototype.isServicePublished = function() {
+    return this.currentUser.service.published;
+  };
+
+  SideController.prototype.publicationText = function() {
+    if (this.currentUser.service.published) {
+      return 'Published';
+    }
+    return 'Unpublished';
   };
 
   return SideController;

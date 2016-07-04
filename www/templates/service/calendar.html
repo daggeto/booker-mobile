@@ -37,11 +37,11 @@
               - {{event.end_at | amDateFormat: 'HH:mm' }}
             </div>
             <div class="calendar--descritpion">
-              {{event.description}}
+              {{event.label}}
             </div>
           </div>
           <div class="calendar--actions" ng-hide="vm.isPast()">
-            <i class="ion-checkmark-round" ng-click="vm.approveEvent(event)" ng-show="event.status == vm.Event.PENDING"></i><i class="ion-close-round" ng-click="vm.disApproveEvent(event)" ng-show="event.status == vm.Event.PENDING"></i><i class="ion-trash-b" ng-click="vm.deleteEvent(event.id)"></i>
+            <i class="ion-checkmark-round" ng-click="vm.approveEvent(event)" ng-show="event.status == vm.Event.PENDING"></i><i class="ion-close-round" ng-click="vm.disapproveEvent(event)" ng-show="event.status == vm.Event.PENDING"></i><i class="ion-trash-b" ng-click="vm.deleteEvent(event.id)"></i>
           </div>
         </ion-item></ion-lists>
     </div>

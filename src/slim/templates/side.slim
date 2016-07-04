@@ -2,9 +2,14 @@ ion-view
   ion-content
     img.profile-picture[src="http://lorempixel.com/350/450/abstract/"]
     ion-lists.side-list[can-swipe="true"]
-      ion-toggle.side-list__item[ng-model="vm.currentUser.provider" ng-change="vm.toggleChange()"]
-        .enable-pointer-events.list-item[
-          ng-click="vm.providerSettingsClicked()"]
-          | Provider Settings
+      ion-item[ng-click="vm.providerSettingsClicked()"]
+        | Provider Settings
+        .pull-right[
+          ng-if="vm.currentUser.service"
+          ng-class="{
+            'green-text': vm.isServicePublished(),
+            'red-text': !vm.isServicePublished()
+          }"
+        ]{{ vm.publicationText() }}
       ion-item Profile Settings
       ion-item[ng-click="logout()"] Logout

@@ -1,16 +1,21 @@
 class BookingService
   'use strict'
 
-  constructor: (ionicToast, EventsService, Event) ->
-    [@ionicToast, @EventsService, @Event] = arguments
+  constructor: ($q, ionicToast, EventsService, Event) ->
+    [@q, @ionicToast, @EventsService, @Event] = arguments
 
   book: (event) ->
-    return unless event.status == @Event.FREE
+    @q((resolve, reject) =>
+      return reject() unless event.status == @Event.FREE
 
-    @EventsService.book(event.id).then(@afterEventBook)
+      @resolveMethod = resolve
+
+      @EventsService.book(event.id).then(@afterEventBook)
+    )
 
   afterEventBook: (response) =>
     @ionicToast.show(@resolveResponse(response.response_code), 'bottom', false, 3000);
+    @resolveMethod(response)
 
   resolveResponse: (response_code) ->
     switch response_code

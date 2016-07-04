@@ -3,12 +3,18 @@ class ServiceCalendarController
 
   constructor: ($scope, UserServicesService, Calendar, Event) ->
     [@scope, @UserServicesService, @Calendar, @Event] = arguments
-
     @calendar = new Calendar()
 
-    @loadEvents(@calendar.selectedDate)
+    @bindEvents()
+    @reloadEvents()
 
     this
+
+  bindEvents: ->
+    @scope.$on('reloadEvents', @reloadEvents)
+
+  reloadEvents: =>
+    @loadEvents(@calendar.selectedDate)
 
   loadEvents: (date) =>
     @UserServicesService.events(

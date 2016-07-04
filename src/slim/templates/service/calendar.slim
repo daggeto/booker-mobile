@@ -16,7 +16,7 @@ ion-view[can-swipe-back="true"]
             ng-class="{
               'calendar--day--active': vm.calendar.isDateSelected(day.moment),
               'calendar--day--current': vm.calendar.isCurrent(day.moment)
-              }"
+            }"
             ng-click="vm.selectDate(day.moment)"
           ]
             | {{ day.number }}
@@ -42,7 +42,7 @@ ion-view[can-swipe-back="true"]
               | {{event.start_at | amDateFormat: 'HH:mm' }}
                 - {{event.end_at | amDateFormat: 'HH:mm' }}
             .calendar--descritpion
-              | {{event.description}}
+              | {{event.label}}
           .calendar--actions[ng-hide="vm.isPast()"]
             i.ion-checkmark-round[
               ng-show="event.status == vm.Event.PENDING"
@@ -50,6 +50,6 @@ ion-view[can-swipe-back="true"]
             ]
             i.ion-close-round[
               ng-show="event.status == vm.Event.PENDING"
-              ng-click="vm.disApproveEvent(event)"
+              ng-click="vm.disapproveEvent(event)"
             ]
             i.ion-trash-b[ng-click="vm.deleteEvent(event.id)"]

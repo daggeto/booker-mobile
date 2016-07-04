@@ -9,7 +9,7 @@ img.service__thumbnail[
     .col-75.service__description[ng-click="vm.goTo('book_service', {id: service.id})"]
       | {{service.name}}
     .col.service__book-button
-      book-button[ng-if='service.nearest_event' event="service.nearest_event"]
+      book-button[ng-if='service.nearest_event' event="service.nearest_event" index="$index"]
   .row
     .col-75.service__address {{service.address}}
     .col.service__price {{service.price | currency}}

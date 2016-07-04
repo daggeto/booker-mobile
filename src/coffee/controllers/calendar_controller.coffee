@@ -10,15 +10,13 @@ class CalendarController
     @service = service
 
     @scope.$on('$ionicView.enter', (event, data) =>
-      @loadEvents(@calendar.selectedDate)
+      @reloadEvents()
     )
 
     this
 
-  eventUrl: (event) ->
-    view = 'edit_event'
-    view = 'preview_event' if @isPast()
-    @state.go("service.calendar.#{view}", event_id: event.id, calendar: @calendar)
+  reloadEvents: ->
+    @loadEvents(@calendar.selectedDate)
 
   loadEvents: (date) =>
     @UserServicesService.events(
@@ -38,19 +36,23 @@ class CalendarController
     )
 
   approveEvent: (event) ->
-    @changeStatus(event, @Event.BOOKED)
+    @changeStatus('approve', event)
 
-  disApproveEvent: (event) ->
-    @changeStatus(event, @Event.FREE)
+  disapproveEvent: (event) ->
+    @changeStatus('disapprove', event)
 
-  changeStatus: (event, status) =>
-    @EventsService.update(id: event.id, status: status).then ->
-      event.status = status
+  changeStatus: (action, event) =>
+    @EventsService.do(action, event.id).then (response) =>
+      @reloadEvents()
+
+  eventUrl: (event) ->
+    view = 'edit_event'
+    view = 'preview_event' if @isPast()
+    @scope.navigator.go("service.calendar.#{view}", event_id: event.id, calendar: @calendar)
 
   selectDate: (date) ->
     @calendar.selectDate(date)
     @loadEvents(date)
-
 
   isPast: ->
     @calendar.selectedDate.isBefore(@calendar.currentDate)

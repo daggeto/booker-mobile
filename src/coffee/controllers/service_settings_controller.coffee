@@ -1,8 +1,6 @@
 class ServiceSettingsController
-  constructor:( $scope, $state, service, UserServicesService) ->
+  constructor:($scope, $state, service, UserServicesService) ->
     [@scope, @state, @service, @UserServicesService] = arguments
-
-    @scope.vm = this
 
     this
 
@@ -14,14 +12,9 @@ class ServiceSettingsController
   ]
 
   save: ->
-    @UserServicesService.update(@service).then(((response) =>
-      @state.go('app.main')
-    ), (refejcted) -> console.log('rejected'))
+    @UserServicesService.update(@service).then(@afterSave, @scope.error)
 
-  showIosSaveButton: ->
-    @scope.ios && @state.is('service.service_settings')
-
-  back: ->
-    @state.go('app.main')
+  afterSave: (response) =>
+    @scope.navigator.home(reload: true)
 
 app.controller('ServiceSettingsController', ServiceSettingsController)

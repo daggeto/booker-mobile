@@ -22,4 +22,7 @@ class EventsService
   book: (id) ->
     @Event.$r.post(id: id, action: 'book').$promise
 
+  do: (action, id) ->
+    @Event.$r.post(id: id, action: action).$promise
+
 app.service('EventsService', EventsService)

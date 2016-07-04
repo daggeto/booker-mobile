@@ -5,7 +5,7 @@ app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMome
     title: "Ups",
     defaultMessage: "I crashed :("
   });
-}).run(function($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log, amMoment, AjaxInterceptor, AuthService, AUTH_EVENTS, SERVER_EVENTS) {
+}).run(function($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log, Navigator, amMoment, AjaxInterceptor, AuthService, AUTH_EVENTS, SERVER_EVENTS) {
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -54,5 +54,6 @@ app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMome
     });
     return $log.error(message);
   };
+  $rootScope.navigator = Navigator;
   AjaxInterceptor.run();
 });

@@ -1,5 +1,8 @@
-<ion-view><ion-content><img class="profile-picture" src="http://lorempixel.com/350/450/abstract/" /><ion-lists can-swipe="true" class="side-list"><ion-toggle class="side-list__item" ng-change="vm.toggleChange()" ng-model="vm.currentUser.provider">
-        <div class="enable-pointer-events list-item" ng-click="vm.providerSettingsClicked()">
-          Provider Settings
+<ion-view><ion-content><img class="profile-picture" src="http://lorempixel.com/350/450/abstract/" /><ion-lists can-swipe="true" class="side-list"><ion-item ng-click="vm.providerSettingsClicked()">Provider Settings
+        <div class="pull-right" ng-class="{
+&#39;green-text&#39;: vm.isServicePublished(),
+&#39;red-text&#39;: !vm.isServicePublished()
+}" ng-if="vm.currentUser.service">
+          {{ vm.publicationText() }}
         </div>
-      </ion-toggle><ion-item>Profile Settings</ion-item><ion-item ng-click="logout()">Logout</ion-item></ion-lists></ion-content></ion-view>
+      </ion-item><ion-item>Profile Settings</ion-item><ion-item ng-click="logout()">Logout</ion-item></ion-lists></ion-content></ion-view>

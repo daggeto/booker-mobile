@@ -11,12 +11,15 @@ app.config ($stateProvider, $urlRouterProvider) ->
       templateUrl: 'templates/app.html')
 
     .state('app.main'
-      url: '/main'
+      cache: false
+      url: '/main/:service'
       resolve:
         UsersService: 'UsersService'
         currentUser: ($window, UsersService, LOCAL_CURRENT_USER_ID) ->
           currentUserId = $window.localStorage.getItem(LOCAL_CURRENT_USER_ID)
           UsersService.findById(currentUserId)
+        service: ($stateParams) ->
+          console.log($stateParams)
       views:
         side:
           templateUrl: 'templates/side.html'
@@ -56,6 +59,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
           controller: 'EventsController as vm')
 
     .state('service.calendar.edit_event'
+      cache: false
       url: '/edit_event/:event_id'
       params:
         calendar: {}
@@ -84,7 +88,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
       views:
         'service_settings@service':
           templateUrl: "templates/service/service_settings.html"
-          controller: 'ServiceSettingsController'
+          controller: 'ServiceSettingsController as vm'
         'photos@service.service_settings':
           templateUrl: 'templates/service/photos.html'
           controller: 'ServicePhotosController')

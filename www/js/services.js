@@ -69,20 +69,26 @@ var BookingService,
 
 BookingService = (function() {
   'use strict';
-  function BookingService(ionicToast, EventsService, Event) {
+  function BookingService($q, ionicToast, EventsService, Event) {
     this.afterEventBook = bind(this.afterEventBook, this);
-    this.ionicToast = arguments[0], this.EventsService = arguments[1], this.Event = arguments[2];
+    this.q = arguments[0], this.ionicToast = arguments[1], this.EventsService = arguments[2], this.Event = arguments[3];
   }
 
   BookingService.prototype.book = function(event) {
-    if (event.status !== this.Event.FREE) {
-      return;
-    }
-    return this.EventsService.book(event.id).then(this.afterEventBook);
+    return this.q((function(_this) {
+      return function(resolve, reject) {
+        if (event.status !== _this.Event.FREE) {
+          return reject();
+        }
+        _this.resolveMethod = resolve;
+        return _this.EventsService.book(event.id).then(_this.afterEventBook);
+      };
+    })(this));
   };
 
   BookingService.prototype.afterEventBook = function(response) {
-    return this.ionicToast.show(this.resolveResponse(response.response_code), 'bottom', false, 3000);
+    this.ionicToast.show(this.resolveResponse(response.response_code), 'bottom', false, 3000);
+    return this.resolveMethod(response);
   };
 
   BookingService.prototype.resolveResponse = function(response_code) {
@@ -181,6 +187,13 @@ EventsService = (function() {
     }).$promise;
   };
 
+  EventsService.prototype["do"] = function(action, id) {
+    return this.Event.$r.post({
+      id: id,
+      action: action
+    }).$promise;
+  };
+
   return EventsService;
 
 })();
@@ -212,6 +225,28 @@ FileUploadService = (function() {
 })();
 
 app.service('FileUploadService', FileUploadService);
+
+var Navigator;
+
+Navigator = (function() {
+  'use strict';
+  function Navigator($state) {
+    this.state = arguments[0];
+  }
+
+  Navigator.prototype.go = function(state, params) {
+    return this.state.go(state, params);
+  };
+
+  Navigator.prototype.home = function(params) {
+    return this.state.go('app.main', params);
+  };
+
+  return Navigator;
+
+})();
+
+app.service('Navigator', Navigator);
 
 var ServicePhotosService;
 

@@ -1,12 +1,13 @@
 app.directive('bookButton', ->
   restrict: 'E',
-  scope: {
+  scope:
     event: '='
-  }
+    index: '='
+
   templateUrl: 'templates/components/book_button.html'
 
   link: (scope, element, attr) ->
     element.on('click', =>
-      scope.$emit('booked', {event: scope.$eval(attr.event)})
+      scope.$emit('bookEvent', {event: scope.event, index: scope.index})
     )
 )

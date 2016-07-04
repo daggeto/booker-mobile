@@ -1,6 +1,6 @@
 class FeedController
-  constructor: ($scope, $state, UserServicesService) ->
-    [@scope, @state, @UserServicesService] = arguments
+  constructor: ($scope, $state, UserServicesService, BookingService) ->
+    [@scope, @state, @UserServicesService, @BookingService] = arguments
 
     @bindListeners()
 
@@ -9,8 +9,9 @@ class FeedController
     this
 
   bindListeners: ->
-    @scope.$on('booked', (event, data) ->
-
+    @scope.$on('bookEvent', (_, data) =>
+      @BookingService.book(data.event).then (response) =>
+        @reloadService(response.service, data.index)
     )
 
   refreshServices: ->
@@ -35,6 +36,9 @@ class FeedController
     params = { per_page: 3, page: @currentPage }
 
     @UserServicesService.findWithGet(params).then(handleResponse, @scope.error)
+
+  reloadService: (service, index) =>
+    @services[index].nearest_event = service.nearest_event
 
   goTo: (state, params) ->
     @state.go(state, params)
