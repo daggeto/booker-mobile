@@ -17,7 +17,10 @@
             authorizationHeader: "Authorization",
             authorizationToken: null,
             stateChangeError: true,
-            fallbackIp: null
+            fallbackIp: null,
+
+            transformRequest: null,
+            transformResponse: null
         };
 
         return {
@@ -44,6 +47,7 @@
                             return response;
                         },
                         responseError : function (err) {
+                            //console.log(res);
                             if (err.status == 0) {
                                 var aux = err.config.url.split("/");
                                 //
@@ -61,13 +65,23 @@
                             return $q.reject(err);
                         }
                     }
-                }])
+                }]);
+                //
+                // User configurable transformers
+                //
+                if (_config.transformRequest) {
+                    $httpProvider.defaults.transformRequest.push(_config.transformRequest);
+                }
+                if (_config.transformResponse) {
+                    $httpProvider.defaults.transformResponse.push(_config.transformResponse);
+                }
             },
             $get: [
                 '$ionicPopup',
                 '$ionicLoading',
                 '$rootScope',
-                function($ionicPopup, $ionicLoading, $rootScope) {
+                '$http',
+                function($ionicPopup, $ionicLoading, $rootScope, $http) {
 
                     var _ajaxRequestsInQ = 0;
 
@@ -82,8 +96,7 @@
                                 animation: 'fade-in',
                                 showBackdrop: true,
                                 maxWidth: 200,
-                                showDelay: 0,
-                                hideOnStateChange: true
+                                showDelay: 0
                             });
                         }
                         _ajaxRequestsInQ++;
@@ -153,6 +166,92 @@
                         }
                     };
                 }]
+        };
+    }]);
+
+}(angular.module("ionic-ajax-interceptor")));
+
+(function(app) {
+    'use strict';
+
+    var _prefix = "iHttp_";
+
+    app.factory("AjaxService", [ "$http", "$q", function($http, $q) {
+        return {
+            config: function(options) {
+                if ( options.hasOwnProperty(prefix) ) { _prefix = options.prefix }
+            },
+            http: function (options) {
+                //
+                // iCache format:
+                // {
+                //    key: String,
+                //    expires: timestamp (null = never expire)
+                // }
+                //
+                var key, expires;
+
+                if (options.iCache) {
+                    //
+                    // Determine key
+                    //
+                    key = _prefix;
+                    expires = options.iCache.expires;
+
+                    if (options.iCache.hasOwnProperty("key")) {
+                        key += options.iCache.key;
+                    } else {
+                        key += options.url;
+                    }
+                    //
+                    // Does data exist?
+                    //
+                    var cacheData = localStorage.getItem(key);
+                    if (cacheData) {
+                        var cacheObj = JSON.parse(cacheData);
+                        //
+                        // Is it valid?
+                        //
+                        if (!cacheObj.timestamp || cacheObj.timestamp > new Date().getTime()) {
+                            return $q.resolve({data: cacheObj.data});
+                        }
+                    }
+                    //
+                    // Remove key
+                    //
+                    delete options.iCache;
+                }
+                var defer = $q.defer();
+
+                $http(options).then(
+                    function success(res) {
+                        //
+                        // Not found, so cache data
+                        //
+                        if ( key && res.data ) {
+                            var data = JSON.stringify({
+                                timestamp: expires,
+                                data: res.data
+                            });
+                            localStorage.setItem(key, data);
+                        }
+                        defer.resolve(res);
+                    },
+                    function error(err) {
+                        defer.reject(err);
+                    }
+                );
+
+                return defer.promise;
+            },
+
+            clearCache: function() {
+                for (var key in localStorage ) {
+                    if ( localStorage.hasOwnProperty(key) && key.indexOf(_prefix) == 0) {
+                        localStorage.removeItem(key);
+                    }
+                }
+            }
         };
     }]);
 

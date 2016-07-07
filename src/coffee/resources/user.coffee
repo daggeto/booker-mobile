@@ -11,7 +11,12 @@ class User
         action: '@action'
       )
 
-    @$session = $resource("#{API_URL}/users/:action.json", id: '@id', action: '@action')
+    @$session =
+      $resource(
+        "#{API_URL}/user/:action.json",
+        id: '@id',
+        action: '@action'
+      )
 
     return this
 

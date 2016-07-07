@@ -1,4 +1,4 @@
-app.service('AuthService', function($q, $http, UsersService, USER_ROLES, API_URL, LOCAL_CURRENT_USER_ID) {
+app.service('AuthService', function($q, $http, $auth, UsersService, USER_ROLES, API_URL, LOCAL_CURRENT_USER_ID) {
   var LOCAL_EMAIL_KEY, LOCAL_TOKEN_KEY, authToken, destroyUserCredentials, isAuthenticated, loadUserCredentials, login, logout, role, storeUserCredentials, useCredentials, username;
   LOCAL_TOKEN_KEY = 'authToken';
   LOCAL_EMAIL_KEY = 'authEmail';
@@ -33,20 +33,27 @@ app.service('AuthService', function($q, $http, UsersService, USER_ROLES, API_URL
     username = '';
     isAuthenticated = false;
     $http.defaults.headers.common['X-User-Token'] = void 0;
-    return window.localStorage.removeItem(LOCAL_TOKEN_KEY);
+    $http.defaults.headers.common['X-User-Email'] = void 0;
+    window.localStorage.removeItem(LOCAL_TOKEN_KEY);
+    return window.localStorage.removeItem(LOCAL_EMAIL_KEY);
   };
   login = function(data) {
     return $q(function(resolve, reject) {
-      return UsersService.login(data).then((function(user) {
+      return $auth.submitLogin(data).then(function(user) {
         storeUserCredentials(user);
         return resolve('Login success.');
-      }), function(err) {
+      })["catch"](function() {
         return reject('Login failed');
       });
     });
   };
   logout = function() {
-    return destroyUserCredentials();
+    destroyUserCredentials();
+    return $auth.signOut().then(function() {
+      return console.log('logged out');
+    })["catch"](function() {
+      return console.log('Loggout failed');
+    });
   };
   loadUserCredentials();
   return {
@@ -204,19 +211,15 @@ var FileUploadService;
 
 FileUploadService = (function() {
   'use strict';
-  function FileUploadService($cordovaFileTransfer, $http) {
-    this.cordovaFileTransfer = $cordovaFileTransfer;
-    this.header = {
-      'X-User-Token': $http.defaults.headers.common['X-User-Token'],
-      'X-User-Email': $http.defaults.headers.common['X-User-Email']
-    };
+  function FileUploadService($cordovaFileTransfer, $auth) {
+    this.cordovaFileTransfer = arguments[0], this.auth = arguments[1];
     this;
   }
 
   FileUploadService.prototype.upload = function(method, upload_path, file_uri) {
     return this.cordovaFileTransfer.upload(upload_path, file_uri, {
       httpMethod: method,
-      headers: this.header
+      headers: this.auth.retrieveData('auth_headers')
     });
   };
 
@@ -361,6 +364,12 @@ UsersService = (function() {
     return this.User.$session.save({
       action: 'sign_in',
       user: data
+    }).$promise;
+  };
+
+  UsersService.prototype.logout = function() {
+    return this.User.$session["delete"]({
+      action: 'sign_out'
     }).$promise;
   };
 

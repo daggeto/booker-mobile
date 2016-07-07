@@ -509,7 +509,7 @@ ServicePhotosController = (function() {
     }
   };
 
-  ServicePhotosController.prototype.photoUploaded = function(data) {
+  ServicePhotosController.prototype.photoUploaded = function(data, other) {
     this.takePhotoPopup.close();
     this.CameraService.cleanup();
     this.reloadPhotos();
@@ -590,10 +590,10 @@ var SideController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 SideController = (function() {
-  function SideController($scope, $state, $ionicSlideBoxDelegate, $ionicPopup, currentUser, UserServicesService) {
+  function SideController($scope, $state, $ionicSlideBoxDelegate, $ionicPopup, currentUser, UserServicesService, AuthService) {
     this.goToService = bind(this.goToService, this);
     this.createService = bind(this.createService, this);
-    this.scope = arguments[0], this.state = arguments[1], this.ionicSlideBoxDelegate = arguments[2], this.ionicPopup = arguments[3], this.currentUser = arguments[4], this.UserServicesService = arguments[5];
+    this.scope = arguments[0], this.state = arguments[1], this.ionicSlideBoxDelegate = arguments[2], this.ionicPopup = arguments[3], this.currentUser = arguments[4], this.UserServicesService = arguments[5], this.AuthService = arguments[6];
     this;
   }
 
@@ -640,6 +640,11 @@ SideController = (function() {
     return this.state.go(view, {
       movieid: 1
     });
+  };
+
+  SideController.prototype.logout = function() {
+    this.AuthService.logout();
+    return this.scope.navigator.go('login');
   };
 
   SideController.prototype.isServicePublished = function() {

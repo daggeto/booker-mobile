@@ -145,7 +145,7 @@ User = (function() {
       id: '@id',
       action: '@action'
     });
-    this.$session = $resource(API_URL + "/users/:action.json", {
+    this.$session = $resource(API_URL + "/user/:action.json", {
       id: '@id',
       action: '@action'
     });

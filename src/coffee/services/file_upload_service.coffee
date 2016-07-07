@@ -1,18 +1,18 @@
 class FileUploadService
   'use strict'
 
-  constructor: ($cordovaFileTransfer, $http) ->
-    @cordovaFileTransfer = $cordovaFileTransfer
+  constructor: ($cordovaFileTransfer, $auth) ->
 
-    @header = {
-      'X-User-Token': $http.defaults.headers.common['X-User-Token']
-      'X-User-Email': $http.defaults.headers.common['X-User-Email']
-    }
+    [@cordovaFileTransfer, @auth] = arguments
 
     this
 
   upload: (method, upload_path, file_uri) ->
-    @cordovaFileTransfer.upload(upload_path, file_uri, httpMethod: method, headers:  @header)
-
+    @cordovaFileTransfer.upload(
+      upload_path,
+      file_uri,
+      httpMethod: method,
+      headers:  @auth.retrieveData('auth_headers')
+     )
 
 app.service('FileUploadService', FileUploadService)

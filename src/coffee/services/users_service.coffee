@@ -14,6 +14,9 @@ class UsersService
   login: (data) ->
     @User.$session.save(action: 'sign_in', user: data).$promise
 
+  logout: ->
+    @User.$session.delete(action: 'sign_out').$promise
+
   toggleProviderSettings: (user_id, provider_flag) ->
     @q (resolve, reject) =>
       @User.$action.save(

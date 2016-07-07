@@ -8,14 +8,22 @@ app = angular.module(
     'ion-datetime-picker',
     'ionic-toast',
     'ionic-ajax-interceptor',
-    'ionicLazyLoad'
+    'ionicLazyLoad',
+    'ng-token-auth'
   ]
 )
-.config((AjaxInterceptorProvider) ->
+.config((AjaxInterceptorProvider, $authProvider, API_URL) ->
   AjaxInterceptorProvider.config(
     title: "Ups",
     defaultMessage: "I crashed :("
   )
+
+  $authProvider.configure
+    apiUrl: API_URL
+    tokenValidationPath: '/user/validate_token'
+    emailSignInPath: '/user/sign_in'
+    signOutUrl: '/user/sign_out'
+    storage: 'localStorage'
 )
 .run(($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log,
       Navigator, amMoment, AjaxInterceptor, AuthService, AUTH_EVENTS, SERVER_EVENTS) ->
@@ -36,6 +44,7 @@ app = angular.module(
   )
 
   $rootScope.$on(AUTH_EVENTS.notAuthorized, (event) ->
+    $state.go('login')
     alertPopup = $ionicPopup.alert(
       title: 'Unauthorized!'
       template: 'You are not allowed to access this resource.')
@@ -50,8 +59,6 @@ app = angular.module(
 	)
 
   $rootScope.$on(SERVER_EVENTS.not_found, (event) ->
-    AuthService.logout()
-    $state.go('login')
     alertPopup = $ionicPopup.alert(
       title: 'Ups! Little problems.'
       template: 'Try to login again')

@@ -4,14 +4,16 @@ class SideController
                 $ionicSlideBoxDelegate,
                 $ionicPopup,
                 currentUser,
-                UserServicesService) ->
+                UserServicesService,
+                AuthService) ->
     [
       @scope,
       @state,
       @ionicSlideBoxDelegate,
       @ionicPopup,
       @currentUser,
-      @UserServicesService
+      @UserServicesService,
+      @AuthService
     ] = arguments
 
     this
@@ -39,7 +41,11 @@ class SideController
 
   slideTo: (index, view) ->
     @ionicSlideBoxDelegate.slide(index)
-    @state.go(view, {movieid: 1});
+    @state.go(view, {movieid: 1})
+
+  logout: ->
+    @AuthService.logout()
+    @scope.navigator.go('login')
 
   isServicePublished: ->
     @currentUser.service.published

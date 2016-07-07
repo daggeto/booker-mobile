@@ -78,7 +78,7 @@ class ServicePhotosController
         .save(service_id: @stateParams.id, photo_uri: response.photo_uri)
         .then(@photoUploaded, @error, @progress)
 
-  photoUploaded: (data) =>
+  photoUploaded: (data, other) =>
     @takePhotoPopup.close()
     @CameraService.cleanup()
     @reloadPhotos()

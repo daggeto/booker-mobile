@@ -1,9 +1,16 @@
 var app;
 
-app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMoment', 'ion-datetime-picker', 'ionic-toast', 'ionic-ajax-interceptor', 'ionicLazyLoad']).config(function(AjaxInterceptorProvider) {
-  return AjaxInterceptorProvider.config({
+app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMoment', 'ion-datetime-picker', 'ionic-toast', 'ionic-ajax-interceptor', 'ionicLazyLoad', 'ng-token-auth']).config(function(AjaxInterceptorProvider, $authProvider, API_URL) {
+  AjaxInterceptorProvider.config({
     title: "Ups",
     defaultMessage: "I crashed :("
+  });
+  return $authProvider.configure({
+    apiUrl: API_URL,
+    tokenValidationPath: '/user/validate_token',
+    emailSignInPath: '/user/sign_in',
+    signOutUrl: '/user/sign_out',
+    storage: 'localStorage'
   });
 }).run(function($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log, Navigator, amMoment, AjaxInterceptor, AuthService, AUTH_EVENTS, SERVER_EVENTS) {
   $ionicPlatform.ready(function() {
@@ -25,6 +32,7 @@ app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMome
   });
   $rootScope.$on(AUTH_EVENTS.notAuthorized, function(event) {
     var alertPopup;
+    $state.go('login');
     return alertPopup = $ionicPopup.alert({
       title: 'Unauthorized!',
       template: 'You are not allowed to access this resource.'
@@ -41,8 +49,6 @@ app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMome
   });
   $rootScope.$on(SERVER_EVENTS.not_found, function(event) {
     var alertPopup;
-    AuthService.logout();
-    $state.go('login');
     return alertPopup = $ionicPopup.alert({
       title: 'Ups! Little problems.',
       template: 'Try to login again'

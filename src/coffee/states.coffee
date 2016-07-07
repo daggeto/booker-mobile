@@ -12,14 +12,13 @@ app.config ($stateProvider, $urlRouterProvider) ->
 
     .state('app.main'
       cache: false
-      url: '/main/:service'
+      url: '/main'
       resolve:
         UsersService: 'UsersService'
-        currentUser: ($window, UsersService, LOCAL_CURRENT_USER_ID) ->
+        currentUser: ($window, UsersService, LOCAL_CURRENT_USER_ID, $auth) ->
           currentUserId = $window.localStorage.getItem(LOCAL_CURRENT_USER_ID)
           UsersService.findById(currentUserId)
-        service: ($stateParams) ->
-          console.log($stateParams)
+
       views:
         side:
           templateUrl: 'templates/side.html'

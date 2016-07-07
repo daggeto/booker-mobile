@@ -10,7 +10,10 @@
             authorizationHeader: "Authorization",
             authorizationToken: null,
             stateChangeError: true,
-            fallbackIp: null
+            fallbackIp: null,
+
+            transformRequest: null,
+            transformResponse: null
         };
 
         return {
@@ -37,6 +40,7 @@
                             return response;
                         },
                         responseError : function (err) {
+                            //console.log(res);
                             if (err.status == 0) {
                                 var aux = err.config.url.split("/");
                                 //
@@ -54,13 +58,23 @@
                             return $q.reject(err);
                         }
                     }
-                }])
+                }]);
+                //
+                // User configurable transformers
+                //
+                if (_config.transformRequest) {
+                    $httpProvider.defaults.transformRequest.push(_config.transformRequest);
+                }
+                if (_config.transformResponse) {
+                    $httpProvider.defaults.transformResponse.push(_config.transformResponse);
+                }
             },
             $get: [
                 '$ionicPopup',
                 '$ionicLoading',
                 '$rootScope',
-                function($ionicPopup, $ionicLoading, $rootScope) {
+                '$http',
+                function($ionicPopup, $ionicLoading, $rootScope, $http) {
 
                     var _ajaxRequestsInQ = 0;
 
@@ -75,8 +89,7 @@
                                 animation: 'fade-in',
                                 showBackdrop: true,
                                 maxWidth: 200,
-                                showDelay: 0,
-                                hideOnStateChange: true
+                                showDelay: 0
                             });
                         }
                         _ajaxRequestsInQ++;
