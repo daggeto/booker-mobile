@@ -9,7 +9,8 @@ app = angular.module(
     'ionic-toast',
     'ionic-ajax-interceptor',
     'ionicLazyLoad',
-    'ng-token-auth'
+    'ng-token-auth',
+    'ngMessages'
   ]
 )
 .config((AjaxInterceptorProvider, $authProvider, API_URL) ->
@@ -23,6 +24,7 @@ app = angular.module(
     tokenValidationPath: '/user/validate_token'
     emailSignInPath: '/user/sign_in'
     signOutUrl: '/user/sign_out'
+    emailRegistrationPath: '/user'
     storage: 'localStorage'
 )
 .run(($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log,
@@ -38,7 +40,7 @@ app = angular.module(
 
   $rootScope.$on('$stateChangeStart', (event, next, nextParams, fromState) ->
     if !AuthService.isAuthenticated()
-      if next.name != 'login'
+      unless next.name in ['login', 'signup']
         event.preventDefault()
         $state.transitionTo('login')
   )
@@ -48,14 +50,6 @@ app = angular.module(
     alertPopup = $ionicPopup.alert(
       title: 'Unauthorized!'
       template: 'You are not allowed to access this resource.')
-	)
-
-  $rootScope.$on(AUTH_EVENTS.notAuthenticated, (event) ->
-    AuthService.logout()
-    $state.go('login')
-    alertPopup = $ionicPopup.alert(
-      title: 'Session Lost!'
-      template: 'Sorry, You have to login again.')
 	)
 
   $rootScope.$on(SERVER_EVENTS.not_found, (event) ->

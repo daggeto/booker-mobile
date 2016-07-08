@@ -1,8 +1,15 @@
-<ion-view name="login-view"><ion-content>
+<ion-view name="login-view"><ion-header-bar align-title="center">
+    <h1 class="title">
+      Registration
+    </h1>
+  </ion-header-bar><ion-content>
+    <div class="message__success align-center" ng-if="vm.message">
+      {{vm.message}}
+    </div>
     <div class="list">
-      <label class="item item-input item-floating-label"><span class="input-label">Email</span><input ng-model="data.email" placeholder="Email" type="email" /></label><label class="item item-input item-floating-label"><span class="input-label">Password</span><input ng-model="data.password" placeholder="Password" type="password" /></label>
+      <label class="item item-input item-floating-label"><span class="input-label">Email</span><input ng-model="vm.data.email" placeholder="Email" type="email" /></label><label class="item item-input item-floating-label"><span class="input-label">Password</span><input ng-model="vm.data.password" placeholder="Password" type="password" /></label>
     </div>
     <div class="padding">
-      <button class="button button-block button-calm" ng-click="login(data)">Login</button>
+      <button class="button button-block button-calm" ng-click="vm.login()">Login</button><button class="button button-block" ng-click="navigator.go(&#39;signup&#39;)">Sign Up</button>
     </div>
   </ion-content></ion-view>

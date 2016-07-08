@@ -1,10 +1,16 @@
-app.controller('LoginController', ($scope, $state, $ionicPopup, AuthService) ->
-	$scope.data = {}
+class LoginController
+  constructor: ($scope, $stateParams, AuthService) ->
+    [@scope, @stateParams, @AuthService] = arguments
 
-	$scope.login = (data) ->
-     AuthService.login(data).then ((authenticated) ->
-      $state.go('app.main', {})
-      $scope.setCurrentUsername(data.username)
-      return
-    )
-)
+    @data = {}
+
+    @message = @stateParams.message
+
+    this
+
+  login: ->
+    @AuthService.login(@data).then ((authenticated) =>
+     @scope.navigator.go('app.main')
+   )
+
+app.controller('LoginController', LoginController)

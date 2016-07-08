@@ -1,5 +1,5 @@
 app.service('AuthService', function($q, $http, $auth, UsersService, USER_ROLES, API_URL, LOCAL_CURRENT_USER_ID) {
-  var LOCAL_EMAIL_KEY, LOCAL_TOKEN_KEY, authToken, destroyUserCredentials, isAuthenticated, loadUserCredentials, login, logout, role, storeUserCredentials, useCredentials, username;
+  var LOCAL_EMAIL_KEY, LOCAL_TOKEN_KEY, authToken, destroyUserCredentials, isAuthenticated, loadUserCredentials, login, logout, role, signup, storeUserCredentials, useCredentials, username;
   LOCAL_TOKEN_KEY = 'authToken';
   LOCAL_EMAIL_KEY = 'authEmail';
   username = '';
@@ -55,10 +55,14 @@ app.service('AuthService', function($q, $http, $auth, UsersService, USER_ROLES, 
       return console.log('Loggout failed');
     });
   };
+  signup = function(data) {
+    return $auth.submitRegistration(data);
+  };
   loadUserCredentials();
   return {
     login: login,
     logout: logout,
+    signup: signup,
     isAuthenticated: function() {
       return isAuthenticated;
     },
@@ -238,7 +242,9 @@ Navigator = (function() {
   }
 
   Navigator.prototype.go = function(state, params) {
-    return this.state.go(state, params);
+    return this.state.go(state, params)["catch"](function(error) {
+      return console.log(error);
+    });
   };
 
   Navigator.prototype.home = function(params) {
@@ -370,6 +376,12 @@ UsersService = (function() {
   UsersService.prototype.logout = function() {
     return this.User.$session["delete"]({
       action: 'sign_out'
+    }).$promise;
+  };
+
+  UsersService.prototype.sign_up = function(data) {
+    return this.User.$session.save({
+      user: data
     }).$promise;
   };
 

@@ -330,15 +330,29 @@ FeedController = (function() {
 
 app.controller('FeedController', FeedController);
 
-app.controller('LoginController', function($scope, $state, $ionicPopup, AuthService) {
-  $scope.data = {};
-  return $scope.login = function(data) {
-    return AuthService.login(data).then((function(authenticated) {
-      $state.go('app.main', {});
-      $scope.setCurrentUsername(data.username);
-    }));
+var LoginController;
+
+LoginController = (function() {
+  function LoginController($scope, $stateParams, AuthService) {
+    this.scope = arguments[0], this.stateParams = arguments[1], this.AuthService = arguments[2];
+    this.data = {};
+    this.message = this.stateParams.message;
+    this;
+  }
+
+  LoginController.prototype.login = function() {
+    return this.AuthService.login(this.data).then(((function(_this) {
+      return function(authenticated) {
+        return _this.scope.navigator.go('app.main');
+      };
+    })(this)));
   };
-});
+
+  return LoginController;
+
+})();
+
+app.controller('LoginController', LoginController);
 
 app.controller('MainController', function($scope, $state, $ionicSlideBoxDelegate) {
   $scope.android = ionic.Platform.isAndroid();
@@ -663,6 +677,50 @@ SideController = (function() {
 })();
 
 app.controller('SideController', SideController);
+
+var SignUpController,
+  indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+SignUpController = (function() {
+  function SignUpController($scope, $ionicPopup, $parse, AuthService) {
+    this.scope = arguments[0], this.ionicPopup = arguments[1], this.parse = arguments[2], this.AuthService = arguments[3];
+    this.ERROR_FIELDS = ['email', 'password', 'password_confirmation'];
+    this.signup_data = {};
+    this.scope.email = '';
+    this;
+  }
+
+  SignUpController.prototype.sign_up = function(form) {
+    if (!form.$valid) {
+      return;
+    }
+    return this.AuthService.signup(this.signup_data).then((function(_this) {
+      return function(response) {
+        return _this.scope.navigator.go('login', {
+          message: 'You are registered. You an login now.'
+        });
+      };
+    })(this))["catch"]((function(_this) {
+      return function(error) {
+        var errors, key, results, value;
+        errors = error.data.errors;
+        results = [];
+        for (key in errors) {
+          value = errors[key];
+          if (indexOf.call(_this.ERROR_FIELDS, key) >= 0) {
+            results.push(form[key].$error.serverMessage = value[0]);
+          }
+        }
+        return results;
+      };
+    })(this));
+  };
+
+  return SignUpController;
+
+})();
+
+app.controller('SignUpController', SignUpController);
 
 var UserServiceController;
 

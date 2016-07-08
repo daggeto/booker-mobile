@@ -1,0 +1,8 @@
+$validation-font-size: 0.7em;
+
+.validation {
+  &__text {
+    color: $red;
+    font-size: $validation-font-size;
+  }
+}

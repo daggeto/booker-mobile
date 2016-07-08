@@ -16,6 +16,9 @@
 .pull-right {
   float: right; }
 
+.align-center {
+  text-align: center; }
+
 .align-right {
   text-align: right; }
 
@@ -42,6 +45,13 @@
 .b-action-button {
   font-size: 1.8em;
   padding: 5px; }
+
+.validation__text {
+  color: #ff3333;
+  font-size: 0.7em; }
+
+.message__success {
+  background-color: #c2f0c2; }
 
 .button-float {
   background: #ef473a !important;

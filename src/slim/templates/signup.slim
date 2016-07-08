@@ -1,0 +1,65 @@
+ion-view[name="registration-view"]
+  ion-header-bar[align-title="center" ]
+    .buttons
+      a.button.icon-left.ion-chevron-left.button-clear.button-dark[
+        ng-click="navigator.go('login')"] Back
+    h1.title Registration
+  ion-content
+    form[name="signupForm"  ng-submit="vm.sign_up(signupForm)" novalidate]
+      div[class="list"]
+        label[class="item item-input item-floating-label"]
+          span[class="input-label"] Email
+          input[
+            required
+            name="email"
+            type="email"
+            placeholder="Email"
+            ng-model="vm.signup_data.email"
+          ]
+          error-messages[
+            form='signupForm'
+            for='email'
+            required="email is required"
+            email="wrong email"
+          ]
+
+        label[class="item item-input item-floating-label"]
+          span[class="input-label"] Password
+          input[
+            required
+            minlength="8"
+            name="password"
+            type="password"
+            placeholder="Password"
+            ng-model="vm.signup_data.password"
+            ]
+          error-messages[
+            form='signupForm'
+            for="password"
+            required="password is required"
+            min-length="at least 8 symbols"
+          ]
+
+        label[class="item item-input item-floating-label"]
+          span[class="input-label"] Confirm Password
+          input[
+            required
+            name="password_confirmation"
+            minlength="8"
+            type="password"
+            placeholder="Confirm Password"
+            ng-model="vm.signup_data.password_confirmation"
+          ]
+          error-messages[
+            form="signupForm"
+            for="password_confirmation"
+            required="confirm password is required"
+            min-length="at least 8 symbols"
+          ]
+
+      div[class="padding"]
+        button[
+          type="submit"
+          class="button button-block button-calm"
+        ]
+          | Sign Up

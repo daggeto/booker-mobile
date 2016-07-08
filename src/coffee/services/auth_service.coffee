@@ -51,11 +51,15 @@ app.service('AuthService', ($q, $http, $auth, UsersService, USER_ROLES, API_URL,
       .then -> console.log('logged out')
       .catch -> console.log('Loggout failed')
 
+  signup = (data) ->
+    $auth.submitRegistration(data)
+
   loadUserCredentials()
 
   return {
     login: login
     logout: logout
+    signup: signup
     isAuthenticated: -> return isAuthenticated
     username: -> return username
     role: -> return role

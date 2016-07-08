@@ -1,6 +1,6 @@
 var app;
 
-app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMoment', 'ion-datetime-picker', 'ionic-toast', 'ionic-ajax-interceptor', 'ionicLazyLoad', 'ng-token-auth']).config(function(AjaxInterceptorProvider, $authProvider, API_URL) {
+app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMoment', 'ion-datetime-picker', 'ionic-toast', 'ionic-ajax-interceptor', 'ionicLazyLoad', 'ng-token-auth', 'ngMessages']).config(function(AjaxInterceptorProvider, $authProvider, API_URL) {
   AjaxInterceptorProvider.config({
     title: "Ups",
     defaultMessage: "I crashed :("
@@ -10,6 +10,7 @@ app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMome
     tokenValidationPath: '/user/validate_token',
     emailSignInPath: '/user/sign_in',
     signOutUrl: '/user/sign_out',
+    emailRegistrationPath: '/user',
     storage: 'localStorage'
   });
 }).run(function($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log, Navigator, amMoment, AjaxInterceptor, AuthService, AUTH_EVENTS, SERVER_EVENTS) {
@@ -23,8 +24,9 @@ app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMome
     }
   });
   $rootScope.$on('$stateChangeStart', function(event, next, nextParams, fromState) {
+    var ref;
     if (!AuthService.isAuthenticated()) {
-      if (next.name !== 'login') {
+      if ((ref = next.name) !== 'login' && ref !== 'signup') {
         event.preventDefault();
         return $state.transitionTo('login');
       }
@@ -36,15 +38,6 @@ app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMome
     return alertPopup = $ionicPopup.alert({
       title: 'Unauthorized!',
       template: 'You are not allowed to access this resource.'
-    });
-  });
-  $rootScope.$on(AUTH_EVENTS.notAuthenticated, function(event) {
-    var alertPopup;
-    AuthService.logout();
-    $state.go('login');
-    return alertPopup = $ionicPopup.alert({
-      title: 'Session Lost!',
-      template: 'Sorry, You have to login again.'
     });
   });
   $rootScope.$on(SERVER_EVENTS.not_found, function(event) {
