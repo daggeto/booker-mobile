@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Todo</title>
+    <meta content="" http-equiv="Content-Security-Policy" />
     <meta content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width" name="viewport" />
     <link href="css/ionic.app.css" rel="stylesheet" />
     <link href="css/application.css" rel="stylesheet" />
@@ -18,9 +18,10 @@
     <script src="lib/ionic-toast/dist/ionic-toast.bundle.min.js"></script>
     <script src="lib/ionic-ajax-interceptor/dist/ionic-ajax-interceptor.min.js"></script>
     <script src="lib/ionic-image-lazy-load/ionic-image-lazy-load.js"></script>
-    <script src="lib/node_modules/moment/moment.js"></script>
-    <script src="lib/node_modules/moment/locale/lt.js"></script>
-    <script src="lib/node_modules/angular-moment/angular-moment.js"></script>
+    <script src="lib/ionic-platform-web-client/dist/ionic.io.bundle.js"></script>
+    <script src="lib/moment/moment.js"></script>
+    <script src="lib/moment/locale/lt.js"></script>
+    <script src="lib/angular-moment/angular-moment.js"></script>
     <script src="lib/moment-range/dist/moment-range.js"></script>
     <script src="lib/underscore/underscore-min.js"></script>
     <script src="js/application.js"></script>
@@ -33,7 +34,6 @@
     <script src="js/filters.js"></script>
     <script src="js/constants.js"></script>
     <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
-    <script src="cordova.js"></script>
   </head>
   <body ng-app="booker" ng-controller="MainController">
     <ion-nav-view animation="slide-left-right"></ion-nav-view>

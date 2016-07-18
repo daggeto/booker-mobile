@@ -27,9 +27,9 @@ app = angular.module(
     emailRegistrationPath: '/user'
     storage: 'localStorage'
 )
-.run(($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log,
+.run(($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log, $auth,
       Navigator, amMoment, AjaxInterceptor, AuthService, AUTH_EVENTS, SERVER_EVENTS) ->
-  $ionicPlatform.ready ->
+  $ionicPlatform.ready =>
     if window.cordova and window.cordova.plugins.Keyboard
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 
@@ -39,7 +39,7 @@ app = angular.module(
       StatusBar.styleDefault();
 
   $rootScope.$on('$stateChangeStart', (event, next, nextParams, fromState) ->
-    if !AuthService.isAuthenticated()
+    if !AuthService.isAuthenticated
       unless next.name in ['login', 'signup']
         event.preventDefault()
         $state.transitionTo('login')
@@ -47,6 +47,7 @@ app = angular.module(
 
   $rootScope.$on(AUTH_EVENTS.notAuthorized, (event) ->
     $state.go('login')
+    $auth.deleteData('auth_headers')
     alertPopup = $ionicPopup.alert(
       title: 'Unauthorized!'
       template: 'You are not allowed to access this resource.')

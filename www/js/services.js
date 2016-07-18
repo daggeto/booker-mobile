@@ -1,79 +1,88 @@
-app.service('AuthService', function($q, $http, $auth, UsersService, USER_ROLES, API_URL, LOCAL_CURRENT_USER_ID) {
-  var LOCAL_EMAIL_KEY, LOCAL_TOKEN_KEY, authToken, destroyUserCredentials, isAuthenticated, loadUserCredentials, login, logout, role, signup, storeUserCredentials, useCredentials, username;
-  LOCAL_TOKEN_KEY = 'authToken';
-  LOCAL_EMAIL_KEY = 'authEmail';
-  username = '';
-  isAuthenticated = false;
-  role = '';
-  authToken = void 0;
-  loadUserCredentials = function() {
-    var email, token;
-    token = window.localStorage.getItem(LOCAL_TOKEN_KEY);
-    email = window.localStorage.getItem(LOCAL_EMAIL_KEY);
-    if (token) {
-      return useCredentials({
-        email: email,
-        authentication_token: token
-      });
-    }
+var AuthService,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+AuthService = (function() {
+  'use strict';
+  function AuthService($q, $auth, DeviceService, NotificationService, LOCAL_CURRENT_USER_ID) {
+    this.saveToken = bind(this.saveToken, this);
+    this.q = arguments[0], this.auth = arguments[1], this.DeviceService = arguments[2], this.NotificationService = arguments[3], this.LOCAL_CURRENT_USER_ID = arguments[4];
+    this.push = this.NotificationService.push;
+    this.isAuthenticated = this.auth.retrieveData('auth_headers') !== null;
+  }
+
+  AuthService.prototype.login = function(data) {
+    var d;
+    d = this.q.defer();
+    this.auth.submitLogin(data).then((function(_this) {
+      return function(user) {
+        _this.isAuthenticated = true;
+        _this.storeUserCredentials(user);
+        _this.registerToken(user).then(_this.saveToken);
+        return d.resolve(user);
+      };
+    })(this))["catch"](function() {
+      return d.reject('Login failed');
+    });
+    return d.promise;
   };
-  storeUserCredentials = function(user) {
-    window.localStorage.setItem(LOCAL_TOKEN_KEY, user.authentication_token);
-    window.localStorage.setItem(LOCAL_EMAIL_KEY, user.email);
-    window.localStorage.setItem(LOCAL_CURRENT_USER_ID, user.id);
-    return useCredentials(user);
-  };
-  useCredentials = function(user) {
-    isAuthenticated = true;
-    $http.defaults.headers.common['X-User-Token'] = user.authentication_token;
-    return $http.defaults.headers.common['X-User-Email'] = user.email;
-  };
-  destroyUserCredentials = function() {
-    authToken = void 0;
-    username = '';
-    isAuthenticated = false;
-    $http.defaults.headers.common['X-User-Token'] = void 0;
-    $http.defaults.headers.common['X-User-Email'] = void 0;
-    window.localStorage.removeItem(LOCAL_TOKEN_KEY);
-    return window.localStorage.removeItem(LOCAL_EMAIL_KEY);
-  };
-  login = function(data) {
-    return $q(function(resolve, reject) {
-      return $auth.submitLogin(data).then(function(user) {
-        storeUserCredentials(user);
-        return resolve('Login success.');
-      })["catch"](function() {
-        return reject('Login failed');
-      });
+
+  AuthService.prototype.saveToken = function(token) {
+    this.push.saveToken(token, {
+      'ignore_user': true
+    });
+    return this.DeviceService.save({
+      token: token.token,
+      platform: ionic.Platform.platform()
     });
   };
-  logout = function() {
-    destroyUserCredentials();
-    return $auth.signOut().then(function() {
-      return console.log('logged out');
-    })["catch"](function() {
+
+  AuthService.prototype.logout = function() {
+    this.isAuthenticated = true;
+    this.destroyUserCredentials();
+    this.auth.signOut().then((function(_this) {
+      return function() {
+        return console.log('Loggout success');
+      };
+    })(this))["catch"](function() {
       return console.log('Loggout failed');
     });
+    return this.push.unregister()["catch"](function(error) {
+      return console.log(error);
+    });
   };
-  signup = function(data) {
-    return $auth.submitRegistration(data);
+
+  AuthService.prototype.signup = function(data) {
+    return this.auth.submitRegistration(data);
   };
-  loadUserCredentials();
-  return {
-    login: login,
-    logout: logout,
-    signup: signup,
-    isAuthenticated: function() {
-      return isAuthenticated;
-    },
-    username: function() {
-      return username;
-    },
-    role: function() {
-      return role;
-    }
+
+  AuthService.prototype.storeUserCredentials = function(user) {
+    return window.localStorage.setItem(this.LOCAL_CURRENT_USER_ID, user.id);
   };
-});
+
+  AuthService.prototype.destroyUserCredentials = function() {
+    return window.localStorage.removeItem(this.LOCAL_CURRENT_USER_ID);
+  };
+
+  AuthService.prototype.getToken = function() {
+    return this.push.getStorageToken().token;
+  };
+
+  AuthService.prototype.registerToken = function() {
+    var d;
+    d = this.q.defer();
+    this.push.register((function(_this) {
+      return function(token) {
+        return d.resolve(token);
+      };
+    })(this));
+    return d.promise;
+  };
+
+  return AuthService;
+
+})();
+
+app.service('AuthService', AuthService);
 
 var BookingService,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
@@ -160,6 +169,30 @@ CameraService = (function() {
 })();
 
 app.service('CameraService', CameraService);
+
+var DeviceService;
+
+DeviceService = (function() {
+  'use strict';
+  function DeviceService(Device) {
+    this.Device = arguments[0];
+  }
+
+  DeviceService.prototype.save = function(params) {
+    return this.Device.$r.save(params).$promise;
+  };
+
+  DeviceService.prototype["delete"] = function(token) {
+    return this.Device.$r["delete"]({
+      token: token
+    }).$promise;
+  };
+
+  return DeviceService;
+
+})();
+
+app.service('DeviceService', DeviceService);
 
 var EventsService;
 
@@ -256,6 +289,47 @@ Navigator = (function() {
 })();
 
 app.service('Navigator', Navigator);
+
+var NotificationService,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+NotificationService = (function() {
+  'use strict';
+  function NotificationService($ionicPopup) {
+    this.onNotification = bind(this.onNotification, this);
+    this.ionicPopup = arguments[0];
+    this.push = new Ionic.Push({
+      debug: true,
+      onNotification: this.onNotification
+    });
+  }
+
+  NotificationService.prototype.onNotification = function(notification) {
+    this.ionicPopup.show({
+      title: notification.title,
+      template: notification.text,
+      buttons: [
+        {
+          text: 'Cancel'
+        }, {
+          text: 'Open',
+          type: 'button-positive',
+          onTap: (function(_this) {
+            return function(data) {
+              return console.log(notification.payload);
+            };
+          })(this)
+        }
+      ]
+    });
+    return console.log('Yeeee i got notification');
+  };
+
+  return NotificationService;
+
+})();
+
+app.service('NotificationService', NotificationService);
 
 var ServicePhotosService;
 

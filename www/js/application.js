@@ -13,19 +13,21 @@ app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMome
     emailRegistrationPath: '/user',
     storage: 'localStorage'
   });
-}).run(function($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log, Navigator, amMoment, AjaxInterceptor, AuthService, AUTH_EVENTS, SERVER_EVENTS) {
-  $ionicPlatform.ready(function() {
-    if (window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
-    }
-    if (window.StatusBar) {
-      return StatusBar.styleDefault();
-    }
-  });
+}).run(function($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log, $auth, Navigator, amMoment, AjaxInterceptor, AuthService, AUTH_EVENTS, SERVER_EVENTS) {
+  $ionicPlatform.ready((function(_this) {
+    return function() {
+      if (window.cordova && window.cordova.plugins.Keyboard) {
+        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        cordova.plugins.Keyboard.disableScroll(true);
+      }
+      if (window.StatusBar) {
+        return StatusBar.styleDefault();
+      }
+    };
+  })(this));
   $rootScope.$on('$stateChangeStart', function(event, next, nextParams, fromState) {
     var ref;
-    if (!AuthService.isAuthenticated()) {
+    if (!AuthService.isAuthenticated) {
       if ((ref = next.name) !== 'login' && ref !== 'signup') {
         event.preventDefault();
         return $state.transitionTo('login');
@@ -35,6 +37,7 @@ app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMome
   $rootScope.$on(AUTH_EVENTS.notAuthorized, function(event) {
     var alertPopup;
     $state.go('login');
+    $auth.deleteData('auth_headers');
     return alertPopup = $ionicPopup.alert({
       title: 'Unauthorized!',
       template: 'You are not allowed to access this resource.'

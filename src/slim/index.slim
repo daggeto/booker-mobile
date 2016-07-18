@@ -2,7 +2,7 @@
 html
   head
     meta[charset="utf-8"]
-    title Todo
+    meta[ http-equiv="Content-Security-Policy" content=""]
     meta[name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width"]
 
     link[href="css/ionic.app.css" rel="stylesheet"]
@@ -22,11 +22,12 @@ html
     script[src="lib/ion-datetime-picker/release/ion-datetime-picker.min.js"]
     script[src="lib/ionic-toast/dist/ionic-toast.bundle.min.js"]
     script[src="lib/ionic-ajax-interceptor/dist/ionic-ajax-interceptor.min.js"]
-    script src="lib/ionic-image-lazy-load/ionic-image-lazy-load.js"
+    script[src="lib/ionic-image-lazy-load/ionic-image-lazy-load.js"]
+    script[src="lib/ionic-platform-web-client/dist/ionic.io.bundle.js"]
 
-    script[src="lib/node_modules/moment/moment.js"]
-    script[src="lib/node_modules/moment/locale/lt.js"]
-    script[src="lib/node_modules/angular-moment/angular-moment.js"]
+    script[src="lib/moment/moment.js"]
+    script[src="lib/moment/locale/lt.js"]
+    script[src="lib/angular-moment/angular-moment.js"]
     script[src="lib/moment-range/dist/moment-range.js"]
 
     script[src="lib/underscore/underscore-min.js"]
@@ -41,9 +42,7 @@ html
     script[src="js/filters.js"]
     script[src="js/constants.js"]
 
-
     script[src="lib/ngCordova/dist/ng-cordova.min.js"]
-    script[src="cordova.js"]
 
   body[ng-app="booker" ng-controller="MainController"]
     ion-nav-view[animation="slide-left-right"]

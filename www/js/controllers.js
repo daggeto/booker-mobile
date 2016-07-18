@@ -341,11 +341,13 @@ LoginController = (function() {
   }
 
   LoginController.prototype.login = function() {
-    return this.AuthService.login(this.data).then(((function(_this) {
+    return this.AuthService.login(this.data).then((function(_this) {
       return function(authenticated) {
-        return _this.scope.navigator.go('app.main');
+        return _this.scope.navigator.home({
+          message: ''
+        });
       };
-    })(this)));
+    })(this));
   };
 
   return LoginController;

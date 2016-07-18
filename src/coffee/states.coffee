@@ -36,7 +36,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
 
     .state('service'
       abstract: true
-      controller: 'UserServiceController as vm'
+      cache: false
       url: '/service/:id'
       templateUrl: 'templates/service.html'
       resolve:
@@ -77,6 +77,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
         '@':
           templateUrl: 'templates/calendar/event.html'
           controller: 'EventsController as vm')
+
     .state('service.calendar.preview_event'
       url: '/preview_event/:event_id'
       params:
@@ -89,6 +90,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
         '@':
           templateUrl: 'templates/calendar/preview_event.html'
           controller: 'EventsController as vm')
+
     .state('service.service_settings'
       url: '/service_settings'
       views:

@@ -60,6 +60,23 @@ app.factory('Calendar', function(moment) {
   })();
 });
 
+var Device;
+
+Device = (function() {
+  'use strict';
+  function Device($resource, API_URL) {
+    var URL;
+    URL = API_URL + "/api/v1/device/";
+    this.$r = $resource(URL);
+    return this;
+  }
+
+  return Device;
+
+})();
+
+app.factory('Device', Device);
+
 var Event;
 
 Event = (function() {

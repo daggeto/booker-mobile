@@ -9,8 +9,7 @@ class LoginController
     this
 
   login: ->
-    @AuthService.login(@data).then ((authenticated) =>
-     @scope.navigator.go('app.main')
-   )
+    @AuthService.login(@data).then (authenticated) =>
+      @scope.navigator.home(message: '')
 
 app.controller('LoginController', LoginController)

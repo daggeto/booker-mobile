@@ -1,67 +1,65 @@
-app.service('AuthService', ($q, $http, $auth, UsersService, USER_ROLES, API_URL, LOCAL_CURRENT_USER_ID) ->
-  LOCAL_TOKEN_KEY = 'authToken';
-  LOCAL_EMAIL_KEY = 'authEmail';
-  username = '';
-  isAuthenticated = false;
-  role = '';
-  authToken = undefined;
+class AuthService
+  'use strict'
 
-  loadUserCredentials = ->
-    token = window.localStorage.getItem(LOCAL_TOKEN_KEY)
-    email = window.localStorage.getItem(LOCAL_EMAIL_KEY)
-    if token
-      useCredentials(email: email, authentication_token: token)
+  constructor: ($q, $auth, DeviceService, NotificationService, LOCAL_CURRENT_USER_ID) ->
+    [@q, @auth, @DeviceService, @NotificationService, @LOCAL_CURRENT_USER_ID] = arguments
 
-  storeUserCredentials = (user) ->
-    window.localStorage.setItem(LOCAL_TOKEN_KEY, user.authentication_token)
-    window.localStorage.setItem(LOCAL_EMAIL_KEY, user.email)
-    window.localStorage.setItem(LOCAL_CURRENT_USER_ID, user.id)
+    @push = @NotificationService.push
 
-    useCredentials(user)
+    @isAuthenticated = @auth.retrieveData('auth_headers') != null
 
-  useCredentials = (user) ->
-    isAuthenticated = true
 
-    $http.defaults.headers.common['X-User-Token'] = user.authentication_token
-    $http.defaults.headers.common['X-User-Email'] = user.email;
+  login: (data) ->
+    d = @q.defer()
 
-  destroyUserCredentials = ->
-    authToken = undefined
-    username = ''
-    isAuthenticated = false
-    $http.defaults.headers.common['X-User-Token'] = undefined
-    $http.defaults.headers.common['X-User-Email'] = undefined
+    @auth.submitLogin(data)
+      .then (user) =>
+        @isAuthenticated = true
 
-    window.localStorage.removeItem(LOCAL_TOKEN_KEY)
-    window.localStorage.removeItem(LOCAL_EMAIL_KEY)
+        @storeUserCredentials(user)
 
-  login = (data) ->
-    $q((resolve, reject) ->
-      $auth.submitLogin(data)
-        .then (user) ->
-          storeUserCredentials(user)
-          resolve('Login success.')
-        .catch ->
-          reject('Login failed')
-    )
+        @registerToken(user).then(@saveToken)
 
-  logout = ->
-    destroyUserCredentials()
-    $auth.signOut()
-      .then -> console.log('logged out')
+        d.resolve(user)
+      .catch ->
+        d.reject('Login failed')
+
+    d.promise
+
+  saveToken: (token) =>
+    @push.saveToken(token,'ignore_user': true)
+    @DeviceService.save(token: token.token, platform: ionic.Platform.platform())
+
+  logout: ->
+    @isAuthenticated = true
+
+    @destroyUserCredentials()
+
+    @auth.signOut()
+      .then => console.log('Loggout success')
       .catch -> console.log('Loggout failed')
 
-  signup = (data) ->
-    $auth.submitRegistration(data)
+    @push.unregister().catch (error) ->
+      console.log(error)
 
-  loadUserCredentials()
+  signup: (data) ->
+    @auth.submitRegistration(data)
 
-  return {
-    login: login
-    logout: logout
-    signup: signup
-    isAuthenticated: -> return isAuthenticated
-    username: -> return username
-    role: -> return role
-  }
-)
+  storeUserCredentials: (user) ->
+    window.localStorage.setItem(@LOCAL_CURRENT_USER_ID, user.id)
+
+  destroyUserCredentials: ->
+    window.localStorage.removeItem(@LOCAL_CURRENT_USER_ID)
+
+  getToken: ->
+    @push.getStorageToken().token
+
+  registerToken: ->
+    d = @q.defer()
+
+    @push.register (token) =>
+      d.resolve(token)
+
+    d.promise
+
+app.service('AuthService', AuthService)
