@@ -1,26 +1,30 @@
 class NotificationService
   'use strict'
 
-  constructor: ($ionicPopup) ->
-    [@ionicPopup] = arguments
+  constructor: ($ionicPopup, $ionicPush, $ionicEventEmitter, Navigator) ->
+    [@ionicPopup, @ionicPush, @ionicEventEmitter, @Navigator] = arguments
 
-    @push = new Ionic.Push(debug: true, onNotification: @onNotification)
+  registerToken: =>
+    @ionicPush.register().then (token) =>
+      @ionicPush.saveToken(token)
+
+    @ionicEventEmitter.on('push:notification', @onNotification)
 
   onNotification: (notification) =>
-    @ionicPopup.show
-      title: notification.title
-      template: notification.text
-      buttons:
-        [
-          { text: 'Cancel' },
-          {
-            text: 'Open',
-            type: 'button-positive',
-            onTap: (data) =>
-              console.log(notification.payload)
-          }
-        ]
+    return @onForeground(notification.message) if notification.raw.additionalData.foreground
 
-    console.log('Yeeee i got notification')
+    @onBackground(notification.message)
+
+
+  onForeground: (message) ->
+
+  onBackground: (message) ->
+    state = message.payload.state
+    stateParams = message.payload.stateParams
+
+    @Navigator.go(state, stateParams)
+
+  getToken: ->
+    @ionicPush.token
 
 app.service('NotificationService', NotificationService)

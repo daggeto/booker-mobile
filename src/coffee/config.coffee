@@ -1,6 +1,10 @@
-app.config ($ionicConfigProvider) ->
+app.config ($ionicConfigProvider, $ionicCloudProvider) ->
   $ionicConfigProvider.tabs.position('bottom');
 
+  $ionicCloudProvider.init
+    core:
+      app_id: '22e15946'
+      gcm_key: '248592828963'
 
 app.factory('AuthInterceptor', ($rootScope, $q, AUTH_EVENTS, SERVER_EVENTS) ->
   { responseError: (response) ->

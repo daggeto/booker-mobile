@@ -10,7 +10,8 @@ app = angular.module(
     'ionic-ajax-interceptor',
     'ionicLazyLoad',
     'ng-token-auth',
-    'ngMessages'
+    'ngMessages',
+    'ionic.cloud'
   ]
 )
 .config((AjaxInterceptorProvider, $authProvider, API_URL) ->
@@ -28,8 +29,11 @@ app = angular.module(
     storage: 'localStorage'
 )
 .run(($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log, $auth,
-      Navigator, amMoment, AjaxInterceptor, AuthService, AUTH_EVENTS, SERVER_EVENTS) ->
+      Navigator, amMoment, AjaxInterceptor, NotificationService,
+      AuthService, AUTH_EVENTS, SERVER_EVENTS) ->
   $ionicPlatform.ready =>
+    NotificationService.registerToken()
+
     if window.cordova and window.cordova.plugins.Keyboard
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 

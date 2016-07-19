@@ -1,6 +1,6 @@
 var app;
 
-app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMoment', 'ion-datetime-picker', 'ionic-toast', 'ionic-ajax-interceptor', 'ionicLazyLoad', 'ng-token-auth', 'ngMessages']).config(function(AjaxInterceptorProvider, $authProvider, API_URL) {
+app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMoment', 'ion-datetime-picker', 'ionic-toast', 'ionic-ajax-interceptor', 'ionicLazyLoad', 'ng-token-auth', 'ngMessages', 'ionic.cloud']).config(function(AjaxInterceptorProvider, $authProvider, API_URL) {
   AjaxInterceptorProvider.config({
     title: "Ups",
     defaultMessage: "I crashed :("
@@ -13,9 +13,10 @@ app = angular.module('booker', ['ionic', 'ngCordova', 'ngResource', 'angularMome
     emailRegistrationPath: '/user',
     storage: 'localStorage'
   });
-}).run(function($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log, $auth, Navigator, amMoment, AjaxInterceptor, AuthService, AUTH_EVENTS, SERVER_EVENTS) {
+}).run(function($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log, $auth, Navigator, amMoment, AjaxInterceptor, NotificationService, AuthService, AUTH_EVENTS, SERVER_EVENTS) {
   $ionicPlatform.ready((function(_this) {
     return function() {
+      NotificationService.registerToken();
       if (window.cordova && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
         cordova.plugins.Keyboard.disableScroll(true);

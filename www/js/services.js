@@ -6,7 +6,6 @@ AuthService = (function() {
   function AuthService($q, $auth, DeviceService, NotificationService, LOCAL_CURRENT_USER_ID) {
     this.saveToken = bind(this.saveToken, this);
     this.q = arguments[0], this.auth = arguments[1], this.DeviceService = arguments[2], this.NotificationService = arguments[3], this.LOCAL_CURRENT_USER_ID = arguments[4];
-    this.push = this.NotificationService.push;
     this.isAuthenticated = this.auth.retrieveData('auth_headers') !== null;
   }
 
@@ -17,7 +16,7 @@ AuthService = (function() {
       return function(user) {
         _this.isAuthenticated = true;
         _this.storeUserCredentials(user);
-        _this.registerToken(user).then(_this.saveToken);
+        _this.saveToken();
         return d.resolve(user);
       };
     })(this))["catch"](function() {
@@ -26,10 +25,9 @@ AuthService = (function() {
     return d.promise;
   };
 
-  AuthService.prototype.saveToken = function(token) {
-    this.push.saveToken(token, {
-      'ignore_user': true
-    });
+  AuthService.prototype.saveToken = function() {
+    var token;
+    token = this.NotificationService.getToken();
     return this.DeviceService.save({
       token: token.token,
       platform: ionic.Platform.platform()
@@ -39,15 +37,12 @@ AuthService = (function() {
   AuthService.prototype.logout = function() {
     this.isAuthenticated = true;
     this.destroyUserCredentials();
-    this.auth.signOut().then((function(_this) {
+    return this.auth.signOut().then((function(_this) {
       return function() {
         return console.log('Loggout success');
       };
     })(this))["catch"](function() {
       return console.log('Loggout failed');
-    });
-    return this.push.unregister()["catch"](function(error) {
-      return console.log(error);
     });
   };
 
@@ -61,21 +56,6 @@ AuthService = (function() {
 
   AuthService.prototype.destroyUserCredentials = function() {
     return window.localStorage.removeItem(this.LOCAL_CURRENT_USER_ID);
-  };
-
-  AuthService.prototype.getToken = function() {
-    return this.push.getStorageToken().token;
-  };
-
-  AuthService.prototype.registerToken = function() {
-    var d;
-    d = this.q.defer();
-    this.push.register((function(_this) {
-      return function(token) {
-        return d.resolve(token);
-      };
-    })(this));
-    return d.promise;
   };
 
   return AuthService;
@@ -295,34 +275,39 @@ var NotificationService,
 
 NotificationService = (function() {
   'use strict';
-  function NotificationService($ionicPopup) {
+  function NotificationService($ionicPopup, $ionicPush, $ionicEventEmitter, Navigator) {
     this.onNotification = bind(this.onNotification, this);
-    this.ionicPopup = arguments[0];
-    this.push = new Ionic.Push({
-      debug: true,
-      onNotification: this.onNotification
-    });
+    this.registerToken = bind(this.registerToken, this);
+    this.ionicPopup = arguments[0], this.ionicPush = arguments[1], this.ionicEventEmitter = arguments[2], this.Navigator = arguments[3];
   }
 
+  NotificationService.prototype.registerToken = function() {
+    this.ionicPush.register().then((function(_this) {
+      return function(token) {
+        return _this.ionicPush.saveToken(token);
+      };
+    })(this));
+    return this.ionicEventEmitter.on('push:notification', this.onNotification);
+  };
+
   NotificationService.prototype.onNotification = function(notification) {
-    this.ionicPopup.show({
-      title: notification.title,
-      template: notification.text,
-      buttons: [
-        {
-          text: 'Cancel'
-        }, {
-          text: 'Open',
-          type: 'button-positive',
-          onTap: (function(_this) {
-            return function(data) {
-              return console.log(notification.payload);
-            };
-          })(this)
-        }
-      ]
-    });
-    return console.log('Yeeee i got notification');
+    if (notification.raw.additionalData.foreground) {
+      return this.onForeground(notification.message);
+    }
+    return this.onBackground(notification.message);
+  };
+
+  NotificationService.prototype.onForeground = function(message) {};
+
+  NotificationService.prototype.onBackground = function(message) {
+    var state, stateParams;
+    state = message.payload.state;
+    stateParams = message.payload.stateParams;
+    return this.Navigator.go(state, stateParams);
+  };
+
+  NotificationService.prototype.getToken = function() {
+    return this.ionicPush.token;
   };
 
   return NotificationService;

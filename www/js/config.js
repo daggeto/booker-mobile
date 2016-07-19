@@ -1,5 +1,11 @@
-app.config(function($ionicConfigProvider) {
-  return $ionicConfigProvider.tabs.position('bottom');
+app.config(function($ionicConfigProvider, $ionicCloudProvider) {
+  $ionicConfigProvider.tabs.position('bottom');
+  return $ionicCloudProvider.init({
+    core: {
+      app_id: '22e15946',
+      gcm_key: '248592828963'
+    }
+  });
 });
 
 app.factory('AuthInterceptor', function($rootScope, $q, AUTH_EVENTS, SERVER_EVENTS) {
