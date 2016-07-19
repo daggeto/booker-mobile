@@ -275,20 +275,14 @@ var NotificationService,
 
 NotificationService = (function() {
   'use strict';
-  function NotificationService($ionicPopup, $ionicPush, $ionicEventEmitter, Navigator) {
-    this.onNotification = bind(this.onNotification, this);
+  function NotificationService($rootScope, $ionicPush, $ionicEventEmitter, $cordovaLocalNotification, Navigator) {
     this.registerToken = bind(this.registerToken, this);
-    this.ionicPopup = arguments[0], this.ionicPush = arguments[1], this.ionicEventEmitter = arguments[2], this.Navigator = arguments[3];
+    this.onLocalNotificationClick = bind(this.onLocalNotificationClick, this);
+    this.onNotification = bind(this.onNotification, this);
+    this.rootScope = arguments[0], this.ionicPush = arguments[1], this.ionicEventEmitter = arguments[2], this.cordovaLocalNotification = arguments[3], this.Navigator = arguments[4];
+    this.ionicEventEmitter.on('push:notification', this.onNotification);
+    this.rootScope.$on('$cordovaLocalNotification:click', this.onLocalNotificationClick);
   }
-
-  NotificationService.prototype.registerToken = function() {
-    this.ionicPush.register().then((function(_this) {
-      return function(token) {
-        return _this.ionicPush.saveToken(token);
-      };
-    })(this));
-    return this.ionicEventEmitter.on('push:notification', this.onNotification);
-  };
 
   NotificationService.prototype.onNotification = function(notification) {
     if (notification.raw.additionalData.foreground) {
@@ -297,13 +291,35 @@ NotificationService = (function() {
     return this.onBackground(notification.message);
   };
 
-  NotificationService.prototype.onForeground = function(message) {};
+  NotificationService.prototype.onLocalNotificationClick = function(event, notification, state) {
+    var payload;
+    payload = JSON.parse(notification.data);
+    return this.navigateFromNotification(payload);
+  };
+
+  NotificationService.prototype.onForeground = function(message) {
+    return this.cordovaLocalNotification.schedule({
+      id: 1,
+      title: message.title,
+      text: message.text,
+      data: message.payload
+    });
+  };
 
   NotificationService.prototype.onBackground = function(message) {
-    var state, stateParams;
-    state = message.payload.state;
-    stateParams = message.payload.stateParams;
-    return this.Navigator.go(state, stateParams);
+    return this.navigateFromNotification(message.payload);
+  };
+
+  NotificationService.prototype.navigateFromNotification = function(payload) {
+    return this.Navigator.go(payload.state, payload.stateParams);
+  };
+
+  NotificationService.prototype.registerToken = function() {
+    return this.ionicPush.register().then((function(_this) {
+      return function(token) {
+        return _this.ionicPush.saveToken(token);
+      };
+    })(this));
   };
 
   NotificationService.prototype.getToken = function() {
