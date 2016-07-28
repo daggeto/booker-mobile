@@ -1,8 +1,8 @@
 class Navigator
   'use strict'
 
-  constructor: ($state) ->
-    [@state] = arguments
+  constructor: ($state, $ionicHistory) ->
+    [@state, @ionicHistory] = arguments
 
   go: (state, params) ->
     @state.go(state, params).catch (error) ->
@@ -10,5 +10,10 @@ class Navigator
 
   home: (params) ->
     @state.go('app.main', params)
+
+  back: ->
+    return @ionicHistory.goBack() if @ionicHistory.backView()
+
+    @home()
 
 app.service('Navigator', Navigator)

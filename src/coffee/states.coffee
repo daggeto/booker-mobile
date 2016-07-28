@@ -34,6 +34,14 @@ app.config ($stateProvider, $urlRouterProvider) ->
           templateUrl: 'templates/feed.html'
           controller: 'FeedController as vm')
 
+    .state('app.main.registrations'
+      url: '/registrations'
+      views:
+        '@':
+          templateUrl: 'templates/registrations.html'
+          controller: 'RegistrationsController as vm'
+    )
+
     .state('service'
       abstract: true
       cache: false

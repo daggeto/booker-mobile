@@ -1,0 +1,5 @@
+.item.item-avatar[ng-click="onEventClick({ event: 'asda'})"]
+  img[src="{{event.service.main_photo.preview_url}}"]
+  h2
+    | {{event.start_at | amDateFormat: 'HH:mm' }} - {{event.end_at | amDateFormat: 'HH:mm' }}
+  p {{event.service.name}}

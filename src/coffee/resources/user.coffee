@@ -4,11 +4,11 @@ class User
   constructor: ($resource, API_URL) ->
     @$r = $resource("#{API_URL}/api/v1/users/:id.json", id: '@id')
 
-    @$action =
+    @$a =
       $resource(
-        "#{API_URL}/api/v1/users/:id/:action.json",
-        id: '@id'
-        action: '@action'
+        "#{API_URL}/api/v1/users/:user_id/:assoc.json",
+        user_id: '@user_id',
+        assoc: '@assoc'
       )
 
     @$session =

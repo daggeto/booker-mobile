@@ -11,28 +11,8 @@ class UsersService
   findById: (id) ->
     @User.$r.get(id: id).$promise
 
-  login: (data) ->
-    @User.$session.save(action: 'sign_in', user: data).$promise
-
-  logout: ->
-    @User.$session.delete(action: 'sign_out').$promise
-
-  sign_up: (data) ->
-    @User.$session.save(user: data).$promise
-
-  toggleProviderSettings: (user_id, provider_flag) ->
-    @q (resolve, reject) =>
-      @User.$action.save(
-        id: user_id
-        provider_flag: provider_flag
-        action: 'toggle_provider_settings'
-      ).$promise.then (data) ->
-        if data.success
-          resolve(data)
-        else
-          reject(data)
-
-  disableProviding: (user) ->
-    @User.$service.remove(user_id: user.id, id: user.service_id)
+  events: (params) ->
+    params.assoc = 'events'
+    @User.$a.get(params).$promise
 
 app.service('UsersService', UsersService)

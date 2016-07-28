@@ -1,0 +1,10 @@
+ion-view[view-title="Registrations"]
+  ion-header-bar.b-header[align-title="center"]
+    .buttons
+      a.button.icon-left.ion-chevron-left.button-clear.button-dark[
+        ng-click="navigator.back()"
+      ]
+        | Back
+    h1.title My Registrations
+  ion-content.padding
+    user-events[events="vm.events"]

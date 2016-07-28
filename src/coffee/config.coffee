@@ -5,6 +5,9 @@ app.config ($ionicConfigProvider, $ionicCloudProvider) ->
     core:
       app_id: '22e15946'
       gcm_key: '248592828963'
+    pluginConfig:
+      android:
+        icon: 'icon.png'
 
 app.factory('AuthInterceptor', ($rootScope, $q, AUTH_EVENTS, SERVER_EVENTS) ->
   { responseError: (response) ->
