@@ -46,6 +46,9 @@
   font-size: 1.8em;
   padding: 5px; }
 
+.b-header {
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.3); }
+
 .validation__text {
   color: #ff3333;
   font-size: 0.7em; }
@@ -202,3 +205,9 @@
     display: flex;
     justify-content: center;
     align-items: center; }
+
+.day-reservations .card {
+  margin: 0; }
+
+.day-reservations .list.card {
+  margin-bottom: 0.5em; }

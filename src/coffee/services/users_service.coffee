@@ -11,8 +11,8 @@ class UsersService
   findById: (id) ->
     @User.$r.get(id: id).$promise
 
-  events: (params) ->
-    params.assoc = 'events'
+  reservations: (params) ->
+    params.assoc = 'reservations'
     @User.$a.get(params).$promise
 
 app.service('UsersService', UsersService)

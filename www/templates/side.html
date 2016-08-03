@@ -1,8 +1,0 @@
-<ion-view><ion-content><img class="profile-picture" src="http://lorempixel.com/350/450/abstract/" /><ion-lists can-swipe="true" class="side-list"><ion-item ng-click="vm.providerSettingsClicked()">Provider Settings
-        <div class="pull-right" ng-class="{
-&#39;green-text&#39;: vm.isServicePublished(),
-&#39;red-text&#39;: !vm.isServicePublished()
-}" ng-if="vm.currentUser.service">
-          {{ vm.publicationText() }}
-        </div>
-      </ion-item><ion-item>Profile Settings</ion-item><ion-item ng-click="vm.logout()">Logout</ion-item></ion-lists></ion-content></ion-view>

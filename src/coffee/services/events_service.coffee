@@ -8,7 +8,7 @@ class EventsService
     this
 
   findById: (id) ->
-    @Event.$r.get(event_id: id)
+    @Event.$r.get(id: id)
 
   save: (params) ->
     @Event.$r.save(params).$promise
@@ -17,12 +17,6 @@ class EventsService
     @Event.$r.update(params).$promise
 
   delete: (id) ->
-    @Event.$r.delete(event_id: id).$promise
-
-  book: (id) ->
-    @Event.$r.post(event_id: id, action: 'book').$promise
-
-  do: (action, id) ->
-    @Event.$r.post(event_id: id, action: action).$promise
+    @Event.$r.delete(id: id).$promise
 
 app.service('EventsService', EventsService)

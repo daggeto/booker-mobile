@@ -13,9 +13,9 @@ class Event
         { value: @BOOKED, label: 'Booked' }
       ]
 
-    URL = "#{API_URL}/api/v1/events/:event_id/:action.json"
+    URL = "#{API_URL}/api/v1/events/:id/:action.json"
     params =
-      event_id: '@event_id'
+      id: '@id'
       action: '@action'
     methods =
       update:

@@ -54,5 +54,4 @@ class SideController
     return 'Published' if @currentUser.service.published
 
     'Unpublished'
-
 app.controller('SideController', SideController)

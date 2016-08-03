@@ -36,16 +36,11 @@ var CalendarController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 CalendarController = (function() {
-  function CalendarController($scope, $state, $locale, UserServicesService, Event, Calendar, EventsService, service) {
+  function CalendarController($scope, $state, UserServicesService, Event, EventsService, ReservationsService, service, Calendar) {
     this.changeStatus = bind(this.changeStatus, this);
     this.loadEvents = bind(this.loadEvents, this);
-    this.scope = $scope;
-    this.state = $state;
-    this.UserServicesService = UserServicesService;
-    this.Event = Event;
-    this.EventsService = EventsService;
+    this.scope = arguments[0], this.state = arguments[1], this.UserServicesService = arguments[2], this.Event = arguments[3], this.EventsService = arguments[4], this.ReservationsService = arguments[5], this.service = arguments[6];
     this.calendar = new Calendar();
-    this.service = service;
     this.scope.$on('$ionicView.enter', (function(_this) {
       return function(event, data) {
         return _this.reloadEvents();
@@ -82,15 +77,15 @@ CalendarController = (function() {
   };
 
   CalendarController.prototype.approveEvent = function(event) {
-    return this.changeStatus('approve', event);
+    return this.changeStatus('approve', event.reservation);
   };
 
   CalendarController.prototype.disapproveEvent = function(event) {
-    return this.changeStatus('disapprove', event);
+    return this.changeStatus('disapprove', event.reservation);
   };
 
-  CalendarController.prototype.changeStatus = function(action, event) {
-    return this.EventsService["do"](action, event.id).then((function(_this) {
+  CalendarController.prototype.changeStatus = function(action, reservation) {
+    return this.ReservationsService["do"](action, reservation.id).then((function(_this) {
       return function(response) {
         return _this.reloadEvents();
       };
@@ -386,6 +381,77 @@ PhotosCarouselController = (function() {
 })();
 
 app.controller('PhotosCarouselController', PhotosCarouselController);
+
+var ReservationsController,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+ReservationsController = (function() {
+  function ReservationsController($scope, $ionicActionSheet, $ionicPopup, currentUser, UsersService, ReservationsService) {
+    this.showConfirm = bind(this.showConfirm, this);
+    this.scope = arguments[0], this.ionicActionSheet = arguments[1], this.ionicPopup = arguments[2], this.currentUser = arguments[3], this.UsersService = arguments[4], this.ReservationsService = arguments[5];
+    this.bindListeners();
+    this;
+  }
+
+  ReservationsController.prototype.bindListeners = function() {
+    this.scope.$on('$ionicView.enter', (function(_this) {
+      return function(event, data) {
+        return _this.reloadReservations();
+      };
+    })(this));
+    return this.scope.$on('reservationClick', (function(_this) {
+      return function(_, data) {
+        return _this.ionicActionSheet.show({
+          titleText: 'Modify your reservation',
+          destructiveText: '<i class="icon ion-close-round"></i> Cancel Reservation',
+          cancelText: 'Close',
+          destructiveButtonClicked: function() {
+            _this.showConfirm(data.reservation);
+            return true;
+          }
+        });
+      };
+    })(this));
+  };
+
+  ReservationsController.prototype.reloadReservations = function() {
+    return this.UsersService.reservations({
+      user_id: this.currentUser.id,
+      group: true
+    }).then((function(_this) {
+      return function(response) {
+        return _this.reservations = response.reservations;
+      };
+    })(this));
+  };
+
+  ReservationsController.prototype.showConfirm = function(reservation) {
+    var popup;
+    popup = this.ionicPopup.confirm({
+      title: 'Do you realy want to cancel this reservation?'
+    });
+    return popup.then((function(_this) {
+      return function(confirmed) {
+        if (confirmed) {
+          return _this.cancelReservation(reservation);
+        }
+      };
+    })(this));
+  };
+
+  ReservationsController.prototype.cancelReservation = function(reservation) {
+    return this.ReservationsService["do"]('cancel', reservation.id).then((function(_this) {
+      return function() {
+        return _this.reloadReservations();
+      };
+    })(this));
+  };
+
+  return ReservationsController;
+
+})();
+
+app.controller('ReservationsController', ReservationsController);
 
 var ServiceCalendarController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };

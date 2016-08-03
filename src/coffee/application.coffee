@@ -29,8 +29,8 @@ app = angular.module(
     storage: 'localStorage'
 )
 .run(($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log, $auth,
-      Navigator, amMoment, AjaxInterceptor, NotificationService,
-      AuthService, AUTH_EVENTS, SERVER_EVENTS) ->
+  Navigator, amMoment, AjaxInterceptor, NotificationService,
+  AuthService, AUTH_EVENTS, SERVER_EVENTS) ->
   $ionicPlatform.ready =>
     NotificationService.registerToken()
 
@@ -55,13 +55,13 @@ app = angular.module(
     alertPopup = $ionicPopup.alert(
       title: 'Unauthorized!'
       template: 'You are not allowed to access this resource.')
-	)
+  )
 
   $rootScope.$on(SERVER_EVENTS.not_found, (event) ->
     alertPopup = $ionicPopup.alert(
       title: 'Ups! Little problems.'
       template: 'Try to login again')
-	)
+  )
 
   $rootScope.error = (message) ->
     $ionicPopup.alert(template: 'Ups! Little problems.')

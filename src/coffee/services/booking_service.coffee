@@ -1,8 +1,8 @@
 class BookingService
   'use strict'
 
-  constructor: ($q, ionicToast, EventsService, Event) ->
-    [@q, @ionicToast, @EventsService, @Event] = arguments
+  constructor: ($q, ionicToast, ReservationsService, Event) ->
+    [@q, @ionicToast, @ReservationsService, @Event] = arguments
 
   book: (event) ->
     @q((resolve, reject) =>
@@ -10,7 +10,7 @@ class BookingService
 
       @resolveMethod = resolve
 
-      @EventsService.book(event.id).then(@afterEventBook)
+      @ReservationsService.save(event_id: event.id).then(@afterEventBook)
     )
 
   afterEventBook: (response) =>

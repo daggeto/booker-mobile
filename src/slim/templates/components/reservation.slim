@@ -1,0 +1,6 @@
+.item.item-avatar
+  img[src="{{reservation.event.service.main_photo.preview_url}}"]
+  h2
+    | {{reservation.event.start_at | amDateFormat: 'HH:mm' }} -
+     {{reservation.event.end_at | amDateFormat: 'HH:mm' }}
+  p {{reservation.event.service.name}}

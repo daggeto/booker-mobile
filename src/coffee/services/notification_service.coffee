@@ -33,6 +33,7 @@ class NotificationService
 
   registerToken: =>
     @ionicPush.register().then (token) =>
+      console.log("Token registerd #{token}")
       @ionicPush.saveToken(token)
 
   getToken: ->

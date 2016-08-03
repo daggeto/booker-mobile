@@ -14,7 +14,7 @@ class AuthService
         @isAuthenticated = true
 
         @storeUserCredentials(user)
-        @saveToken()
+#        @saveToken()
 
         d.resolve(user)
       .catch ->

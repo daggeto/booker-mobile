@@ -1,13 +1,17 @@
 class CalendarController
   constructor: (
-    $scope, $state, $locale, UserServicesService, Event, Calendar, EventsService, service) ->
-    @scope = $scope
-    @state = $state
-    @UserServicesService = UserServicesService
-    @Event = Event
-    @EventsService = EventsService
+    $scope, $state, UserServicesService, Event, EventsService, ReservationsService, service, Calendar) ->
+    [
+      @scope,
+      @state,
+      @UserServicesService,
+      @Event,
+      @EventsService,
+      @ReservationsService,
+      @service
+    ] = arguments
+
     @calendar = new Calendar()
-    @service = service
 
     @scope.$on('$ionicView.enter', (event, data) =>
       @reloadEvents()
@@ -36,13 +40,13 @@ class CalendarController
     )
 
   approveEvent: (event) ->
-    @changeStatus('approve', event)
+    @changeStatus('approve', event.reservation)
 
   disapproveEvent: (event) ->
-    @changeStatus('disapprove', event)
+    @changeStatus('disapprove', event.reservation)
 
-  changeStatus: (action, event) =>
-    @EventsService.do(action, event.id).then (response) =>
+  changeStatus: (action, reservation) =>
+    @ReservationsService.do(action, reservation.id).then (response) =>
       @reloadEvents()
 
   eventUrl: (event) ->

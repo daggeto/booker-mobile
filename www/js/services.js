@@ -16,7 +16,6 @@ AuthService = (function() {
       return function(user) {
         _this.isAuthenticated = true;
         _this.storeUserCredentials(user);
-        _this.saveToken();
         return d.resolve(user);
       };
     })(this))["catch"](function() {
@@ -69,9 +68,9 @@ var BookingService,
 
 BookingService = (function() {
   'use strict';
-  function BookingService($q, ionicToast, EventsService, Event) {
+  function BookingService($q, ionicToast, ReservationsService, Event) {
     this.afterEventBook = bind(this.afterEventBook, this);
-    this.q = arguments[0], this.ionicToast = arguments[1], this.EventsService = arguments[2], this.Event = arguments[3];
+    this.q = arguments[0], this.ionicToast = arguments[1], this.ReservationsService = arguments[2], this.Event = arguments[3];
   }
 
   BookingService.prototype.book = function(event) {
@@ -81,7 +80,9 @@ BookingService = (function() {
           return reject();
         }
         _this.resolveMethod = resolve;
-        return _this.EventsService.book(event.id).then(_this.afterEventBook);
+        return _this.ReservationsService.save({
+          event_id: event.id
+        }).then(_this.afterEventBook);
       };
     })(this));
   };
@@ -204,20 +205,6 @@ EventsService = (function() {
     }).$promise;
   };
 
-  EventsService.prototype.book = function(id) {
-    return this.Event.$r.post({
-      id: id,
-      action: 'book'
-    }).$promise;
-  };
-
-  EventsService.prototype["do"] = function(action, id) {
-    return this.Event.$r.post({
-      id: id,
-      action: action
-    }).$promise;
-  };
-
   return EventsService;
 
 })();
@@ -250,8 +237,8 @@ var Navigator;
 
 Navigator = (function() {
   'use strict';
-  function Navigator($state) {
-    this.state = arguments[0];
+  function Navigator($state, $ionicHistory) {
+    this.state = arguments[0], this.ionicHistory = arguments[1];
   }
 
   Navigator.prototype.go = function(state, params) {
@@ -262,6 +249,13 @@ Navigator = (function() {
 
   Navigator.prototype.home = function(params) {
     return this.state.go('app.main', params);
+  };
+
+  Navigator.prototype.back = function() {
+    if (this.ionicHistory.backView()) {
+      return this.ionicHistory.goBack();
+    }
+    return this.home();
   };
 
   return Navigator;
@@ -317,6 +311,7 @@ NotificationService = (function() {
   NotificationService.prototype.registerToken = function() {
     return this.ionicPush.register().then((function(_this) {
       return function(token) {
+        console.log("Token registerd " + token);
         return _this.ionicPush.saveToken(token);
       };
     })(this));
@@ -331,6 +326,32 @@ NotificationService = (function() {
 })();
 
 app.service('NotificationService', NotificationService);
+
+var ReservationsService;
+
+ReservationsService = (function() {
+  'use strict';
+  function ReservationsService(Reservation, $cacheFactory) {
+    this.Reservation = arguments[0], this.cacheFactory = arguments[1];
+    this;
+  }
+
+  ReservationsService.prototype.save = function(params) {
+    return this.Reservation.$r.save(params).$promise;
+  };
+
+  ReservationsService.prototype["do"] = function(action, reservation_id) {
+    return this.Reservation.$r.post({
+      reservation_id: reservation_id,
+      action: action
+    }).$promise;
+  };
+
+  return ReservationsService;
+
+})();
+
+app.service('ReservationsService', ReservationsService);
 
 var ServicePhotosService;
 
@@ -441,48 +462,9 @@ UsersService = (function() {
     }).$promise;
   };
 
-  UsersService.prototype.login = function(data) {
-    return this.User.$session.save({
-      action: 'sign_in',
-      user: data
-    }).$promise;
-  };
-
-  UsersService.prototype.logout = function() {
-    return this.User.$session["delete"]({
-      action: 'sign_out'
-    }).$promise;
-  };
-
-  UsersService.prototype.sign_up = function(data) {
-    return this.User.$session.save({
-      user: data
-    }).$promise;
-  };
-
-  UsersService.prototype.toggleProviderSettings = function(user_id, provider_flag) {
-    return this.q((function(_this) {
-      return function(resolve, reject) {
-        return _this.User.$action.save({
-          id: user_id,
-          provider_flag: provider_flag,
-          action: 'toggle_provider_settings'
-        }).$promise.then(function(data) {
-          if (data.success) {
-            return resolve(data);
-          } else {
-            return reject(data);
-          }
-        });
-      };
-    })(this));
-  };
-
-  UsersService.prototype.disableProviding = function(user) {
-    return this.User.$service.remove({
-      user_id: user.id,
-      id: user.service_id
-    });
+  UsersService.prototype.reservations = function(params) {
+    params.assoc = 'reservations';
+    return this.User.$a.get(params).$promise;
   };
 
   return UsersService;

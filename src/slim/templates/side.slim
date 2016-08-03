@@ -8,9 +8,8 @@ ion-view
           ng-if="vm.currentUser.service"
           ng-class="{
             'green-text': vm.isServicePublished(),
-            'red-text': !vm.isServicePublished()
-          }"
-        ]{{ vm.publicationText() }}
+            'red-text': !vm.isServicePublished()}"]
+          | {{ vm.publicationText() }}
       ion-item Profile Settings
-      ion-item[ng-click="navigator.go('app.main.registrations')"] My Registrations
+      ion-item[ng-click="navigator.go('app.main.Reservations')"] My Reservations
       ion-item[ng-click="vm.logout()"] Logout

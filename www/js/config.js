@@ -4,6 +4,11 @@ app.config(function($ionicConfigProvider, $ionicCloudProvider) {
     core: {
       app_id: '22e15946',
       gcm_key: '248592828963'
+    },
+    pluginConfig: {
+      android: {
+        icon: 'icon.png'
+      }
     }
   });
 });

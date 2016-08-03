@@ -129,6 +129,32 @@ Event = (function() {
 
 app.factory('Event', Event);
 
+var Reservation;
+
+Reservation = (function() {
+  'use strict';
+  function Reservation($resource, API_URL) {
+    var URL, methods, params;
+    URL = API_URL + "/api/v1/reservations/:reservation_id/:action.json";
+    params = {
+      reservation_id: '@reservation_id',
+      action: '@action'
+    };
+    methods = {
+      post: {
+        method: 'POST'
+      }
+    };
+    this.$r = $resource(URL, params, methods);
+    return this;
+  }
+
+  return Reservation;
+
+})();
+
+app.factory('Reservation', Reservation);
+
 var ServicePhoto;
 
 ServicePhoto = (function() {
@@ -158,9 +184,9 @@ User = (function() {
     this.$r = $resource(API_URL + "/api/v1/users/:id.json", {
       id: '@id'
     });
-    this.$action = $resource(API_URL + "/api/v1/users/:id/:action.json", {
-      id: '@id',
-      action: '@action'
+    this.$a = $resource(API_URL + "/api/v1/users/:user_id/:assoc.json", {
+      user_id: '@user_id',
+      assoc: '@assoc'
     });
     this.$session = $resource(API_URL + "/user/:action.json", {
       id: '@id',
