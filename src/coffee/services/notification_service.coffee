@@ -1,8 +1,22 @@
 class NotificationService
   'use strict'
 
-  constructor: ($rootScope, $ionicPush, $ionicEventEmitter, $cordovaLocalNotification,  Navigator) ->
-    [@rootScope, @ionicPush, @ionicEventEmitter, @cordovaLocalNotification, @Navigator] = arguments
+  constructor: (
+    $rootScope,
+    $ionicPush,
+    $ionicEventEmitter,
+    $cordovaLocalNotification,
+    Navigator,
+    DeviceService
+  ) ->
+    [
+      @rootScope,
+      @ionicPush,
+      @ionicEventEmitter,
+      @cordovaLocalNotification,
+      @Navigator,
+      @DeviceService
+    ] = arguments
 
     @ionicEventEmitter.on('push:notification', @onNotification)
     @rootScope.$on('$cordovaLocalNotification:click', @onLocalNotificationClick)
@@ -36,7 +50,8 @@ class NotificationService
       console.log("Token registerd #{token}")
       @ionicPush.saveToken(token)
 
-  getToken: ->
-    @ionicPush.token
+  saveToken: ->
+    if @ionicPush.storage.get('ionic_io_push_token')
+      @DeviceService.save(token: @ionicPush.token.token, platform: ionic.Platform.platform())
 
 app.service('NotificationService', NotificationService)

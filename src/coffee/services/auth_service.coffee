@@ -1,8 +1,8 @@
 class AuthService
   'use strict'
 
-  constructor: ($q, $auth, DeviceService, NotificationService, LOCAL_CURRENT_USER_ID) ->
-    [@q, @auth, @DeviceService, @NotificationService, @LOCAL_CURRENT_USER_ID] = arguments
+  constructor: ($q, $auth, NotificationService, LOCAL_CURRENT_USER_ID) ->
+    [@q, @auth, @NotificationService, @LOCAL_CURRENT_USER_ID] = arguments
 
     @isAuthenticated = @auth.retrieveData('auth_headers') != null
 
@@ -14,7 +14,7 @@ class AuthService
         @isAuthenticated = true
 
         @storeUserCredentials(user)
-#        @saveToken()
+        @saveToken()
 
         d.resolve(user)
       .catch ->
@@ -23,9 +23,7 @@ class AuthService
     d.promise
 
   saveToken: =>
-    token = @NotificationService.getToken()
-
-    @DeviceService.save(token: token.token, platform: ionic.Platform.platform())
+    @NotificationService.saveToken()
 
   logout: ->
     @isAuthenticated = true
