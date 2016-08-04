@@ -18,7 +18,6 @@ app.config ($stateProvider, $urlRouterProvider) ->
       templateUrl: 'templates/app.html')
 
     .state('app.main'
-      cache: false
       url: '/main'
       resolve:
         UsersService: 'UsersService'
