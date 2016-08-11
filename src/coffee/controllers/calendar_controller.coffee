@@ -1,9 +1,18 @@
 class CalendarController
   constructor: (
-    $scope, $state, UserServicesService, Event, EventsService, ReservationsService, service, Calendar) ->
+    $scope,
+    $state,
+    $stateParams,
+    UserServicesService,
+    Event,
+    EventsService,
+    ReservationsService,
+    service,
+    Calendar) ->
     [
       @scope,
       @state,
+      @stateParams,
       @UserServicesService,
       @Event,
       @EventsService,
@@ -11,7 +20,7 @@ class CalendarController
       @service
     ] = arguments
 
-    @calendar = new Calendar()
+    @calendar = new Calendar(@stateParams.selectedDate)
 
     @scope.$on('$ionicView.enter', (event, data) =>
       @reloadEvents()

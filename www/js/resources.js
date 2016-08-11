@@ -11,9 +11,9 @@ app.factory('Calendar', function(moment) {
 
     month = 'MMMM';
 
-    function Calendar() {
+    function Calendar(selectedDate) {
       this.currentDate = moment().startOf('day');
-      this.selectedDate = moment(this.currentDate);
+      this.selectedDate = moment(selectedDate || this.currentDate).startOf('day');
       this.startOfWeek = moment(this.currentDate).startOf('isoweek');
       this.events = [];
       this.recalculateWeek();

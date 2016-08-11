@@ -33,8 +33,8 @@ app.config ($stateProvider, $urlRouterProvider) ->
           templateUrl: 'templates/feed.html'
           controller: 'FeedController as vm')
 
-    .state('app.main.Reservations'
-      url: '/Reservations'
+    .state('app.main.reservations'
+      url: '/reservations'
       views:
         '@':
           templateUrl: 'templates/reservations.html'
@@ -52,7 +52,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
           UserServicesService.findById($stateParams.id))
 
     .state('service.calendar'
-      url: '/calendar'
+      url: '/calendar/:selectedDate'
       views:
         'calendar@service':
           templateUrl: "templates/service/calendar.html"

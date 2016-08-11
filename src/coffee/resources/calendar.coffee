@@ -5,9 +5,9 @@ app.factory('Calendar', (moment)->
     weekDayFormat = 'ddd'
     month = 'MMMM'
 
-    constructor: ->
+    constructor: (selectedDate) ->
       @currentDate = moment().startOf('day')
-      @selectedDate = moment(@currentDate)
+      @selectedDate = moment(selectedDate || @currentDate).startOf('day')
       @startOfWeek = moment(@currentDate).startOf('isoweek')
       @events = []
       @recalculateWeek()

@@ -3,9 +3,9 @@ var AuthService,
 
 AuthService = (function() {
   'use strict';
-  function AuthService($q, $auth, DeviceService, NotificationService, LOCAL_CURRENT_USER_ID) {
+  function AuthService($q, $auth, NotificationService, LOCAL_CURRENT_USER_ID) {
     this.saveToken = bind(this.saveToken, this);
-    this.q = arguments[0], this.auth = arguments[1], this.DeviceService = arguments[2], this.NotificationService = arguments[3], this.LOCAL_CURRENT_USER_ID = arguments[4];
+    this.q = arguments[0], this.auth = arguments[1], this.NotificationService = arguments[2], this.LOCAL_CURRENT_USER_ID = arguments[3];
     this.isAuthenticated = this.auth.retrieveData('auth_headers') !== null;
   }
 
@@ -16,6 +16,7 @@ AuthService = (function() {
       return function(user) {
         _this.isAuthenticated = true;
         _this.storeUserCredentials(user);
+        _this.saveToken();
         return d.resolve(user);
       };
     })(this))["catch"](function() {
@@ -25,12 +26,7 @@ AuthService = (function() {
   };
 
   AuthService.prototype.saveToken = function() {
-    var token;
-    token = this.NotificationService.getToken();
-    return this.DeviceService.save({
-      token: token.token,
-      platform: ionic.Platform.platform()
-    });
+    return this.NotificationService.saveToken();
   };
 
   AuthService.prototype.logout = function() {
@@ -269,11 +265,11 @@ var NotificationService,
 
 NotificationService = (function() {
   'use strict';
-  function NotificationService($rootScope, $ionicPush, $ionicEventEmitter, $cordovaLocalNotification, Navigator) {
+  function NotificationService($rootScope, $ionicPush, $ionicEventEmitter, $cordovaLocalNotification, Navigator, DeviceService) {
     this.registerToken = bind(this.registerToken, this);
     this.onLocalNotificationClick = bind(this.onLocalNotificationClick, this);
     this.onNotification = bind(this.onNotification, this);
-    this.rootScope = arguments[0], this.ionicPush = arguments[1], this.ionicEventEmitter = arguments[2], this.cordovaLocalNotification = arguments[3], this.Navigator = arguments[4];
+    this.rootScope = arguments[0], this.ionicPush = arguments[1], this.ionicEventEmitter = arguments[2], this.cordovaLocalNotification = arguments[3], this.Navigator = arguments[4], this.DeviceService = arguments[5];
     this.ionicEventEmitter.on('push:notification', this.onNotification);
     this.rootScope.$on('$cordovaLocalNotification:click', this.onLocalNotificationClick);
   }
@@ -317,8 +313,13 @@ NotificationService = (function() {
     })(this));
   };
 
-  NotificationService.prototype.getToken = function() {
-    return this.ionicPush.token;
+  NotificationService.prototype.saveToken = function() {
+    if (this.ionicPush.storage.get('ionic_io_push_token')) {
+      return this.DeviceService.save({
+        token: this.ionicPush.token.token,
+        platform: ionic.Platform.platform()
+      });
+    }
   };
 
   return NotificationService;

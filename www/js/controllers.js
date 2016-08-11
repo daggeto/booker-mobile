@@ -36,11 +36,11 @@ var CalendarController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 CalendarController = (function() {
-  function CalendarController($scope, $state, UserServicesService, Event, EventsService, ReservationsService, service, Calendar) {
+  function CalendarController($scope, $state, $stateParams, UserServicesService, Event, EventsService, ReservationsService, service, Calendar) {
     this.changeStatus = bind(this.changeStatus, this);
     this.loadEvents = bind(this.loadEvents, this);
-    this.scope = arguments[0], this.state = arguments[1], this.UserServicesService = arguments[2], this.Event = arguments[3], this.EventsService = arguments[4], this.ReservationsService = arguments[5], this.service = arguments[6];
-    this.calendar = new Calendar();
+    this.scope = arguments[0], this.state = arguments[1], this.stateParams = arguments[2], this.UserServicesService = arguments[3], this.Event = arguments[4], this.EventsService = arguments[5], this.ReservationsService = arguments[6], this.service = arguments[7];
+    this.calendar = new Calendar(this.stateParams.selectedDate);
     this.scope.$on('$ionicView.enter', (function(_this) {
       return function(event, data) {
         return _this.reloadEvents();
