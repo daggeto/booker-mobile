@@ -19,6 +19,7 @@ class ServiceCalendarController
   loadEvents: (date) =>
     @UserServicesService.events(
       service_id: @service.id
+      action: 'future'
       start_at: date.format()
       'status[]': [@Event.FREE, @Event.PENDING]
     ).then(((events) =>

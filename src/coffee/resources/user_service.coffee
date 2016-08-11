@@ -6,7 +6,12 @@ class UserService
       update: { method:'PUT' }
     )
 
-    @$events = $resource("#{API_URL}/api/v1/services/:service_id/events.json",
+    @$events = $resource("#{API_URL}/api/v1/services/:service_id/events/:action.json",
+      service_id: '@service_id',
+      action: '@action'
+    )
+
+    @$future_events = $resource("#{API_URL}/api/v1/services/:service_id/events.json",
       service_id: '@service_id'
     )
 

@@ -213,7 +213,11 @@ UserService = (function() {
         method: 'PUT'
       }
     });
-    this.$events = $resource(API_URL + "/api/v1/services/:service_id/events.json", {
+    this.$events = $resource(API_URL + "/api/v1/services/:service_id/events/:action.json", {
+      service_id: '@service_id',
+      action: '@action'
+    });
+    this.$future_events = $resource(API_URL + "/api/v1/services/:service_id/events.json", {
       service_id: '@service_id'
     });
     this.$service_photos = $resource(API_URL + "/api/v1/services/:service_id/service_photos.json", {

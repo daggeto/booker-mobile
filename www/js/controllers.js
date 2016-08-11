@@ -480,6 +480,7 @@ ServiceCalendarController = (function() {
   ServiceCalendarController.prototype.loadEvents = function(date) {
     return this.UserServicesService.events({
       service_id: this.service.id,
+      action: 'future',
       start_at: date.format(),
       'status[]': [this.Event.FREE, this.Event.PENDING]
     }).then(((function(_this) {
