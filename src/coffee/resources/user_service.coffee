@@ -2,8 +2,11 @@ class UserService
   'use strict'
 
   constructor: ($resource, API_URL) ->
-    @$r = $resource("#{API_URL}/api/v1/services/:id.json", { id: '@id' }
-      update: { method:'PUT' }
+    @$r = $resource("#{API_URL}/api/v1/services/:id/:action.json", { id: '@id', action: '@action' }
+      update:
+        method:'PUT'
+      post:
+        method: 'POST'
     )
 
     @$events = $resource("#{API_URL}/api/v1/services/:service_id/events/:action.json",

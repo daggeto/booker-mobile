@@ -1,6 +1,6 @@
 class ServiceSettingsController
-  constructor:($scope, $state, service, UserServicesService) ->
-    [@scope, @state, @service, @UserServicesService] = arguments
+  constructor:($scope, $state, service, ionicToast, UserServicesService) ->
+    [@scope, @state, @service, @ionicToast, @UserServicesService] = arguments
 
     this
 
@@ -16,5 +16,19 @@ class ServiceSettingsController
 
   afterSave: (response) =>
     @scope.navigator.home(reload: true)
+
+  togglePublication: ->
+    return @UserServicesService.unpublish(@service.id) unless @service.published
+
+    @UserServicesService.publish(@service.id)
+      .then(@togglePublicationSuccess)
+      .catch(@togglePublicationFail)
+
+  togglePublicationSuccess: (response) =>
+    @ionicToast.show('Your service will be visible in feed now.', 'top', true, 3000);
+
+  togglePublicationFail: (response) =>
+    @ionicToast.show(response.data.errors[0], 'top', true, 3000);
+    @service = response.data.service
 
 app.controller('ServiceSettingsController', ServiceSettingsController)

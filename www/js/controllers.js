@@ -631,9 +631,11 @@ var ServiceSettingsController,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 ServiceSettingsController = (function() {
-  function ServiceSettingsController($scope, $state, service, UserServicesService) {
+  function ServiceSettingsController($scope, $state, service, ionicToast, UserServicesService) {
+    this.togglePublicationFail = bind(this.togglePublicationFail, this);
+    this.togglePublicationSuccess = bind(this.togglePublicationSuccess, this);
     this.afterSave = bind(this.afterSave, this);
-    this.scope = arguments[0], this.state = arguments[1], this.service = arguments[2], this.UserServicesService = arguments[3];
+    this.scope = arguments[0], this.state = arguments[1], this.service = arguments[2], this.ionicToast = arguments[3], this.UserServicesService = arguments[4];
     this;
   }
 
@@ -661,6 +663,22 @@ ServiceSettingsController = (function() {
     return this.scope.navigator.home({
       reload: true
     });
+  };
+
+  ServiceSettingsController.prototype.togglePublication = function() {
+    if (!this.service.published) {
+      return this.UserServicesService.unpublish(this.service.id);
+    }
+    return this.UserServicesService.publish(this.service.id).then(this.togglePublicationSuccess)["catch"](this.togglePublicationFail);
+  };
+
+  ServiceSettingsController.prototype.togglePublicationSuccess = function(response) {
+    return this.ionicToast.show('Your service will be visible in feed now.', 'top', true, 3000);
+  };
+
+  ServiceSettingsController.prototype.togglePublicationFail = function(response) {
+    this.ionicToast.show(response.data.errors[0], 'top', true, 3000);
+    return this.service = response.data.service;
   };
 
   return ServiceSettingsController;

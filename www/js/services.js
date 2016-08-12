@@ -440,6 +440,20 @@ UserServicesService = (function() {
     }).$promise;
   };
 
+  UserServicesService.prototype.publish = function(service_id) {
+    return this.UserService.$r.post({
+      id: service_id,
+      action: 'publish'
+    }).$promise;
+  };
+
+  UserServicesService.prototype.unpublish = function(service_id) {
+    return this.UserService.$r.post({
+      id: service_id,
+      action: 'unpublish'
+    }).$promise;
+  };
+
   return UserServicesService;
 
 })();

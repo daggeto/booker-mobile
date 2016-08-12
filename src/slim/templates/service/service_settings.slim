@@ -10,7 +10,7 @@ ion-view
   ion-content
     ui-view[name="photos"]
     .list
-      ion-toggle[ng-model="vm.service.published"] Provider Settings
+      ion-toggle[ng-model="vm.service.published" ng-change="vm.togglePublication()"] Provider Settings
 
       label.item.item-input.item-stacked-label.padding
         span.input-label Name

@@ -30,4 +30,10 @@ class UserServicesService
   delete: (id) ->
     @UserService.$r.delete(id: id).$promise
 
+  publish: (service_id) ->
+    @UserService.$r.post(id: service_id, action: 'publish').$promise
+
+  unpublish: (service_id) ->
+    @UserService.$r.post(id: service_id, action: 'unpublish').$promise
+
 app.service('UserServicesService', UserServicesService)

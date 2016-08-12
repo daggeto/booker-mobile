@@ -206,11 +206,15 @@ var UserService;
 UserService = (function() {
   'use strict';
   function UserService($resource, API_URL) {
-    this.$r = $resource(API_URL + "/api/v1/services/:id.json", {
-      id: '@id'
+    this.$r = $resource(API_URL + "/api/v1/services/:id/:action.json", {
+      id: '@id',
+      action: '@action'
     }, {
       update: {
         method: 'PUT'
+      },
+      post: {
+        method: 'POST'
       }
     });
     this.$events = $resource(API_URL + "/api/v1/services/:service_id/events/:action.json", {
