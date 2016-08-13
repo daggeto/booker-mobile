@@ -65,7 +65,8 @@ var BookingService,
 BookingService = (function() {
   'use strict';
   function BookingService($q, $ionicPopup, ionicToast, ReservationsService, Event) {
-    this.afterEventBook = bind(this.afterEventBook, this);
+    this.bookFailed = bind(this.bookFailed, this);
+    this.bookSuccess = bind(this.bookSuccess, this);
     this.q = arguments[0], this.ionicPopup = arguments[1], this.ionicToast = arguments[2], this.ReservationsService = arguments[3], this.Event = arguments[4];
   }
 
@@ -91,29 +92,22 @@ BookingService = (function() {
           return reject();
         }
         _this.resolveMethod = resolve;
+        _this.rejectMethod = reject;
         return _this.ReservationsService.save({
           event_id: event.id
-        }).then(_this.afterEventBook);
+        }).then(_this.bookSuccess)["catch"](_this.bookFailed);
       };
     })(this));
   };
 
-  BookingService.prototype.afterEventBook = function(response) {
-    this.ionicToast.show(this.resolveResponse(response.response_code), 'bottom', false, 3000);
+  BookingService.prototype.bookSuccess = function(response) {
+    this.ionicToast.show(response.message, 'bottom', false, 3000);
     return this.resolveMethod(response);
   };
 
-  BookingService.prototype.resolveResponse = function(response_code) {
-    switch (response_code) {
-      case 1:
-        return "Event can't be booked.";
-      case 2:
-        return 'It overlaps with your current reservations.';
-      case 3:
-        return 'It overlaps with your service events.';
-      default:
-        return 'Event booked. You will get answer in 1 hour!';
-    }
+  BookingService.prototype.bookFailed = function(response) {
+    this.ionicToast.show(response.data.message, 'bottom', false, 3000);
+    return this.rejectMethod;
   };
 
   return BookingService;

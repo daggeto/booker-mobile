@@ -17,19 +17,19 @@ class BookingService
       return reject() unless event.status == @Event.FREE
 
       @resolveMethod = resolve
+      @rejectMethod = reject
 
-      @ReservationsService.save(event_id: event.id).then(@afterEventBook)
+      @ReservationsService.save(event_id: event.id)
+        .then(@bookSuccess)
+        .catch(@bookFailed)
     )
 
-  afterEventBook: (response) =>
-    @ionicToast.show(@resolveResponse(response.response_code), 'bottom', false, 3000);
+  bookSuccess: (response) =>
+    @ionicToast.show(response.message, 'bottom', false, 3000);
     @resolveMethod(response)
 
-  resolveResponse: (response_code) ->
-    switch response_code
-      when 1 then "Event can't be booked."
-      when 2 then 'It overlaps with your current reservations.'
-      when 3 then 'It overlaps with your service events.'
-      else 'Event booked. You will get answer in 1 hour!'
+  bookFailed: (response) =>
+    @ionicToast.show(response.data.message, 'bottom', false, 3000);
+    @rejectMethod
 
 app.service('BookingService', BookingService)
