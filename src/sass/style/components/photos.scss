@@ -1,7 +1,8 @@
 $action-button-color: #fff;
 $add-photo-font-size: 5em;
 $photo-slide-height: 23em;
-
+$loader-width: 100%;
+$loader-height: 17em;
 .photo-actions {
   position: absolute;
   width: 100%;
@@ -30,6 +31,14 @@ $photo-slide-height: 23em;
     height: 100%;
     color: $accent-color;
     font-size: $add-photo-font-size;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .image-loader-container {
+    width: $loader-width;
+    height: $loader-height;
     display: flex;
     justify-content: center;
     align-items: center;
