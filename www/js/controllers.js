@@ -617,8 +617,7 @@ ServicePhotosController = (function() {
   };
 
   ServicePhotosController.prototype.error = function(error) {
-    this.ionicLoading.hide();
-    return alert(error.body);
+    return this.ionicLoading.hide();
   };
 
   return ServicePhotosController;

@@ -96,6 +96,5 @@ class ServicePhotosController
 
   error: (error) =>
     @ionicLoading.hide()
-    alert(error.body)
 
 app.controller('ServicePhotosController', ServicePhotosController)
