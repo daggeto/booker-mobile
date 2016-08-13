@@ -25,10 +25,10 @@ class ServiceSettingsController
       .catch(@togglePublicationFail)
 
   togglePublicationSuccess: (response) =>
-    @ionicToast.show('Your service will be visible in feed now.', 'top', true, 3000);
+    @ionicToast.show('Your service will be visible in feed now.', 'bottom', true, 3000);
 
   togglePublicationFail: (response) =>
-    @ionicToast.show(response.data.errors[0], 'top', true, 3000);
+    @ionicToast.show(response.data.errors[0], 'bottom', true, 3000);
     @service = response.data.service
 
 app.controller('ServiceSettingsController', ServiceSettingsController)

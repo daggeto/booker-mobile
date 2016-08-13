@@ -673,11 +673,11 @@ ServiceSettingsController = (function() {
   };
 
   ServiceSettingsController.prototype.togglePublicationSuccess = function(response) {
-    return this.ionicToast.show('Your service will be visible in feed now.', 'top', true, 3000);
+    return this.ionicToast.show('Your service will be visible in feed now.', 'bottom', true, 3000);
   };
 
   ServiceSettingsController.prototype.togglePublicationFail = function(response) {
-    this.ionicToast.show(response.data.errors[0], 'top', true, 3000);
+    this.ionicToast.show(response.data.errors[0], 'bottom', true, 3000);
     return this.service = response.data.service;
   };
 

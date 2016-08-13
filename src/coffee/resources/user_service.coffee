@@ -14,10 +14,6 @@ class UserService
       action: '@action'
     )
 
-    @$future_events = $resource("#{API_URL}/api/v1/services/:service_id/events.json",
-      service_id: '@service_id'
-    )
-
     @$service_photos = $resource("#{API_URL}/api/v1/services/:service_id/service_photos.json",
       service_id: '@service_id'
     )
