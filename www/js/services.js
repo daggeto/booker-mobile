@@ -64,12 +64,27 @@ var BookingService,
 
 BookingService = (function() {
   'use strict';
-  function BookingService($q, ionicToast, ReservationsService, Event) {
+  function BookingService($q, $ionicPopup, ionicToast, ReservationsService, Event) {
     this.afterEventBook = bind(this.afterEventBook, this);
-    this.q = arguments[0], this.ionicToast = arguments[1], this.ReservationsService = arguments[2], this.Event = arguments[3];
+    this.q = arguments[0], this.ionicPopup = arguments[1], this.ionicToast = arguments[2], this.ReservationsService = arguments[3], this.Event = arguments[4];
   }
 
   BookingService.prototype.book = function(event) {
+    var confirmBooking;
+    confirmBooking = this.ionicPopup.confirm({
+      title: 'Please confirm your reservation',
+      okText: 'Yes'
+    });
+    return confirmBooking.then((function(_this) {
+      return function(confirmed) {
+        if (confirmed) {
+          return _this.bookingConfirmed(event);
+        }
+      };
+    })(this));
+  };
+
+  BookingService.prototype.bookingConfirmed = function(event) {
     return this.q((function(_this) {
       return function(resolve, reject) {
         if (event.status !== _this.Event.FREE) {
@@ -97,7 +112,7 @@ BookingService = (function() {
       case 3:
         return 'It overlaps with your service events.';
       default:
-        return 'Event booked. Wait for approval!';
+        return 'Event booked. You will get answer in 1 hour!';
     }
   };
 

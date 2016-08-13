@@ -1,10 +1,18 @@
 class BookingService
   'use strict'
 
-  constructor: ($q, ionicToast, ReservationsService, Event) ->
-    [@q, @ionicToast, @ReservationsService, @Event] = arguments
+  constructor: ($q, $ionicPopup, ionicToast, ReservationsService, Event) ->
+    [@q, @ionicPopup, @ionicToast, @ReservationsService, @Event] = arguments
 
   book: (event) ->
+    confirmBooking = @ionicPopup.confirm
+      title: 'Please confirm your reservation',
+      okText: 'Yes'
+
+    confirmBooking.then (confirmed) =>
+      @bookingConfirmed(event) if confirmed
+
+  bookingConfirmed: (event) ->
     @q((resolve, reject) =>
       return reject() unless event.status == @Event.FREE
 
@@ -22,6 +30,6 @@ class BookingService
       when 1 then "Event can't be booked."
       when 2 then 'It overlaps with your current reservations.'
       when 3 then 'It overlaps with your service events.'
-      else 'Event booked. Wait for approval!'
+      else 'Event booked. You will get answer in 1 hour!'
 
 app.service('BookingService', BookingService)
