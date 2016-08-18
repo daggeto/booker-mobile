@@ -42,6 +42,15 @@ app.config ($stateProvider, $urlRouterProvider) ->
           controller: 'ReservationsController as vm'
     )
 
+    .state('app.main.profile_edit'
+      url: '/profile_edit'
+      cache: false
+      views:
+        '@':
+          templateUrl: 'templates/profile/edit.html'
+          controller: 'ProfileEditController as vm'
+    )
+
     .state('service'
       abstract: true
       cache: false

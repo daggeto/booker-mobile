@@ -1,0 +1,17 @@
+ion-view[view-title="My Profile"]
+  ion-header-bar.b-header[align-title="center"]
+    .buttons
+      a.button.icon-left.ion-chevron-left.button-clear.button-dark[
+        ng-click="navigator.back()"
+      ]
+        | Back
+    h1.title My Profile
+  ion-content.padding
+    img.service__thumbnail[
+      image-lazy-src="{{vm.currentUser.profile_image.preview_url}}"
+      lazy-scroll-resize="true"
+      image-lazy-loader="ios"
+      ]
+    upload-photo.pull-right[on-photo-taken="vm.onPhotoTaken(response)"]
+      button.button.button-assertive Upload Photo
+
