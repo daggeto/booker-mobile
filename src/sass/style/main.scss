@@ -9,13 +9,19 @@ $default-padding: 16px;
 }
 
 .side-list {
-	&__item {
-		padding: $default-padding;
-	}
+  &__item {
+    padding: $default-padding;
+  }
+}
 
+.no-padding-grid {
+  .row {
+    padding: 0;
 
-.no-padding {
-  padding: 0;
+    .col {
+      padding: 0;
+    }
+  }
 }
 
 .pull-left {
@@ -46,6 +52,10 @@ $default-padding: 16px;
 
 .center {
   justify-content: center;
+}
+
+.justify-right {
+  justify-content: flex-end;
 }
 
 .middle {

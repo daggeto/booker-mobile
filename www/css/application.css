@@ -7,6 +7,11 @@
 .side-list__item {
   padding: 16px; }
 
+.no-padding-grid .row {
+  padding: 0; }
+  .no-padding-grid .row .col {
+    padding: 0; }
+
 .pull-left {
   float: left; }
 
@@ -29,6 +34,9 @@
 
 .center {
   justify-content: center; }
+
+.justify-right {
+  justify-content: flex-end; }
 
 .middle {
   align-items: center; }
@@ -62,6 +70,25 @@
   display: flex;
   justify-content: center;
   align-items: center; }
+
+.day-reservations .card {
+  margin: 0; }
+
+.day-reservations .list.card {
+  margin-bottom: 0.5em; }
+
+.event--status {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  font-size: 0.7em;
+  font-weight: bold; }
+  .event--status__free {
+    color: #8BC34A; }
+  .event--status__pending {
+    color: #FFC107; }
+  .event--status__booked {
+    color: #4e9cf4; }
 
 .button-float {
   background: #ef473a !important;
@@ -218,9 +245,3 @@
     display: flex;
     justify-content: center;
     align-items: center; }
-
-.day-reservations .card {
-  margin: 0; }
-
-.day-reservations .list.card {
-  margin-bottom: 0.5em; }

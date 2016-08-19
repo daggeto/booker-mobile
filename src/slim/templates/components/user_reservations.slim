@@ -1,4 +1,8 @@
 .day-reservations[ng-repeat="(day, day_reservations) in reservations"]
   .list.card
     .item.item-divider.align-center {{day | todayTomorrow}}
-    reservation[ng-repeat="reservation in day_reservations" reservation="reservation"]
+    event[ng-repeat="reservation in day_reservations"
+      data-event="reservation.event"
+      data-target="reservation"
+      data-avatar="reservation.service_photo_url"
+    ]

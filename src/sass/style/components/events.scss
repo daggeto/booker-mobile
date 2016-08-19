@@ -1,9 +1,27 @@
-.day-reservations {
-  .card {
-    margin: 0;
-  }
+$event-free-color: #8BC34A;
+$event-pending-color: #FFC107;
+$event-booked-color: #4e9cf4;
 
-  .list.card {
-    margin-bottom: $r-size-micro;
+$event-status-size: 0.7em;
+
+.event {
+  &--status {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    font-size: $event-status-size;
+    font-weight: bold;
+
+    &__free {
+      color: $event-free-color;
+    }
+
+    &__pending {
+      color: $event-pending-color;
+    }
+
+    &__booked {
+      color: $event-booked-color;
+    }
   }
 }
