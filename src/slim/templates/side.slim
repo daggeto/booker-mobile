@@ -1,10 +1,11 @@
 ion-view
   ion-content
-    img.profile-picture[
-      image-lazy-src="{{vm.currentUser.profile_image.preview_url}}"
-      lazy-scroll-resize="true"
-      image-lazy-loader="ios"
-    ]
+    .profile
+      img.profile__image[
+        image-lazy-src="{{vm.currentUser.profile_image.preview_url}}"
+        lazy-scroll-resize="true"
+        image-lazy-loader="ios"
+      ]
     ion-lists.side-list[can-swipe="true"]
       ion-item[ng-click="vm.providerSettingsClicked()"]
         | Provider Settings
