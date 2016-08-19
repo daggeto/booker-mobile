@@ -12,6 +12,10 @@ $default-padding: 16px;
 	&__item {
 		padding: $default-padding;
 	}
+
+
+.no-padding {
+  padding: 0;
 }
 
 .pull-left {

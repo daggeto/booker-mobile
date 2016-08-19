@@ -43,10 +43,6 @@ class SideController
     @ionicSlideBoxDelegate.slide(index)
     @state.go(view, {movieid: 1})
 
-  logout: ->
-    @AuthService.logout()
-    @scope.navigator.go('login')
-
   isServicePublished: ->
     @currentUser.service.published
 

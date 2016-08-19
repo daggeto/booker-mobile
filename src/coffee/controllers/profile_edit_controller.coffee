@@ -1,6 +1,6 @@
 class ProfileEditController
-  constructor: ($scope, currentUser, ProfileImage, ImageService) ->
-    [@scope, @currentUser, @ProfileImage, @ImageService] = arguments
+  constructor: ($scope, currentUser, ProfileImage, ImageService, AuthService) ->
+    [@scope, @currentUser, @ProfileImage, @ImageService, @AuthService] = arguments
 
     this
 
@@ -22,5 +22,9 @@ class ProfileEditController
 
   error: (error) =>
     @superAfterUpload()
+
+  logout: ->
+    @AuthService.logout()
+    @scope.navigator.go('login')
 
 app.controller('ProfileEditController', ProfileEditController)
