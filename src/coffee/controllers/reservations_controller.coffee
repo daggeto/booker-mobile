@@ -22,15 +22,17 @@ class ReservationsController
       @reloadReservations()
 
 
-    @scope.$on 'reservationClick', (_, data) =>
+    @scope.$on 'onEventClick', (_, data) =>
       @ionicActionSheet.show
         titleText: 'Modify your reservation'
         destructiveText: '<i class="icon ion-close-round"></i> Cancel Reservation'
         cancelText: 'Close'
         destructiveButtonClicked: =>
-          @showConfirm(data.reservation)
+          @showConfirm(data.target)
 
           true
+    @scope.$on 'onEventAvatarClick', (_, data) =>
+      console.log
 
   reloadReservations: ->
     @UsersService.reservations(user_id: @currentUser.id, group: true).then (response) =>

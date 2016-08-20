@@ -6,6 +6,6 @@
         | {{event.start_at | amDateFormat: 'HH:mm' }} -
          {{event.end_at | amDateFormat: 'HH:mm' }}
       .name
-        | {{event.service_name}}
+        | {{name}}
     .col.event--status[class="event--status__{{event.status}}"]
       | {{event.status_label | uppercase}}

@@ -2,7 +2,8 @@
   .list.card
     .item.item-divider.align-center {{day | todayTomorrow}}
     event[ng-repeat="reservation in day_reservations"
-      data-event="reservation.event"
-      data-target="reservation"
-      data-avatar="reservation.service_photo_url"
+      event="reservation.event"
+      name="reservation.service.name"
+      target="reservation"
+      avatar="{{reservation.service.main_photo.preview_url}}"
     ]
