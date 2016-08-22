@@ -66,9 +66,10 @@ class CalendarController
         @deleteEvent(data.target)
 
   actionButtons: (event) ->
-    buttons = [
-      @button('Edit', 'ion-edit', @onEdit, event)
-    ]
+    buttons = []
+
+    buttons.push @button('Edit', 'ion-edit', @onEdit, event) unless event.past
+    buttons.push @button('Preview', 'ion-eye', @onPreview, event) if event.past
 
     if event.status == @Event.PENDING
       buttons.push @button('Approve', 'ion-checkmark-round', @approveEvent, event)
@@ -115,9 +116,10 @@ class CalendarController
       @reloadEvents()
 
   onEdit: (event) =>
-    view = 'edit_event'
-    view = 'preview_event' if event.past
-    @scope.navigator.go("service.calendar.#{view}", event_id: event.id, calendar: @calendar)
+    @scope.navigator.go("service.calendar.edit_event", event_id: event.id, calendar: @calendar)
+
+  onPreview: (event) =>
+    @scope.navigator.go("service.calendar.preview_event", event_id: event.id, calendar: @calendar)
 
   selectDate: (date) ->
     @calendar.selectDate(date)
