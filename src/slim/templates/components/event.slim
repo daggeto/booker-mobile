@@ -1,11 +1,13 @@
-.item.item-avatar.no-padding-grid
-  img[src="{{avatar}}"]
+.item.event.no-padding-grid
   .row
-    .col
-      h2
+    .col.col-75.event--content
+      .event--title
         | {{event.start_at | amDateFormat: 'HH:mm' }} -
          {{event.end_at | amDateFormat: 'HH:mm' }}
-      .name
-        | {{name}}
-    .col.event--status[class="event--status__{{event.status}}"]
-      | {{event.status_label | uppercase}}
+      .event--sub-title
+        .event--status[class="event--status__{{event.status}}"]
+          | {{event.status_label | uppercase}}
+        span[ng-show="name"] - {{name}}
+
+    .col.col-25.event--avatar
+      img[src="{{avatar}}" ng-show="avatar"]

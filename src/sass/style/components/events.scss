@@ -2,13 +2,29 @@ $event-free-color: #8BC34A;
 $event-pending-color: #FFC107;
 $event-booked-color: #4e9cf4;
 
+$event-title-size: 1.5em;
 $event-status-size: 0.7em;
+$avatar-size: 2.7em;
+$content-height: 3em;
 
 .event {
+  &--content {
+    position: relative;
+    height: $content-height;
+  }
+
+  &--title {
+    font-size: $event-title-size;
+    font-weight: lighter;
+  }
+
+  &--sub-title {
+    position: absolute;
+    bottom: 0;
+  }
+
   &--status {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
+    display: inline;
     font-size: $event-status-size;
     font-weight: bold;
 
@@ -22,6 +38,16 @@ $event-status-size: 0.7em;
 
     &__booked {
       color: $event-booked-color;
+    }
+  }
+
+  &--avatar {
+    text-align: right;
+
+    img {
+      border-radius: 50%;
+      width: $avatar-size;
+      height: $avatar-size;
     }
   }
 }

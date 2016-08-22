@@ -77,10 +77,20 @@
 .day-reservations .list.card {
   margin-bottom: 0.5em; }
 
+.event--content {
+  position: relative;
+  height: 3em; }
+
+.event--title {
+  font-size: 1.5em;
+  font-weight: lighter; }
+
+.event--sub-title {
+  position: absolute;
+  bottom: 0; }
+
 .event--status {
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
+  display: inline;
   font-size: 0.7em;
   font-weight: bold; }
   .event--status__free {
@@ -89,6 +99,13 @@
     color: #FFC107; }
   .event--status__booked {
     color: #4e9cf4; }
+
+.event--avatar {
+  text-align: right; }
+  .event--avatar img {
+    border-radius: 50%;
+    width: 2.7em;
+    height: 2.7em; }
 
 .button-float {
   background: #ef473a !important;
