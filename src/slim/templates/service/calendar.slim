@@ -36,33 +36,3 @@ ion-view[can-swipe-back="true"]
         target="event"
         avatar="{{event.user.profile_image.preview_url}}"
       ]
-
-      /ion-lists.calendar__list.center
-      /  ion-item.calendar--event.calendar--event--add.col[
-      /    ng-hide="vm.isPast()"
-      /    ng-click="vm.goToAddEvent()"]
-      /    i.ion-ios-plus-empty
-      /  ion-item
-      /  ion-item.calendar--event.col.col-center[
-      /    ng-repeat="event in vm.calendar.events track by event.id"
-      /    class="calendar--event--{{event.status}}"
-      /    ng-class="{'calendar--event--past' : vm.isPast()}"
-      /  ]
-      /    .calendar__title[
-      /      ng-click="vm.eventUrl(event)"
-      /    ]
-      /      .calendar--time
-      /        | {{event.start_at | amDateFormat: 'HH:mm' }}
-      /          - {{event.end_at | amDateFormat: 'HH:mm' }}
-      /      .calendar--descritpion
-      /        | {{event.label}}
-      /    .calendar--actions[ng-hide="vm.isPast()"]
-      /      i.ion-checkmark-round[
-      /        ng-show="event.status == vm.Event.PENDING"
-      /        ng-click="vm.approveEvent(event)"
-      /      ]
-      /      i.ion-close-round[
-      /        ng-show="event.status == vm.Event.PENDING"
-      /        ng-click="vm.disapproveEvent(event)"
-      /      ]
-      /      i.ion-trash-b[ng-click="vm.deleteEvent(event.id)"]
