@@ -32,7 +32,7 @@ ion-view[can-swipe-back="true"]
     .list.card[ng-show="vm.calendar.events.length > 0"]
       event[ng-repeat="event in vm.calendar.events track by event.id"
         event="event"
-        name="event.user.email"
+        name="event.label"
         target="event"
         avatar="{{event.user.profile_image.preview_url}}"
       ]
