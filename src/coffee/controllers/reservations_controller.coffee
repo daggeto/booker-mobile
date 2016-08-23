@@ -22,6 +22,10 @@ class ReservationsController
       @reloadReservations()
 
 
+    @scope.$on 'onEventClick', @onEventClick
+    @scope.$on 'onEventAvatarClick', @onEventAvatarClick
+
+  onEventClick: (_, data) =>
     @scope.$on 'onEventClick', (_, data) =>
       @ionicActionSheet.show
         titleText: 'Modify your reservation'
@@ -31,13 +35,13 @@ class ReservationsController
           @showConfirm(data.target)
 
           true
-    @scope.$on 'onEventAvatarClick', (_, data) =>
-      console.log
+
+  onEventAvatarClick: (_, data) =>
+    @scope.navigator.go('book_service', id: data.target.service.id)
 
   reloadReservations: ->
     @UsersService.reservations(user_id: @currentUser.id, group: true).then (response) =>
       @reservations = response.reservations
-
 
   showConfirm: (reservation) =>
     popup = @ionicPopup.confirm
