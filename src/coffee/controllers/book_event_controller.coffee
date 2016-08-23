@@ -15,6 +15,6 @@ class BookEventController
     @BookingService.book(data.event).then =>
       @scope.$broadcast('reloadEvents')
   back: ->
-    @state.go('app.main')
+    @scope.navigator.back()
 
 app.controller('BookEventController', BookEventController)
