@@ -30,17 +30,16 @@ class EventsController
     @event.end_at = @modifyDate(@event.end_at)
 
     if @isAddState()
-      @EventsService.save(@event).then(@response, (refejcted) ->
-        console.log('rejected')
-      )
+      @EventsService.save(@event).then(@response).catch(@failure)
 
     if @isEditState()
-      @EventsService.update(@event).then(@response, (refejcted) ->
-        console.log('rejected')
-      )
+      @EventsService.update(@event).then(@response).catch(@failure)
 
   response: (response) =>
     @state.transitionTo('service.calendar', {id: @service.id}, reload: true)
+
+  failure: (response) =>
+    @showToast(response.data.message)
 
   validateTime: ->
     return false unless @checkRequired(@event.start_at, 'Time From')
@@ -48,10 +47,6 @@ class EventsController
 
     if moment(@event.start_at).isAfter(@event.end_at)
       @showToast("Time From can't be after Time To")
-      return false
-
-    if @checkOverlap()
-      @showToast('Event overlaps with other this day events')
       return false
 
     true
@@ -62,17 +57,6 @@ class EventsController
        return false
 
      true
-
-  checkOverlap:  ->
-    newEventRange = moment.range(@event.start_at, @event.end_at)
-
-    overlaps = _.find(@calendar.events, (event, i) =>
-      return false if @event.id == event.id
-
-      eventRange = moment.range(event.start_at, event.end_at)
-
-      newEventRange.intersect(eventRange) 
-    )
 
   modifyDate: (date) =>
     date_moment= moment(date)
