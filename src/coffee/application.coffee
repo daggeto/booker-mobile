@@ -73,6 +73,9 @@ app = angular.module(
   $rootScope.stateIs = (state) ->
     $state.is(state)
 
+  $rootScope.isAndroid = ->
+    ionic.Platform.isAndroid()
+
   AjaxInterceptor.run()
 
   return

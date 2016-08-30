@@ -10,4 +10,7 @@ class MainController
   isCurrentSlide: (index) ->
     @ionicSlideBoxDelegate.currentIndex() == index
 
+  isAndroid: ->
+    @scope.$root.isAndroid()
+
 app.controller('MainController', MainController)

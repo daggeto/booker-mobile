@@ -1,9 +1,10 @@
-ion-slide-box.main-panel[
-  show-pager="false"
-  on-slide-changed="slideHasChanged($index)"
-  active-slide="1"]
+.slides[ng-class="{'android-content': vm.isAndroid()}"]
+  ion-slide-box.main-panel[
+    show-pager="false"
+    on-slide-changed="slideHasChanged($index)"
+    active-slide="1"]
 
-  ion-slide
-    ion-nav-view[name="side"]
-  ion-slide
-    ion-nav-view[name="feed"]
+    ion-slide
+      ion-nav-view[name="side"]
+    ion-slide
+      ion-nav-view[name="feed"]
