@@ -47,8 +47,17 @@
 .red-text {
   color: #ff3333; }
 
+.fade.ng-enter {
+  transition: 0.5s linear all;
+  opacity: 0; }
+
+/* The finishing CSS styles for the enter animation */
+.fade.ng-enter.ng-enter-active {
+  opacity: 1; }
+
 .b-action-button {
   font-size: 1.8em;
+  width: 1.2em;
   padding: 5px; }
 
 .b-header {
@@ -76,6 +85,28 @@
 
 .day-reservations .list.card {
   margin-bottom: 0.5em; }
+
+/*Disabling platform specific tweaks */
+.platform-ios.platform-cordova:not(.fullscreen) .bar-header {
+  height: 44px !important; }
+
+.platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader) {
+  height: 44px !important; }
+
+.platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader).item-input-inset .item-input-wrapper {
+  margin-top: 0px !important; }
+
+.platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader) > * {
+  margin-top: 0px !important; }
+
+.platform-ios.platform-cordova:not(.fullscreen) .tabs-top > .tabs, .platform-ios.platform-cordova:not(.fullscreen) .tabs.tabs-top {
+  top: 44px !important; }
+
+.platform-ios.platform-cordova:not(.fullscreen) .has-header, .platform-ios.platform-cordova:not(.fullscreen) .bar-subheader {
+  top: 44px !important; }
+
+.platform-ios.platform-cordova:not(.fullscreen) .has-subheader {
+  top: 88px !important; }
 
 .event--content {
   position: relative;
@@ -262,3 +293,23 @@
     display: flex;
     justify-content: center;
     align-items: center; }
+
+.search {
+  display: flex;
+  flex-grow: 2; }
+  .search--input {
+    width: 100%; }
+  .search--result {
+    padding: 1em;
+    display: flex; }
+    .search--result--avatar img {
+      border-radius: 50%;
+      width: 2.5em;
+      height: 2.5em; }
+    .search--result--title {
+      width: 100%;
+      padding-left: 1em;
+      font-size: 1.1em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }

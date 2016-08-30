@@ -1,10 +1,9 @@
 ion-view[name="app"]
-  ion-slide-box.main-panel[
-    on-slide-changed="slideHasChanged($index)"
-    active-slide="1"
-    ng-class="{'main-slides': ios}"]
+  ion-header-bar.b-header.flexbox
+    .buttons[ng-hide="stateIs('app.main.search_results')"]
+      i.ion-person.b-action-button
+    search[ min-length="3"]
+    .buttons[ng-hide="stateIs('app.main.search_results')"]
+      i.ion-ios-paper.b-action-button
 
-    ion-slide
-      ion-nav-view[name="side"]
-    ion-slide
-      ion-nav-view[name="feed"]
+  ion-nav-view[name="content" class="fade"]

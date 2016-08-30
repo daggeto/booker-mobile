@@ -15,6 +15,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
     .state('app'
       url: '/app'
       abstract: true
+      controller: 'MainController as vm'
       templateUrl: 'templates/app.html')
 
     .state('app.main'
@@ -27,12 +28,23 @@ app.config ($stateProvider, $urlRouterProvider) ->
           UsersService.findById(currentUserId)
 
       views:
-        side:
+        'content@app':
+          templateUrl: 'templates/slides.html'
+        'side@app.main':
           templateUrl: 'templates/side.html'
           controller: 'SideController as vm'
-        feed:
+        'feed@app.main':
           templateUrl: 'templates/feed.html'
           controller: 'FeedController as vm')
+
+    .state('app.main.search_results'
+      cache: false
+      url: '/search_results/:results'
+      views:
+        'content@app':
+          templateUrl: 'templates/components/search_results.html'
+          controller: 'SearchResultController as vm'
+    )
 
     .state('app.main.reservations'
       url: '/reservations'

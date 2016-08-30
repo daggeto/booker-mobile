@@ -1,0 +1,33 @@
+$avatar-size: 2.5em;
+$title-font-size: 1.1em;
+.search {
+  display: flex;
+  flex-grow: 2;
+
+
+  &--input {
+    width: 100%;
+  }
+
+  &--result {
+    padding: $r-size-small;
+    display: flex;
+
+    &--avatar {
+      img {
+        border-radius: 50%;
+        width: $avatar-size;
+        height: $avatar-size;
+      }
+    }
+
+    &--title {
+      width: 100%;
+      padding-left: $r-size-small;
+      font-size: $title-font-size;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

@@ -1,8 +1,10 @@
 $normal-size: 1.8em;
 $padding: 5px;
+$width: 1.2em;
 
 .b-action-button {
   font-size: $normal-size;
+  width: $width;
   padding: $padding;
 }
 

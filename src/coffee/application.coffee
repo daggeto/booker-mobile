@@ -11,7 +11,8 @@ app = angular.module(
     'ionicLazyLoad',
     'ng-token-auth',
     'ngMessages',
-    'ionic.cloud'
+    'ionic.cloud',
+    'ngAnimate'
   ]
 )
 .config((AjaxInterceptorProvider, $authProvider, API_URL) ->
@@ -68,6 +69,9 @@ app = angular.module(
     $log.error(message)
 
   $rootScope.navigator = Navigator
+
+  $rootScope.stateIs = (state) ->
+    $state.is(state)
 
   AjaxInterceptor.run()
 

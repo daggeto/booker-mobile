@@ -1,16 +1,10 @@
-app.controller('MainController', ($scope, $state, $ionicSlideBoxDelegate) ->
-  $scope.android = ionic.Platform.isAndroid()
-  $scope.ios = ionic.Platform.isIOS()
+class MainController
+  constructor: ($scope, $state, $ionicSlideBoxDelegate, $q) ->
+    [@scope, @state, @ionicSlideBoxDelegate, @q] = arguments
 
-  $scope.setCurrentUsername = (name) ->
-    $scope.username = name
+    this
 
-  $scope.slideTo = (index) ->
+  slideTo: (index) ->
     $ionicSlideBoxDelegate.slide(index)
 
-  $scope.goTo = (view) ->
-    $state.go(view)
-
-  $scope.goToMain = ->
-    $state.go('app.main')
-)
+app.controller('MainController', MainController)
