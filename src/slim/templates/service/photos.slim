@@ -4,7 +4,7 @@ ion-slide-box.photo-slider[
   ion-slide[ng-repeat="photo in vm.service.service_photos"]
     ng-include[src="'templates/service/photo_actions.html'"]
 
-    img.profile__image[
+    img.profile--image[
       image-lazy-src="{{photo.preview_url}}"
       lazy-scroll-resize="true"
       image-lazy-loader="ios"

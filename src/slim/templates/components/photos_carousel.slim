@@ -2,7 +2,7 @@ ion-slide-box.photo-slider[
   on-slide-changed="slideHasChanged($index)"
   active-slide="0"]
   ion-slide[ng-repeat="photo in vm.photos"]
-    img.profile-picture[
+    img.profile--image[
       image-lazy-src="{{photo.preview_url}}"
       lazy-scroll-resize="true"
       image-lazy-loader="ios"
