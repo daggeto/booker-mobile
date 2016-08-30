@@ -1,5 +1,6 @@
 ion-content
-  ion-list
+  .hint-text.flexbox.center[ng-hide="vm.results.length > 0"] No results
+  ion-list[ng-show="vm.results.length > 0"]
     search-result[
       service="service"
       ng-repeat="service in vm.results track by service.id"

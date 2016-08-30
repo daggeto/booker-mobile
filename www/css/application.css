@@ -55,6 +55,11 @@
 .fade.ng-enter.ng-enter-active {
   opacity: 1; }
 
+.hint-text {
+  color: #858585;
+  font-size: 1.5em;
+  padding: 1em; }
+
 .b-action-button {
   font-size: 1.8em;
   width: 1.2em;

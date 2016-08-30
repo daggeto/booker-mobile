@@ -79,3 +79,9 @@ $default-padding: 16px;
 .fade.ng-enter.ng-enter-active {
   opacity:1;
 }
+
+.hint-text {
+  color: $gray;
+  font-size: $font-default;
+  padding : $r-size-small;
+}
