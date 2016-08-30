@@ -5,6 +5,9 @@ class MainController
     this
 
   slideTo: (index) ->
-    $ionicSlideBoxDelegate.slide(index)
+    @ionicSlideBoxDelegate.slide(index)
+
+  isCurrentSlide: (index) ->
+    @ionicSlideBoxDelegate.currentIndex() == index
 
 app.controller('MainController', MainController)

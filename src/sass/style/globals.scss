@@ -14,12 +14,14 @@ $r-size-small: 1em;
 $r-size-default: 1.5em;
 $r-size-big: 5em;
 
-$accent-color: #ef473a;
-$light: #fde9e7;
 
 $light-green: #c2f0c2;
 $green: #47d147;
 $red: #ff3333;
-$gray: #858585;
+$gray: #676767;
+$white: #ffffff;
+
+$accent-background-color: $gray;
+$accent-color: $white;
 
 $shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.3);
