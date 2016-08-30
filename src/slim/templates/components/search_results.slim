@@ -1,4 +1,4 @@
-ion-content
+ion-content[ng-class="{'android-content': isAndroid()}"]
   .hint-text.flexbox.center[ng-hide="vm.results.length > 0"] No results
   ion-list[ng-show="vm.results.length > 0"]
     search-result[
