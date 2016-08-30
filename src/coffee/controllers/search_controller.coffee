@@ -10,6 +10,8 @@ class SearchController
     @term = ''
     @scope.$watch 'vm.term', @watchTerm if @getData
 
+    @scope.$on 'serviceClick', @serviceClick
+
   watchTerm: (newValue, oldValue) =>
     return if newValue == oldValue
 
@@ -29,6 +31,10 @@ class SearchController
 
   goToResults: (services) ->
     @scope.$root.navigator.go('app.main.search_results', results: angular.toJson(services))
+
+  serviceClick: (event, data) =>
+    @scope.$root.navigator.go('book_service', id: data.service.id)
+
 
   back: ->
     @term = ''

@@ -1,4 +1,4 @@
-app.directive('search', ($ionicModal) ->
+app.directive('search',  ->
   {
     restrict: 'E'
     replace: true

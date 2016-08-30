@@ -7,6 +7,6 @@ app.directive('searchResult', ->
 
   link: (scope, element) ->
     element.on('click', =>
-      scope.$emit('serviceClick', event: scope.service)
+      scope.$root.$broadcast('serviceClick', service: scope.service)
     )
 )

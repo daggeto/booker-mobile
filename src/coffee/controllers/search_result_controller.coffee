@@ -10,4 +10,5 @@ class SearchResultController
 
   updateResults: (scope, data) =>
     @results = data.results
+
 app.controller('SearchResultController', SearchResultController)
