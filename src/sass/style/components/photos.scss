@@ -18,7 +18,6 @@ $loader-height: 17em;
 
   &--button{
     padding: $size-small;
-    color: $accent-color;
     font-size: $font-default;
     margin: 0 $r-size-nano;
   }
@@ -29,7 +28,7 @@ $loader-height: 17em;
 
   &__add {
     height: 100%;
-    color: $accent-color;
+    color: $gray;
     font-size: $add-photo-font-size;
     display: flex;
     justify-content: center;

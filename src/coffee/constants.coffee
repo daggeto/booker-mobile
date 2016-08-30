@@ -15,5 +15,5 @@ app.constant('USER_ROLES'
 app.constant 'LOCAL_CURRENT_USER_ID', 'currentUserId'
 
 #app.constant('API_URL', 'http://515459.s.dedikuoti.lt');
-app.constant 'API_URL', 'http://192.168.50.67:3000'
+app.constant 'API_URL', 'http://192.168.1.68:3000'
 #app.constant 'API_URL', 'http://localhost:3000'
