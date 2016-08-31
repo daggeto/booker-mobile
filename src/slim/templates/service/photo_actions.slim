@@ -1,5 +1,6 @@
 .photo-actions.photo-actions__bottom
-  button.button.photo-actions--button.pull-left[ng-click="vm.showTakePhotoPopup(photo.id)"]
-    .icon.ion-edit
-  button.button.photo-actions--button.pull-right[ng-click="vm.deletePhoto(photo.id)"]
-    .icon.ion-trash-b
+  upload-photo.pull-left[on-photo-taken="vm.onPhotoTaken(response)" photo-id="photo.id"]
+    button.button.accent-button
+      | Edit
+  button.button.accent-button.pull-right[ng-click="vm.deletePhoto(photo.id)"]
+    | Delete

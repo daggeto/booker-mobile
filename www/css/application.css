@@ -184,15 +184,11 @@
 .photo-actions {
   position: absolute;
   width: 100%;
-  padding: 0.5em; }
+  padding: 0.1em; }
   .photo-actions__top {
     top: 0; }
   .photo-actions__bottom {
     bottom: 0; }
-  .photo-actions--button {
-    padding: 5px;
-    font-size: 1.5em;
-    margin: 0 0.1em; }
 
 .photo-slider {
   height: 23em; }
@@ -209,6 +205,8 @@
     display: flex;
     justify-content: center;
     align-items: center; }
+  .photo-slider .slider-pager {
+    bottom: 8px; }
 
 .take-photo-buttons {
   font-size: 5em; }

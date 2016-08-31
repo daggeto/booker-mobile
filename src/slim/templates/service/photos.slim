@@ -10,5 +10,6 @@ ion-slide-box.photo-slider[
       image-lazy-loader="ios"
     ]
 
-  ion-slide.photo-slider__add[ng-if="vm.showAddPhoto()" ng-click="vm.addNewPhoto()"]
-    i.ion-plus-circled
+  ion-slide.photo-slider__add[ng-if="vm.showAddPhoto()"]
+    upload-photo[on-photo-taken="vm.onPhotoTaken(response)"]
+      i.ion-plus-circled
