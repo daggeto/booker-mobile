@@ -38,7 +38,6 @@ app.config ($stateProvider, $urlRouterProvider) ->
           controller: 'FeedController as vm')
 
     .state('app.main.search_results'
-      cache: false
       url: '/search_results/:results'
       views:
         'content@app':
