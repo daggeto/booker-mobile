@@ -1,6 +1,8 @@
 app.config ($ionicConfigProvider, $ionicCloudProvider) ->
   $ionicConfigProvider.tabs.position('bottom');
 
+  $ionicConfigProvider.views.swipeBackEnabled(false);
+
   $ionicCloudProvider.init
     core:
       app_id: '22e15946'
