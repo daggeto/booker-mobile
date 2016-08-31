@@ -1,5 +1,9 @@
+$active-color: #000000;
+$inactive-color: #a8a8a8;
 .b-icon {
+  color: $inactive-color;
+
   &__active {
-    color: $gray;
+    color: $active-color;
   }
 }

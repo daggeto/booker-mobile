@@ -1,15 +1,14 @@
-ion-view[name="app"]
-  ion-header-bar.b-header.flexbox
-    .buttons[ng-hide="stateIs('app.main.search_results')"]
-      i.ion-person.b-action-button[
-        ng-class="{'b-icon__active': vm.isCurrentSlide(0)}"
-        ng-click='vm.slideTo(0)'
-      ]
-    search[ min-length="3"]
-    .buttons[ng-hide="stateIs('app.main.search_results')"]
-      i.ion-ios-paper.b-action-button[
-        ng-class="{'b-icon__active': vm.isCurrentSlide(1)}"
-        ng-click='vm.slideTo(1)'
-      ]
+ion-header-bar.b-header.flexbox
+  .buttons[ng-hide="stateIs('app.main.search_results')"]
+    i.ion-person.b-action-button.b-icon[
+      ng-class="{'b-icon__active': vm.isCurrentSlide(0)}"
+      ng-click='vm.slideTo(0)'
+    ]
+  search[ min-length="3"]
+  .buttons[ng-hide="stateIs('app.main.search_results')"]
+    i.ion-ios-paper.b-action-button.b-icon[
+      ng-class="{'b-icon__active': vm.isCurrentSlide(1)}"
+      ng-click='vm.slideTo(1)'
+    ]
 
-  ion-nav-view[name="content" class="fade"]
+ion-nav-view[name="content" class="main-content"]

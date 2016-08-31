@@ -1,4 +1,4 @@
-
+//
 /*Disabling platform specific tweaks */
 .platform-ios.platform-cordova:not(.fullscreen) .bar-header
 {
@@ -31,8 +31,4 @@
 
 .platform-ios.platform-cordova:not(.fullscreen) .has-subheader {
   top: 88px !important;
-}
-
-.android-content {
-  padding-top: 44px;
 }

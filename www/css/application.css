@@ -1,6 +1,9 @@
 .main-panel {
   height: 100%; }
 
+.b-has-header {
+  padding-top: 44px; }
+
 .main-slides {
   padding: 20px 0 35px 0; }
 
@@ -113,11 +116,10 @@
 .platform-ios.platform-cordova:not(.fullscreen) .has-subheader {
   top: 88px !important; }
 
-.android-content {
-  padding-top: 44px; }
-
-.b-icon__active {
-  color: #676767; }
+.b-icon {
+  color: #a8a8a8; }
+  .b-icon__active {
+    color: #000000; }
 
 .event--content {
   position: relative;
