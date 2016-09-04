@@ -7,9 +7,13 @@ app.config ($ionicConfigProvider, $ionicCloudProvider) ->
     core:
       app_id: '22e15946'
       gcm_key: '248592828963'
-    pluginConfig:
-      android:
-        icon: 'icon.png'
+    push:
+      debug: true,
+      sender_id: '248592828963'
+      pluginConfig:
+        android:
+          icon: 'ic_notification'
+          iconColor: '#3ea6ee'
 
 app.factory('AuthInterceptor', ($rootScope, $q, AUTH_EVENTS, SERVER_EVENTS) ->
   { responseError: (response) ->

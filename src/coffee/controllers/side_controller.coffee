@@ -5,7 +5,8 @@ class SideController
                 $ionicPopup,
                 currentUser,
                 UserServicesService,
-                AuthService) ->
+                AuthService,
+                NotificationService,) ->
     [
       @scope,
       @state,
@@ -13,10 +14,14 @@ class SideController
       @ionicPopup,
       @currentUser,
       @UserServicesService,
-      @AuthService
+      @AuthService,
+      @NotificationService,
     ] = arguments
 
     this
+
+  notify: ->
+    @NotificationService.notifyLocal()
 
   providerSettingsClicked: ->
     return @showAlert() unless @currentUser.service

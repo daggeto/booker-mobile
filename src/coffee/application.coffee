@@ -35,6 +35,9 @@ app = angular.module(
   $ionicPlatform.ready =>
     NotificationService.registerToken()
 
+    if ionic.Platform.isIOS()
+      cordova.plugins.notification.local.registerPermission (granted) ->
+        console.log("Notifications granted: #{granted}")
     if window.cordova and window.cordova.plugins.Keyboard
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 
