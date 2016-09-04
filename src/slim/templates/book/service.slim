@@ -5,4 +5,6 @@ ion-view[can-swipe-back="true"]
     h1.title {{vm.service.name}}
   ion-content.has-header
     photos-carousel[photos='vm.service.service_photos']
+    .service--description
+      | {{vm.service.description}}
     calendar[service='vm.service']

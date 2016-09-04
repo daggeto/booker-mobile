@@ -12,9 +12,13 @@ ion-view
     .list
       ion-toggle[ng-model="vm.service.published" ng-change="vm.togglePublication()"] Provider Settings
 
-      label.item.item-input.item-stacked-label.padding
+      label.item.item-input.b-input.padding
         span.input-label Name
         input[type="text" ng-model="vm.service.name"]
+
+      label.item.item-input.item-stacked-label.b-textarea.padding
+        span.input-label Description
+        textarea[ng-model="vm.service.description"]
 
       label.item.item-select.padding
         span.input-label Duration
@@ -22,14 +26,14 @@ ion-view
           ng-model="vm.service.duration"
           ng-options="dur.value as dur.label for dur in vm.durations"]
 
-      label.item.item-input.item-stacked-label.padding
+      label.item.item-input.b-input.padding
         span.input-label Price
         input[type="text" ng-model="vm.service.price"]
 
-      label.item.item-input.item-stacked-label.padding
+      label.item.item-input.b-input.padding
         span.input-label Phone Number
         input[type="text" ng-model="vm.service.phone"]
 
-      label.item.item-input.item-stacked-label.padding
+      label.item.item-input.b-input.padding
         span.input-label Address
         input[type="text" ng-model="vm.service.address"]

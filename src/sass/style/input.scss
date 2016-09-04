@@ -1,0 +1,16 @@
+$wrapper-height: 10em;
+$textarea-height: 100%;
+
+.b-textarea {
+  height: $wrapper-height;
+
+  textarea {
+    height: $textarea-height;
+  }
+}
+
+.b-input {
+  input {
+    text-align: right;
+  }
+}
