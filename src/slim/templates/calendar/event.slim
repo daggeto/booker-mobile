@@ -13,7 +13,7 @@ ion-view
         span.input-label Description:
         input[type="text" ng-model="vm.event.description"]
 
-      label.item.item-select.padding
+      label.item.item-select.padding[ng-hide="vm.Event.isEventNotFree(vm.event)"]
         span.input-label Status:
         select[
           ng-model="vm.event.status"
@@ -25,6 +25,7 @@ ion-view
         title="Time From"
         name="from"
         ng-model="vm.event.start_at"
+        ng-hide="vm.Event.isEventNotFree(vm.event)"
       ]
         .col.input-label From:
         .col.align-right {{ vm.event.start_at | date: "H:mm" }}
@@ -35,6 +36,7 @@ ion-view
         title="Time To"
         name="to"
         ng-model="vm.event.end_at"
+        ng-hide="vm.Event.isEventNotFree(vm.event)"
       ]
         .col.input-label To:
         .col.align-right {{ vm.event.end_at | date: "H:mm" }}

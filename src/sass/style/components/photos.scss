@@ -1,8 +1,10 @@
 $action-button-color: #fff;
 $add-photo-font-size: 5em;
-$photo-slide-height: 23em;
+$photo-slide-height: 10em;
+$image-height: 100%;
+$image-margin-top: -180px;
 $loader-width: 100%;
-$loader-height: 17em;
+$loader-height: 5em;
 $button-height: $r-size-default;
 $slider-bottom: 8px;
 .photo-actions {
@@ -29,6 +31,11 @@ $slider-bottom: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  &--image {
+    width: $image-height;
+    margin-top: $image-margin-top;
   }
 
   .image-loader-container {

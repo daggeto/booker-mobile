@@ -68,8 +68,10 @@ class CalendarController
   actionButtons: (event) ->
     buttons = []
 
-    buttons.push @button('Edit', 'ion-edit', @onEdit, event) unless event.past
     buttons.push @button('Preview', 'ion-eye', @onPreview, event) if event.past
+
+    unless event.past || @Event.isEventNotFree(event)
+      buttons.push @button('Edit', 'ion-edit', @onEdit, event)
 
     if event.status == @Event.PENDING
       buttons.push @button('Approve', 'ion-checkmark-round', @approveEvent, event)

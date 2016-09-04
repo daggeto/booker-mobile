@@ -32,6 +32,9 @@ class Event
         end_at: ''
       }
 
+    @isEventNotFree = (event) ->
+      event.status == @PENDING || event.status == @BOOKED
+
     return this
 
 app.factory('Event', Event)

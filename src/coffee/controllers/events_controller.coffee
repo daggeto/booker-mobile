@@ -75,4 +75,7 @@ class EventsController
   isEditState: ->
     @state.is('service.calendar.edit_event')
 
+  isEventNotFree: (event) ->
+    event.status == @Event.PENDING || event.status == @Event.BOOKED
+
 app.controller('EventsController', EventsController)
