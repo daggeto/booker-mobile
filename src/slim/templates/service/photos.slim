@@ -1,15 +1,21 @@
 ion-slide-box.photo-slider[
   on-slide-changed="slideHasChanged($index)"
-  active-slide="0"]
+  active-slide="0"
+  ng-class="vm.clickedClass('photo-slider')"
+]
   ion-slide[ng-repeat="photo in vm.service.service_photos"]
     ng-include[src="'templates/service/photo_actions.html'"]
 
-    img.profile--image[
+    img[
       image-lazy-src="{{photo.preview_url}}"
       lazy-scroll-resize="true"
       image-lazy-loader="ios"
+      ng-click="vm.onImageClick()"
     ]
 
-  ion-slide.photo-slider__add[ng-if="vm.showAddPhoto()"]
+  ion-slide.photo-slider--add[
+    ng-if="vm.showAddPhoto()"
+    ng-class="vm.clickedClass('photo-slider--add')"
+  ]
     upload-photo[on-photo-taken="vm.onPhotoTaken(response)"]
       i.ion-plus-circled

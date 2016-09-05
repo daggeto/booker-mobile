@@ -1,9 +1,12 @@
 ion-slide-box.photo-slider[
   on-slide-changed="slideHasChanged($index)"
-  active-slide="0"]
+  active-slide="0"
+  ng-class="vm.clickedClass('photo-slider')"
+  ]
   ion-slide[ng-repeat="photo in vm.photos"]
-    img.photo-slider--image[
+    img[
       image-lazy-src="{{photo.preview_url}}"
       lazy-scroll-resize="true"
       image-lazy-loader="ios"
+      ng-click="vm.onImageClick()"
     ]

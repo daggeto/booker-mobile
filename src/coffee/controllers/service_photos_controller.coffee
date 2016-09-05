@@ -57,4 +57,10 @@ class ServicePhotosController
   showAddPhoto: ->
     @service.service_photos.length < 5
 
+  onImageClick: ->
+    @imageClicked = !@imageClicked
+
+  clickedClass: (clazz)->
+    return "#{clazz}__clicked" if @imageClicked
+
 app.controller('ServicePhotosController', ServicePhotosController)

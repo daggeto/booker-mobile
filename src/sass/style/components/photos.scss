@@ -1,8 +1,11 @@
 $action-button-color: #fff;
 $add-photo-font-size: 5em;
 $photo-slide-height: 10em;
-$image-height: 100%;
+$photo-slide-height-clicked: 100%;
+$image-height: 360px;
 $image-margin-top: -180px;
+$image-margin-top-clicked: 0px;
+$image-width: 100%;
 $loader-width: 100%;
 $loader-height: 5em;
 $button-height: $r-size-default;
@@ -24,18 +27,31 @@ $slider-bottom: 8px;
 .photo-slider {
   height: $photo-slide-height;
 
-  &__add {
+  img {
+    width: $image-width;
+    margin-top: $image-margin-top;
+  }
+
+  &__clicked {
+    height: $photo-slide-height-clicked;
+
+    img {
+      margin-top: $image-margin-top-clicked;
+    }
+  }
+
+  &--add {
+    width: 100%;
     height: 100%;
     color: $gray;
     font-size: $add-photo-font-size;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
 
-  &--image {
-    width: $image-height;
-    margin-top: $image-margin-top;
+    &__clicked {
+      height: $image-height;
+    }
   }
 
   .image-loader-container {
