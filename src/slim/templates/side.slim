@@ -1,18 +1,18 @@
-.profile
-  img.profile--image[
-    image-lazy-src="{{vm.currentUser.profile_image.preview_url}}"
-    lazy-scroll-resize="true"
-    image-lazy-loader="ios"
-  ]
-ion-lists.side-list[can-swipe="true"]
-  ion-item[ng-click="vm.providerSettingsClicked()"]
-    | Provider Settings
-    .pull-right[
-      ng-if="vm.currentUser.service"
-      ng-class="{
-        'green-text': vm.isServicePublished(),
-        'red-text': !vm.isServicePublished()}"]
-      | {{ vm.publicationText() }}
-  ion-item[ng-click="navigator.go('app.main.profile_edit')"] My Profile
-  ion-item[ng-click="navigator.go('app.main.reservations')"] My Reservations
-  ion-item[ng-click="vm.notify()"] Notify
+ion-scroll
+  .profile
+    .photo-preview
+      img[
+        src="{{vm.currentUser.profile_image.preview_url}}"
+      ]
+  ion-lists.side-list[can-swipe="true"]
+    ion-item[ng-click="vm.providerSettingsClicked()"]
+      | Provider Settings
+      .pull-right[
+        ng-if="vm.currentUser.service"
+        ng-class="{
+          'green-text': vm.isServicePublished(),
+          'red-text': !vm.isServicePublished()}"]
+        | {{ vm.publicationText() }}
+    ion-item[ng-click="navigator.go('app.main.profile_edit')"] My Profile
+    ion-item[ng-click="navigator.go('app.main.reservations')"] My Reservations
+    ion-item[ng-click="vm.notify()"] Notify

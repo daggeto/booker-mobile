@@ -2,10 +2,6 @@ $profile-image-width: 100%;
 $profile-image-height: $r-size-big;
 
 .profile {
-  &--image {
-    width: 100%;
-  }
-
   .image-loader-container {
     width: $profile-image-width;
     height: $profile-image-height;

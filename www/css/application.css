@@ -78,9 +78,6 @@
 .message__success {
   background-color: #c2f0c2; }
 
-.profile--image {
-  width: 100%; }
-
 .profile .image-loader-container {
   width: 100%;
   height: 5em;
@@ -203,33 +200,36 @@
   .photo-actions__bottom {
     bottom: 0; }
 
-.photo-slider {
+.photo-preview {
   height: 10em; }
-  .photo-slider img {
+  .photo-preview img {
     width: 100%;
     margin-top: -180px; }
-  .photo-slider__clicked {
+  .photo-preview__clicked {
     height: 100%; }
-    .photo-slider__clicked img {
+    .photo-preview__clicked img {
       margin-top: 0px; }
-  .photo-slider--add {
-    width: 100%;
-    height: 100%;
-    color: #676767;
-    font-size: 5em;
-    display: flex;
-    justify-content: center;
-    align-items: center; }
-    .photo-slider--add__clicked {
-      height: 360px; }
-  .photo-slider .image-loader-container {
-    width: 100%;
-    height: 5em;
-    display: flex;
-    justify-content: center;
-    align-items: center; }
-  .photo-slider .slider-pager {
-    bottom: 8px; }
+
+.photo-slider--add {
+  width: 100%;
+  height: 100%;
+  color: #676767;
+  font-size: 5em;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  .photo-slider--add__clicked {
+    height: 360px; }
+
+.photo-slider .image-loader-container {
+  width: 100%;
+  height: 5em;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+.photo-slider .slider-pager {
+  bottom: 8px; }
 
 .take-photo-buttons {
   font-size: 5em; }

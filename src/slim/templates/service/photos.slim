@@ -1,7 +1,7 @@
-ion-slide-box.photo-slider[
+ion-slide-box.photo-slider.photo-preview[
   on-slide-changed="slideHasChanged($index)"
   active-slide="0"
-  ng-class="vm.clickedClass('photo-slider')"
+  ng-class="vm.clickedClass('photo-preview')"
 ]
   ion-slide[ng-repeat="photo in vm.service.service_photos"]
     ng-include[src="'templates/service/photo_actions.html'"]
