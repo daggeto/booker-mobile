@@ -20,9 +20,6 @@ class SideController
 
     this
 
-  notify: ->
-    @NotificationService.notifyLocal()
-
   providerSettingsClicked: ->
     return @showAlert() unless @currentUser.service
 
