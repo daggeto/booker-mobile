@@ -11,6 +11,10 @@ var sh = require('shelljs');
 var coffee = require('gulp-coffee');
 var slim = require("gulp-slim");
 var inject = require('gulp-inject');
+var del = require('del');
+var gulpSequence = require('gulp-sequence');
+var uglify = require('gulp-uglify');
+var pump = require('pump');
 
 var paths = {
   sass: ['./src/sass/**/*.scss'],
@@ -18,7 +22,13 @@ var paths = {
   slim: ['./src/slim/**/*.slim'],
 };
 
-gulp.task('default', ['sass', 'coffee', 'slim']);
+gulp.task('clean', function(done){
+  del(['./www/js/**/*']);
+  del(['./www/templates/**/*.html']);
+  del(['./www/index.html']);
+
+  done()
+});
 
 gulp.task('sass', function(done) {
   gulp.src('./src/sass/*.scss')
@@ -41,6 +51,17 @@ gulp.task('coffee', function(done) {
     .on('end', done)
 });
 
+gulp.task('prod-coffee', function(done){
+  pump([
+      gulp.src(paths.coffee),
+      coffee({bare: true}),
+      concat('script.js'),
+      gulp.dest('./www/js/')
+    ],
+    done
+  );
+});
+
 gulp.task('slim', function(done){
   gulp.src("./src/slim/**/*.slim")
     .pipe(changed("./www", {extension: '.html'}))
@@ -49,11 +70,13 @@ gulp.task('slim', function(done){
     .on('end', done);
 });
 
-gulp.task('index', ['default'], function () {
-  var target = gulp.src('./www/index.html');
+gulp.task('inject-scripts', function (done) {
   var sources = gulp.src(['./www/js/**/*.js'], {read: false});
 
-  return target.pipe(inject(sources,{relative: true})).pipe(gulp.dest('./www'));
+  gulp.src('./www/index.html')
+    .pipe(inject(sources,{relative: true}))
+    .pipe(gulp.dest('./www'))
+    .on('end', done);
 });
 
 gulp.task('watch', function() {
@@ -69,15 +92,6 @@ gulp.task('install', ['git-check'], function() {
     });
 });
 
-gulp.task('git-check', function(done) {
-  if (!sh.which('git')) {
-    console.log(
-      '  ' + gutil.colors.red('Git is not installed.'),
-      '\n  Git, the version control system, is required to download Ionic.',
-      '\n  Download git here:', gutil.colors.cyan('http://git-scm.com/downloads') + '.',
-      '\n  Once git is installed, run \'' + gutil.colors.cyan('gulp install') + '\' again.'
-    );
-    process.exit(1);
-  }
-  done();
-});
+gulp.task('default', ['sass', 'coffee', 'slim']);
+gulp.task('index', gulpSequence('default', 'inject-scripts'));
+gulp.task('prod', gulpSequence('clean', 'prod-coffee', 'slim','inject-scripts'))
