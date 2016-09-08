@@ -3,7 +3,7 @@ class EventsController
     @scope = $scope
     @state = $state
     @calendar = $stateParams.calendar
-    @ionicToast = ionicToast
+    @ionicToast = ionicToastst
     @EventsService = EventsService
     @Event = Event
     @event = event
@@ -25,7 +25,7 @@ class EventsController
   save: =>
     return unless @validateTime()
 
-    @event['service_id'] = @service.id
+    @event.service_id = @service.id
     @event.start_at = @modifyDate(@event.start_at)
     @event.end_at = @modifyDate(@event.end_at)
 

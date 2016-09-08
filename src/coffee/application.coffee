@@ -56,13 +56,13 @@ app = angular.module(
   $rootScope.$on(AUTH_EVENTS.notAuthorized, (event) ->
     $state.go('login')
     $auth.deleteData('auth_headers')
-    alertPopup = $ionicPopup.alert(
+    $ionicPopup.alert(
       title: 'Unauthorized!'
       template: 'You are not allowed to access this resource.')
   )
 
   $rootScope.$on(SERVER_EVENTS.not_found, (event) ->
-    alertPopup = $ionicPopup.alert(
+    $ionicPopup.alert(
       title: 'Ups! Little problems.'
       template: 'Try to login again')
   )
