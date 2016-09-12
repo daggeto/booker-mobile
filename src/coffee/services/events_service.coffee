@@ -1,22 +1,13 @@
-class EventsService
-  'use strict'
+app.factory 'EventsService', (Event, $cacheFactory) ->
+  new class EventsService
+    findById: (id) ->
+      Event.$r.get(id: id)
 
-  constructor: (Event, $cacheFactory) ->
-    @Event = Event
-    @cacheFactory = $cacheFactory
+    save: (params) ->
+      Event.$r.save(params).$promise
 
-    this
+    update: (params) ->
+      Event.$r.update(params).$promise
 
-  findById: (id) ->
-    @Event.$r.get(id: id)
-
-  save: (params) ->
-    @Event.$r.save(params).$promise
-
-  update: (params) ->
-    @Event.$r.update(params).$promise
-
-  delete: (id) ->
-    @Event.$r.delete(id: id).$promise
-
-app.service('EventsService', EventsService)
+    delete: (id) ->
+      Event.$r.delete(id: id).$promise

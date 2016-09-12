@@ -1,7 +1,5 @@
-class Reservation
-  'use strict'
-
-  constructor: ($resource, API_URL) ->
+app.factory 'Reservation', ($resource, API_URL) ->
+  new class Reservation
     URL = "#{API_URL}/api/v1/reservations/:reservation_id/:action.json"
 
     params =
@@ -10,8 +8,4 @@ class Reservation
     methods =
       post:
         method: 'POST'
-    @$r = $resource(URL, params, methods)
-
-    return this
-
-app.factory('Reservation', Reservation)
+    $r: $resource(URL, params, methods)

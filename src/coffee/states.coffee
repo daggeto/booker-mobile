@@ -78,15 +78,15 @@ app.config ($stateProvider, $urlRouterProvider) ->
         'calendar@service':
           templateUrl: "templates/service/calendar.html"
           controller: 'CalendarController as vm')
+
     .state('service.calendar.add_event'
       cache: false
       url: '/add_event'
       params:
         calendar: {}
       resolve:
-        eventResource: 'Event'
-        event: (eventResource) ->
-          eventResource.$new()
+        event: (Event) ->
+          Event.$new()
       views:
         '@':
           templateUrl: 'templates/calendar/event.html'
@@ -127,7 +127,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
           controller: 'ServiceSettingsController as vm'
         'photos@service.service_settings':
           templateUrl: 'templates/service/photos.html'
-          controller: 'ServicePhotosController')
+          controller: 'ServicePhotosController as vm')
     .state('book_service',
       cache: false,
       url: '/book_service/:id',

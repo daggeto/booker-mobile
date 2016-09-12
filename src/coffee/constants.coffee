@@ -12,8 +12,13 @@ app.constant('USER_ROLES'
   simple: 'public_role'
 )
 
+app.constant 'EVENT_STATUS',
+  FREE: 'free'
+  PENDING: 'pending'
+  BOOKED: 'booked'
+
 app.constant 'LOCAL_CURRENT_USER_ID', 'currentUserId'
 
-app.constant('API_URL', 'http://515459.s.dedikuoti.lt');
-#app.constant 'API_URL', 'http://192.168.50.49:3000'
+#app.constant('API_URL', 'http://515459.s.dedikuoti.lt');
+app.constant 'API_URL', 'http://192.168.50.55:3000'
 #app.constant 'API_URL', 'http://localhost:3000'

@@ -1,42 +1,39 @@
-class ServiceCalendarController
-  'use strict'
+app.controller 'ServiceCalendarController',
+  ($scope, UserServicesService, Calendar, EVENT_STATUS) ->
+    { service } = this
 
-  constructor: ($scope, UserServicesService, Calendar, Event) ->
-    [@scope, @UserServicesService, @Calendar, @Event] = arguments
-    @calendar = new Calendar()
+    new class ServiceCalendarController
+      constructor: ->
+        @calendar = new Calendar()
 
-    @bindEvents()
-    @reloadEvents()
+        @bindEvents()
+        @reloadEvents()
 
-    this
+      bindEvents: ->
+        $scope.$on('reloadEvents', @reloadEvents)
 
-  bindEvents: ->
-    @scope.$on('reloadEvents', @reloadEvents)
+      reloadEvents: =>
+        @loadEvents(@calendar.selectedDate)
 
-  reloadEvents: =>
-    @loadEvents(@calendar.selectedDate)
+      loadEvents: (date) =>
+        UserServicesService.events(
+          service_id: service.id
+          action: 'future'
+          start_at: date.format()
+          'status[]': [EVENT_STATUS.FREE, EVENT_STATUS.PENDING]
+        ).then(((events) =>
+          @calendar.events = events
+        ), (rejected) ->
+          console.log(rejected)
+        )
 
-  loadEvents: (date) =>
-    @UserServicesService.events(
-      service_id: @service.id
-      action: 'future'
-      start_at: date.format()
-      'status[]': [@Event.FREE, @Event.PENDING]
-    ).then(((events) =>
-      @calendar.events = events
-    ), (rejected) ->
-      console.log(rejected)
-    )
+      selectDate: (date) =>
+        return if @isPast(date)
+        @calendar.selectDate(date)
+        @loadEvents(date)
 
-  selectDate: (date) =>
-    return if @isPast(date)
-    @calendar.selectDate(date)
-    @loadEvents(date)
+      isPast: (date) ->
+        date.isBefore(@calendar.currentDate)
 
-  isPast: (date) ->
-    date.isBefore(@calendar.currentDate)
-
-  eventClick: (event) ->
-    @scope.$emit('bookEvent', { event: event })
-
-app.controller('ServiceCalendarController', ServiceCalendarController)
+      eventClick: (event) ->
+        $scope.$emit('bookEvent', { event: event })

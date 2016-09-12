@@ -1,35 +1,29 @@
-class BookingService
-  'use strict'
+app.factory 'BookingService', ($q, $ionicPopup, ionicToast, ReservationsService, EVENT_STATUS) ->
+  new class BookingService
+    book: (event) ->
+      confirmBooking = $ionicPopup.confirm
+        title: 'Please confirm your reservation',
+        okText: 'Yes'
 
-  constructor: ($q, $ionicPopup, ionicToast, ReservationsService, Event) ->
-    [@q, @ionicPopup, @ionicToast, @ReservationsService, @Event] = arguments
+      confirmBooking.then (confirmed) =>
+        @bookingConfirmed(event) if confirmed
 
-  book: (event) ->
-    confirmBooking = @ionicPopup.confirm
-      title: 'Please confirm your reservation',
-      okText: 'Yes'
+    bookingConfirmed: (event) ->
+      $q((resolve, reject) =>
+        return reject() unless event.status == EVENT_STATUS.FREE
 
-    confirmBooking.then (confirmed) =>
-      @bookingConfirmed(event) if confirmed
+        @resolveMethod = resolve
+        @rejectMethod = reject
 
-  bookingConfirmed: (event) ->
-    @q((resolve, reject) =>
-      return reject() unless event.status == @Event.FREE
+        ReservationsService.save(event_id: event.id)
+          .then(@bookSuccess)
+          .catch(@bookFailed)
+      )
 
-      @resolveMethod = resolve
-      @rejectMethod = reject
+    bookSuccess: (response) =>
+      ionicToast.show(response.message, 'bottom', false, 3000);
+      @resolveMethod(response)
 
-      @ReservationsService.save(event_id: event.id)
-        .then(@bookSuccess)
-        .catch(@bookFailed)
-    )
-
-  bookSuccess: (response) =>
-    @ionicToast.show(response.message, 'bottom', false, 3000);
-    @resolveMethod(response)
-
-  bookFailed: (response) =>
-    @ionicToast.show(response.data.message, 'bottom', false, 3000);
-    @rejectMethod
-
-app.service('BookingService', BookingService)
+    bookFailed: (response) =>
+      ionicToast.show(response.data.message, 'bottom', false, 3000);
+      @rejectMethod

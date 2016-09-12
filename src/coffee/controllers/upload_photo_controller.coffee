@@ -1,70 +1,66 @@
-class UploadPhotoController
-  constructor: ($scope, $ionicActionSheet, $ionicLoading, $q, CameraService) ->
-    [@scope, @ionicActionSheet, @ionicLoading, @q, @CameraService] = arguments
+app.controller 'UploadPhotoController',
+  ($scope, $ionicActionSheet, $ionicLoading, $q, CameraService) ->
+    new class UploadPhotoController
+      constructor: ->
+        buttons: []
 
-    buttons: []
+      click: =>
+        $ionicActionSheet.show
+          buttons:[
+            { text: @cameraText(), photo_id: $scope.photo_id },
+            { text: @galleryText(), photo_id: $scope.photo_id }
+          ]
+          titleText: 'Take a photo'
+          cancelText: 'Close'
+          buttonClicked: @buttonClicked
 
-    this
+      cameraText: ->
+        text = 'Camera'
 
-  click: =>
-    @ionicActionSheet.show
-      buttons:[
-        { text: @cameraText(), photo_id: @scope.photo_id },
-        { text: @galleryText(), photo_id: @scope.photo_id }
-      ]
-      titleText: 'Take a photo'
-      cancelText: 'Close'
-      buttonClicked: @buttonClicked
+        text = "<i class=\"icon ion-camera\"></i> #{text}"  if ionic.Platform.isAndroid()
 
-  cameraText: ->
-    text = 'Camera'
+        text
 
-    text = "<i class=\"icon ion-camera\"></i> #{text}"  if ionic.Platform.isAndroid()
+      galleryText: ->
+        text = 'Gallery'
 
-    text
+        text = "<i class=\"icon ion-images\"></i> #{text}"  if ionic.Platform.isAndroid()
 
-  galleryText: ->
-    text = 'Gallery'
+        text
 
-    text = "<i class=\"icon ion-images\"></i> #{text}"  if ionic.Platform.isAndroid()
+      buttonClicked: (index, button) =>
+        switch index
+          when 0 then @takePhoto(button.photo_id)
+          when 1 then @selectPhoto(button.photo_id)
 
-    text
+        true
 
-  buttonClicked: (index, button) =>
-    switch index
-      when 0 then @takePhoto(button.photo_id)
-      when 1 then @selectPhoto(button.photo_id)
+      takePhoto: (photo_id) ->
+        @promisePhoto(Camera.PictureSourceType.CAMERA, photo_id)
+          .then($scope.onPhotoTaken, @error)
 
-    true
+      selectPhoto: (photo_id) ->
+        @promisePhoto(Camera.PictureSourceType.PHOTOLIBRARY, photo_id)
+          .then($scope.onPhotoTaken, @error)
 
-  takePhoto: (photo_id) ->
-    @promisePhoto(Camera.PictureSourceType.CAMERA, photo_id)
-      .then(@scope.onPhotoTaken, @error)
-
-  selectPhoto: (photo_id) ->
-    @promisePhoto(Camera.PictureSourceType.PHOTOLIBRARY, photo_id)
-      .then(@scope.onPhotoTaken, @error)
-
-  promisePhoto: (method, photo_id) ->
-    @ionicLoading.show()
-    @q((resolve, reject) =>
-      @CameraService.takePhoto(method).then( (photo_uri) =>
-        resolve(
-          response:
-            photo_uri: photo_uri
-            photo_id: photo_id
-            afterPhotoUpload: @afterPhotoUpload
+      promisePhoto: (method, photo_id) ->
+        $ionicLoading.show()
+        $q((resolve, reject) =>
+          CameraService.takePhoto(method).then( (photo_uri) =>
+            resolve(
+              response:
+                photo_uri: photo_uri
+                photo_id: photo_id
+                afterPhotoUpload: @afterPhotoUpload
+            )
+          ).catch( (error) ->
+            reject(error)
+          )
         )
-      ).catch( (error) ->
-        reject(error)
-      )
-    )
 
-  error: =>
-    @ionicLoading.hide()
+      error: =>
+        $ionicLoading.hide()
 
-  afterPhotoUpload: =>
-    @CameraService.cleanup()
-    @ionicLoading.hide()
-
-app.controller('UploadPhotoController', UploadPhotoController)
+      afterPhotoUpload: =>
+        CameraService.cleanup()
+        $ionicLoading.hide()

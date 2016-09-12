@@ -1,7 +1,4 @@
-class UserServiceController
-  constructor: (service) ->
-    @service = service
-
-    this
-
-app.controller('UserServiceController', UserServiceController)
+app.controller 'UserServiceController', (service) ->
+  new class UserServiceController
+    constructor: ->
+      @service = service

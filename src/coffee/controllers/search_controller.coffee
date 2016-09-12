@@ -1,43 +1,41 @@
-class SearchController
-  constructor: ($scope, $state, $ionicModal, UserServicesService) ->
-    [@scope, @state, @ionicModal, @UserServicesService] = arguments
+app.controller 'SearchController', ($scope, $state, UserServicesService) ->
+  directive = this
 
-    @init()
+  new class SearchController
+    constructor: ->
+      { @getData }  = directive
 
-    this
+      @init()
 
-  init: ->
-    @term = ''
-    @scope.$watch 'vm.term', @watchTerm if @getData
+    init: ->
+      term = ''
+      $scope.$watch 'vm.term', @watchTerm if @getData
 
-    @scope.$on 'serviceClick', @serviceClick
+      $scope.$on 'serviceClick', @serviceClick
 
-  watchTerm: (newValue, oldValue) =>
-    return if newValue == oldValue
+    watchTerm: (newValue, oldValue) =>
+      return if newValue == oldValue
 
-    if newValue.length > @scope.minLength
-      @searchServices(newValue).then (results) =>
-        @goToResults(results.services) unless @state.is('app.main.search_results')
+      if newValue.length > $scope.minLength
+        @searchServices(newValue).then (results) =>
+          @goToResults(results.services) unless $state.is('app.main.search_results')
 
-        @scope.$root.$broadcast('resultsUpdate', results: results.services)
+          $scope.$root.$broadcast('resultsUpdate', results: results.services)
 
-        return
-    else
-      @results = []
-    return
+          return
+      else
+        @results = []
+      return
 
-  searchServices: (value) ->
-    @UserServicesService.findWithGet(action: 'search', term: value)
+    searchServices: (value) ->
+      UserServicesService.findWithGet(action: 'search', term: value)
 
-  goToResults: (services) ->
-    @scope.$root.navigator.go('app.main.search_results', results: angular.toJson(services))
+    goToResults: (services) ->
+      $scope.$root.navigator.go('app.main.search_results', results: angular.toJson(services))
 
-  serviceClick: (event, data) =>
-    @scope.$root.navigator.go('book_service', id: data.service.id)
+    serviceClick: (event, data) =>
+      $scope.$root.navigator.go('book_service', id: data.service.id)
 
-
-  back: ->
-    @term = ''
-    @scope.$root.navigator.back()
-
-app.controller('SearchController', SearchController)
+    back: ->
+      @term = ''
+      $scope.$root.navigator.back()

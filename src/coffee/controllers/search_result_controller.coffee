@@ -1,14 +1,9 @@
-class SearchResultController
-  constructor: ($scope, $stateParams) ->
-    [@scope, @stateParams] = arguments
+app.controller 'SearchResultController', ($scope, $stateParams) ->
+  new class SearchResultController
+    constructor: ->
+      @results = angular.fromJson($stateParams.results)
 
-    @results = angular.fromJson(@stateParams.results)
+      $scope.$on 'resultsUpdate', @updateResults
 
-    @scope.$on 'resultsUpdate', @updateResults
-
-    this
-
-  updateResults: (scope, data) =>
-    @results = data.results
-
-app.controller('SearchResultController', SearchResultController)
+    updateResults: (scope, data) =>
+      @results = data.results

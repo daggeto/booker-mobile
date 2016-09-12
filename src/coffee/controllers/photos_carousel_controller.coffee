@@ -1,16 +1,10 @@
-class PhotosCarouselController
-  constructor: ($scope) ->
-    [@scope] = arguments
+app.controller 'PhotosCarouselController', ->
+  new class PhotosCarouselController
+    constructor: ->
+      @imageClicked = false
 
-    @imageClicked = false
+    onImageClick: ->
+      @imageClicked = !@imageClicked
 
-    this
-
-  onImageClick: ->
-    @imageClicked = !@imageClicked
-
-
-  clickedClass: (clazz)->
-    return "#{clazz}__clicked" if @imageClicked
-
-app.controller('PhotosCarouselController', PhotosCarouselController)
+    clickedClass: (clazz)->
+      return "#{clazz}__clicked" if @imageClicked

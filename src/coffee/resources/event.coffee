@@ -1,40 +1,32 @@
-class Event
-  'use strict'
-
-  constructor: ($resource, API_URL) ->
-    @FREE = 'free'
-    @PENDING = 'pending'
-    @BOOKED = 'booked'
-
-    @statuses =
-      [
-        { value: @FREE, label: 'Free' }
-        { value: @PENDING, label: 'Pending' }
-        { value: @BOOKED, label: 'Booked' }
-      ]
-
+app.factory 'Event', ($resource, EVENT_STATUS, API_URL) ->
+  new class Event
     URL = "#{API_URL}/api/v1/events/:id/:action.json"
     params =
       id: '@id'
       action: '@action'
+
     methods =
       update:
         method: 'PUT'
       post:
         method: 'POST'
-    @$r = $resource(URL, params, methods)
 
-    @$new = ->
+    statuses:
+      [
+        { value: EVENT_STATUS.FREE, label: 'Free' }
+        { value: EVENT_STATUS.PENDING, label: 'Pending' }
+        { value: EVENT_STATUS.BOOKED, label: 'Booked' }
+      ]
+
+    $r: $resource(URL, params, methods)
+
+    $new: ->
       {
         description: ''
-        status: 'free'
+        status: EVENT_STATUS.FREE
         start_at: ''
         end_at: ''
       }
 
-    @isEventNotFree = (event) ->
-      event.status == @PENDING || event.status == @BOOKED
-
-    return this
-
-app.factory('Event', Event)
+    isEventNotFree: (event) ->
+      event.status == EVENT_STATUS.PENDING || event.status == EVENT_STATUS.BOOKED

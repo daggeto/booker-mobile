@@ -1,20 +1,16 @@
-class BookEventController
-  constructor: ($scope, $state, service, BookingService) ->
-    [@scope, @state, @service, @BookingService] = arguments
+app.controller 'BookEventController', ($scope, $state, service, BookingService) ->
+  new class BookEventController
+    constructor: ->
+      @service = service
 
-    @bindListeners()
+      @bindListeners()
 
-    @scope.vm = this
+    bindListeners: ->
+      $scope.$on('bookEvent', @bookEvent)
 
-    this
+    bookEvent: (_, data) =>
+      BookingService.book(data.event).then =>
+        $scope.$broadcast('reloadEvents')
 
-  bindListeners: ->
-    @scope.$on('bookEvent', @bookEvent)
-
-  bookEvent: (_, data) =>
-    @BookingService.book(data.event).then =>
-      @scope.$broadcast('reloadEvents')
-  back: ->
-    @scope.navigator.back()
-
-app.controller('BookEventController', BookEventController)
+    back: ->
+      $scope.navigator.back()

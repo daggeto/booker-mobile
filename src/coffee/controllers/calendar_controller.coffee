@@ -1,5 +1,5 @@
-class CalendarController
-  constructor: (
+app.controller 'CalendarController',
+  (
     $scope,
     $state,
     $stateParams,
@@ -9,131 +9,121 @@ class CalendarController
     Event,
     EventsService,
     ReservationsService,
+    Calendar,
     service,
-    Calendar) ->
-    [
-      @scope,
-      @state,
-      @stateParams,
-      @ionicActionSheet,
-      @ionicPopup,
-      @UserServicesService,
-      @Event,
-      @EventsService,
-      @ReservationsService,
-      @service
-    ] = arguments
+    EVENT_STATUS
+  ) ->
+    new class CalendarController
+      constructor:  ->
+        @service = service
 
-    @bindListeners()
+        @bindListeners()
 
-    @calendar = new Calendar(@stateParams.selectedDate)
+        @calendar = new Calendar($stateParams.selectedDate)
 
-    @scope.$on('$ionicView.enter', (event, data) =>
-      @reloadEvents()
-    )
+        $scope.$on('$ionicView.enter', (event, data) =>
+          @reloadEvents()
+        )
 
-    this
 
-  bindListeners: ->
-    @scope.$on 'onEventClick', @onEventClick
+      bindListeners: ->
+        $scope.$on 'onEventClick', @onEventClick
 
-    @scope.$on 'onEventAvatarClick', (_, data) =>
-      console.log
+        $scope.$on 'onEventAvatarClick', (_, data) =>
+          console.log
 
-  reloadEvents: ->
-    @loadEvents(@calendar.selectedDate)
+      reloadEvents: ->
+        @loadEvents(@calendar.selectedDate)
 
-  loadEvents: (date) =>
-    @UserServicesService.events(
-      service_id: @service.id
-      start_at: date.format()
-    ).then(((response) =>
-      @calendar.events = response
-    ), (refejcted) ->
-      console.log('rejected')
-    )
+      loadEvents: (date) =>
+        UserServicesService.events(
+          service_id: service.id
+          start_at: date.format()
+        ).then(((response) =>
+          @calendar.events = response
+        ), (refejcted) ->
+          console.log('rejected')
+        )
 
-  onEventClick: (_, data)=>
-    @ionicActionSheet.show
-      titleText: 'Options'
-      buttons: @actionButtons(data.target)
-      buttonClicked: @buttonClicked
-      destructiveText: @buttonText('Delete', 'ion-trash-b')
-      cancelText: 'Close'
-      destructiveButtonClicked: =>
-        return @showConfirm(data.target) unless data.target.status == @Event.FREE
+      onEventClick: (_, data)=>
+        $ionicActionSheet.show
+          titleText: 'Options'
+          buttons: @actionButtons(data.target)
+          buttonClicked: @buttonClicked
+          destructiveText: @buttonText('Delete', 'ion-trash-b')
+          cancelText: 'Close'
+          destructiveButtonClicked: =>
+            return @showConfirm(data.target) unless data.target.status == EVENT_STATUS.FREE
 
-        @deleteEvent(data.target)
+            @deleteEvent(data.target)
 
-  actionButtons: (event) ->
-    buttons = []
+      actionButtons: (event) ->
+        buttons = []
 
-    buttons.push @button('Preview', 'ion-eye', @onPreview, event) if event.past
+        buttons.push @button('Preview', 'ion-eye', @onPreview, event) if event.past
 
-    unless event.past || @Event.isEventNotFree(event)
-      buttons.push @button('Edit', 'ion-edit', @onEdit, event)
+        unless event.past || Event.isEventNotFree(event)
+          buttons.push @button('Edit', 'ion-edit', @onEdit, event)
 
-    if event.status == @Event.PENDING
-      buttons.push @button('Approve', 'ion-checkmark-round', @approveEvent, event)
-      buttons.push @button('Disapprove', 'ion-close-round', @disapproveEvent, event)
+        if event.status == EVENT_STATUS.PENDING
+          buttons.push @button('Approve', 'ion-checkmark-round', @approveEvent, event)
+          buttons.push @button('Disapprove', 'ion-close-round', @disapproveEvent, event)
 
-    buttons
+        buttons
 
-  button: (text, icon, action, event) ->
-    { text: @buttonText(text, icon), action: action, event: event }
+      button: (text, icon, action, event) ->
+        { text: @buttonText(text, icon), action: action, event: event }
 
-  buttonText: (text, icon) ->
-    text = "<i class=\"icon #{icon}\"></i> #{text}"  if ionic.Platform.isAndroid()
+      buttonText: (text, icon) ->
+        text = "<i class=\"icon #{icon}\"></i> #{text}"  if ionic.Platform.isAndroid()
 
-    text
+        text
 
-  buttonClicked: (index, button) ->
-    button.action(button.event)
+      buttonClicked: (index, button) ->
+        button.action(button.event)
 
-    true
+        true
 
-  showConfirm: (event) =>
-    popup = @ionicPopup.confirm
-      title: 'This time is reserved'
-      template: 'Do you really want to delete this event?'
+      showConfirm: (event) =>
+        popup = $ionicPopup.confirm
+          title: 'This time is reserved'
+          template: 'Do you really want to delete this event?'
 
-    popup.then (confirmed) =>
-      @deleteEvent(event) if confirmed
+        popup.then (confirmed) =>
+          @deleteEvent(event) if confirmed
 
-  deleteEvent: (event) ->
-    @EventsService.delete(event.id).then( =>
-      @state.reload()
-    ).catch( ->
-      console.log('not deleted')
-    )
+      deleteEvent: (event) ->
+        EventsService.delete(event.id).then( =>
+          $state.reload()
+        ).catch( ->
+          console.log('not deleted')
+        )
 
-  approveEvent: (event) =>
-    @changeStatus('approve', event.reservation)
+      approveEvent: (event) =>
+        @changeStatus('approve', event.reservation)
 
-  disapproveEvent: (event) =>
-    @changeStatus('disapprove', event.reservation)
+      disapproveEvent: (event) =>
+        @changeStatus('disapprove', event.reservation)
 
-  changeStatus: (action, reservation) =>
-    @ReservationsService.do(action, reservation.id).then (response) =>
-      @reloadEvents()
+      changeStatus: (action, reservation) =>
+        ReservationsService.do(action, reservation.id).then (response) =>
+          @reloadEvents()
 
-  onEdit: (event) =>
-    @scope.navigator.go("service.calendar.edit_event", event_id: event.id, calendar: @calendar)
+      onEdit: (event) =>
+        $scope.navigator.go("service.calendar.edit_event", event_id: event.id, calendar: @calendar)
 
-  onPreview: (event) =>
-    @scope.navigator.go("service.calendar.preview_event", event_id: event.id, calendar: @calendar)
+      onPreview: (event) =>
+        $scope.navigator.go("service.calendar.preview_event", event_id: event.id, calendar: @calendar)
 
-  selectDate: (date) ->
-    @calendar.selectDate(date)
-    @loadEvents(date)
+      selectDate: (date) ->
+        @calendar.selectDate(date)
+        @loadEvents(date)
 
-  addEvent: ->
-    @state.go('service.calendar.add_event', calendar: @calendar)
+      addEvent: ->
+        $scope.navigator.go('service.calendar.add_event', calendar: @calendar)
 
-  isPast: ->
-    @calendar.selectedDate.isBefore(@calendar.currentDate)
+      isPast: ->
+        @calendar.selectedDate.isBefore(@calendar.currentDate)
 
-  back: ->
-    @state.go('app.main')
-
-app.controller('CalendarController', CalendarController)
+      back: ->
+        $scope.navigator.go('app.main')

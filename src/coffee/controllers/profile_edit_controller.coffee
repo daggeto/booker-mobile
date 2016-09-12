@@ -1,30 +1,25 @@
-class ProfileEditController
-  constructor: ($scope, currentUser, ProfileImage, ImageService, AuthService) ->
-    [@scope, @currentUser, @ProfileImage, @ImageService, @AuthService] = arguments
+app.controller 'ProfileEditController',
+  ($scope, currentUser, ProfileImage, ImageService, AuthService) ->
+    new class ProfileEditController
+      onPhotoTaken: (response) ->
+        @superAfterUpload = response.afterPhotoUpload
+        return @updatePhoto(response) if currentUser.profile_image
 
-    this
+        @savePhoto(response)
 
-  onPhotoTaken: (response) ->
-    @superAfterUpload = response.afterPhotoUpload
-    return @updatePhoto(response) if @currentUser.profile_image
+      savePhoto: (data) ->
+        ImageService.save(ProfileImage.PATH, data.photo_uri).then(@afterUpload).catch(@error)
 
-    @savePhoto(response)
+      updatePhoto: (data) ->
+        ImageService.update(ProfileImage.PATH, data.photo_uri).then(@afterUpload).catch(@error)
 
-  savePhoto: (data) ->
-    @ImageService.save(@ProfileImage.PATH, data.photo_uri).then(@afterUpload).catch(@error)
+      afterUpload: (data) =>
+        currentUser.profile_image = data.profile_image
+        @superAfterUpload()
 
-  updatePhoto: (data) ->
-    @ImageService.update(@ProfileImage.PATH, data.photo_uri).then(@afterUpload).catch(@error)
+      error: (error) =>
+        @superAfterUpload()
 
-  afterUpload: (data) =>
-    @currentUser.profile_image = data.profile_image
-    @superAfterUpload()
-
-  error: (error) =>
-    @superAfterUpload()
-
-  logout: ->
-    @AuthService.logout()
-    @scope.navigator.go('login')
-
-app.controller('ProfileEditController', ProfileEditController)
+      logout: ->
+        AuthService.logout()
+        $scope.navigator.go('login')

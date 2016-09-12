@@ -1,46 +1,41 @@
-class AuthService
-  'use strict'
+app.factory 'AuthService', ($q, $auth, NotificationService, LOCAL_CURRENT_USER_ID) ->
+  new class AuthService
+    constructor: ->
+      @isAuthenticated = $auth.retrieveData('auth_headers') != null
 
-  constructor: ($q, $auth, NotificationService, LOCAL_CURRENT_USER_ID) ->
-    [@q, @auth, @NotificationService, @LOCAL_CURRENT_USER_ID] = arguments
+    login: (data) ->
+      d = $q.defer()
 
-    @isAuthenticated = @auth.retrieveData('auth_headers') != null
+      $auth.submitLogin(data)
+        .then (user) =>
+          @isAuthenticated = true
 
-  login: (data) ->
-    d = @q.defer()
+          @storeUserCredentials(user)
+          @saveToken()
 
-    @auth.submitLogin(data)
-      .then (user) =>
-        @isAuthenticated = true
+          d.resolve(user)
+        .catch ->
+          d.reject('Login failed')
 
-        @storeUserCredentials(user)
-        @saveToken()
+      d.promise
 
-        d.resolve(user)
-      .catch ->
-        d.reject('Login failed')
+    saveToken: =>
+      NotificationService.saveToken()
 
-    d.promise
+    logout: ->
+      @isAuthenticated = true
 
-  saveToken: =>
-    @NotificationService.saveToken()
+      @destroyUserCredentials()
 
-  logout: ->
-    @isAuthenticated = true
+      $auth.signOut()
+        .then => console.log('Loggout success')
+        .catch -> console.log('Loggout failed')
 
-    @destroyUserCredentials()
+    signup: (data) ->
+      $auth.submitRegistration(data)
 
-    @auth.signOut()
-      .then => console.log('Loggout success')
-      .catch -> console.log('Loggout failed')
+    storeUserCredentials: (user) ->
+      window.localStorage.setItem(LOCAL_CURRENT_USER_ID, user.id)
 
-  signup: (data) ->
-    @auth.submitRegistration(data)
-
-  storeUserCredentials: (user) ->
-    window.localStorage.setItem(@LOCAL_CURRENT_USER_ID, user.id)
-
-  destroyUserCredentials: ->
-    window.localStorage.removeItem(@LOCAL_CURRENT_USER_ID)
-
-app.service('AuthService', AuthService)
+    destroyUserCredentials: ->
+      window.localStorage.removeItem(LOCAL_CURRENT_USER_ID)

@@ -2,7 +2,7 @@ ion-view
   ion-header-bar[align-title="center" ]
     .buttons
       a.button.icon-left.ion-chevron-left.button-clear.button-dark[
-        ng-click="vm.state.go('service.calendar', {id: vm.service.id})"] Back
+        ng-click="navigator.back()"] Back
     h1.title {{vm.calendar.selectedDate.format() | date }}
   ion-content[scroll="false"]
     .list

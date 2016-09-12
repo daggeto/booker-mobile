@@ -1,16 +1,10 @@
-class MainController
-  constructor: ($scope, $state, $ionicSlideBoxDelegate, $q) ->
-    [@scope, @state, @ionicSlideBoxDelegate, @q] = arguments
+app.controller 'MainController', ($scope, $ionicSlideBoxDelegate) ->
+  new class MainController
+    slideTo: (index) ->
+      $ionicSlideBoxDelegate.slide(index)
 
-    this
+    isCurrentSlide: (index) ->
+      $ionicSlideBoxDelegate.currentIndex() == index
 
-  slideTo: (index) ->
-    @ionicSlideBoxDelegate.slide(index)
-
-  isCurrentSlide: (index) ->
-    @ionicSlideBoxDelegate.currentIndex() == index
-
-  isAndroid: ->
-    @scope.$root.isAndroid()
-
-app.controller('MainController', MainController)
+    isAndroid: ->
+      $scope.$root.isAndroid()

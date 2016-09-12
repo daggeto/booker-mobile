@@ -1,19 +1,13 @@
-class Navigator
-  'use strict'
+app.factory 'Navigator', ($state, $ionicHistory) ->
+  new class Navigator
+    go: (state, params) ->
+      $state.go(state, params).catch (error) ->
+        console.log(error)
 
-  constructor: ($state, $ionicHistory) ->
-    [@state, @ionicHistory] = arguments
+    home: (params) ->
+      $state.go('app.main', params)
 
-  go: (state, params) ->
-    @state.go(state, params).catch (error) ->
-      console.log(error)
+    back: ->
+      return $ionicHistory.goBack() if $ionicHistory.backView()
 
-  home: (params) ->
-    @state.go('app.main', params)
-
-  back: ->
-    return @ionicHistory.goBack() if @ionicHistory.backView()
-
-    @home()
-
-app.service('Navigator', Navigator)
+      @home()

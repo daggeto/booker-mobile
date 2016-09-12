@@ -1,18 +1,8 @@
-class UsersService
-  'use strict'
+app.factory 'UsersService', ($cacheFactory, User) ->
+  new class UsersService
+    findById: (id) ->
+      User.$r.get(id: id).$promise
 
-  constructor: ($q, $cacheFactory, User) ->
-    @q = $q
-    @cacheFactory = $cacheFactory
-    @User = User
-
-    this
-
-  findById: (id) ->
-    @User.$r.get(id: id).$promise
-
-  reservations: (params) ->
-    params.assoc = 'reservations'
-    @User.$a.get(params).$promise
-
-app.service('UsersService', UsersService)
+    reservations: (params) ->
+      params.assoc = 'reservations'
+      User.$a.get(params).$promise

@@ -1,15 +1,7 @@
-class ReservationsService
-  'use strict'
+app.factory 'ReservationsService', (Reservation, $cacheFactory) ->
+  new class ReservationsService
+    save: (params) ->
+      Reservation.$r.save(params).$promise
 
-  constructor: (Reservation, $cacheFactory) ->
-    [@Reservation, @cacheFactory] = arguments
-
-    this
-
-  save: (params) ->
-    @Reservation.$r.save(params).$promise
-
-  do: (action, reservation_id) ->
-    @Reservation.$r.post(reservation_id: reservation_id, action: action).$promise
-
-app.service('ReservationsService', ReservationsService)
+    do: (action, reservation_id) ->
+      Reservation.$r.post(reservation_id: reservation_id, action: action).$promise

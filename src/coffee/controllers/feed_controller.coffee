@@ -1,46 +1,41 @@
-class FeedController
-  constructor: ($scope, $state, UserServicesService, BookingService) ->
-    [@scope, @state, @UserServicesService, @BookingService] = arguments
+app.controller 'FeedController', ($scope, $state, UserServicesService, BookingService) ->
+  new class FeedController
+    constructor:  ->
+      @bindListeners()
 
-    @bindListeners()
+      @refreshServices()
 
-    @refreshServices()
+    bindListeners: ->
+      $scope.$on('bookEvent', (_, data) =>
+        BookingService.book(data.event).then (response) =>
+          @reloadService(response.service, data.index)
+      )
 
-    this
+    refreshServices: ->
+      @currentPage = 1
+      @loadServices((response) =>
+        @services = response.services
+        @anyMoreServices = response.more
 
-  bindListeners: ->
-    @scope.$on('bookEvent', (_, data) =>
-      @BookingService.book(data.event).then (response) =>
-        @reloadService(response.service, data.index)
-    )
+        $scope.$broadcast('scroll.refreshComplete')
+      )
 
-  refreshServices: ->
-    @currentPage = 1
-    @loadServices((response) =>
-      @services = response.services
-      @anyMoreServices = response.more
+    loadMoreServices: ->
+      @currentPage++
+      @loadServices((response) =>
+        @services = @services.concat(response.services)
+        @anyMoreServices = response.more
 
-      @scope.$broadcast('scroll.refreshComplete')
-    )
+        $scope.$broadcast('scroll.infiniteScrollComplete')
+      )
 
-  loadMoreServices: ->
-    @currentPage++
-    @loadServices((response) =>
-      @services = @services.concat(response.services)
-      @anyMoreServices = response.more
+    loadServices: (handleResponse) ->
+      params = { per_page: 3, page: @currentPage }
 
-      @scope.$broadcast('scroll.infiniteScrollComplete')
-    )
+      UserServicesService.findWithGet(params).then(handleResponse, $scope.error)
 
-  loadServices: (handleResponse) ->
-    params = { per_page: 3, page: @currentPage }
+    reloadService: (service, index) =>
+      @services[index].nearest_event = service.nearest_event
 
-    @UserServicesService.findWithGet(params).then(handleResponse, @scope.error)
-
-  reloadService: (service, index) =>
-    @services[index].nearest_event = service.nearest_event
-
-  goTo: (state, params) ->
-    @state.go(state, params)
-
-app.controller('FeedController', FeedController)
+    goTo: (state, params) ->
+      $state.go(state, params)

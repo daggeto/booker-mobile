@@ -6,7 +6,7 @@ app.directive('bookButton', ->
 
   templateUrl: 'templates/components/book_button.html'
 
-  link: (scope, element, attr) ->
+  link: (scope, element) ->
     element.on('click', =>
       scope.$emit('bookEvent', {event: scope.event, index: scope.index})
     )

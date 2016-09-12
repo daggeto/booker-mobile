@@ -1,66 +1,48 @@
-class ServicePhotosController
-  constructor:( $scope,
-                $stateParams,
-                $ionicSlideBoxDelegate,
-                $ionicLoading,
-                UserServicesService,
-                ServicePhotosService,
-                service) ->
-    [
-      @scope,
-      @stateParams,
-      @ionicSlideBoxDelegate,
-      @ionicLoading,
-      @UserServicesService,
-      @ServicePhotosService,
-      @service
-    ] = arguments
+app.controller 'ServicePhotosController',
+  ($stateParams, $ionicSlideBoxDelegate, UserServicesService, ServicePhotosService, service) ->
+    new class ServicePhotosController
+      constructor: ->
+        @service = service
 
-    @scope.vm = this
+      onPhotoTaken: (response) ->
+        @superAfterUpload = response.afterPhotoUpload
+        return @updatePhoto(response) if response.photo_id
 
-    this
+        @savePhoto(response)
 
-  onPhotoTaken: (response) ->
-    @superAfterUpload = response.afterPhotoUpload
-    return @updatePhoto(response) if response.photo_id
+      savePhoto: (data) ->
+        ServicePhotosService
+          .save(service_id: $stateParams.id, photo_uri: data.photo_uri)
+          .then(@afterUpload, @error)
 
-    @savePhoto(response)
+      updatePhoto: (data) =>
+        ServicePhotosService
+          .update(
+            service_id: $stateParams.id,
+            photo_id: data.photo_id,
+            photo_uri: data.photo_uri
+          ).then(@afterUpload, @error)
 
-  savePhoto: (data) ->
-    @ServicePhotosService
-      .save(service_id: @stateParams.id, photo_uri: data.photo_uri)
-      .then(@afterUpload, @error)
+      afterUpload: =>
+        @reloadPhotos()
+        @superAfterUpload()
 
-  updatePhoto: (data) =>
-    @ServicePhotosService
-      .update(
-        service_id: @stateParams.id,
-        photo_id: data.photo_id,
-        photo_uri: data.photo_uri
-      ).then(@afterUpload, @error)
+      reloadPhotos: =>
+        UserServicesService.service_photos(service_id: service.id).then (service_photos) =>
+          service.service_photos = service_photos
+          $ionicSlideBoxDelegate.update()
 
-  afterUpload: =>
-    @reloadPhotos()
-    @superAfterUpload()
+      deletePhoto: (id)->
+        ServicePhotosService.delete(id).then(@reloadPhotos, @error)
 
-  reloadPhotos: =>
-    @UserServicesService.service_photos(service_id: @service.id).then (service_photos) =>
-      @service.service_photos = service_photos
-      @ionicSlideBoxDelegate.update()
+      error: (error) =>
+        @superAfterUpload()
 
-  deletePhoto: (id)->
-    @ServicePhotosService.delete(id).then(@reloadPhotos, @error)
+      showAddPhoto: ->
+        service.service_photos.length < 5
 
-  error: (error) =>
-    @superAfterUpload()
+      onImageClick: ->
+        @imageClicked = !@imageClicked
 
-  showAddPhoto: ->
-    @service.service_photos.length < 5
-
-  onImageClick: ->
-    @imageClicked = !@imageClicked
-
-  clickedClass: (clazz)->
-    return "#{clazz}__clicked" if @imageClicked
-
-app.controller('ServicePhotosController', ServicePhotosController)
+      clickedClass: (clazz)->
+        return "#{clazz}__clicked" if @imageClicked

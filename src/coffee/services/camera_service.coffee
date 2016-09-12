@@ -1,29 +1,23 @@
-class CameraService
-  'use strict'
+app.factory 'CameraService', ($cordovaCamera) ->
+  new class CameraService
+    capturePhoto: ->
+      @takePhoto(Camera.PictureSourceType.CAMERA)
 
-  constructor: ($cordovaCamera) ->
-    @cordovaCamera = $cordovaCamera
+    selectPhoto: ->
+      @takePhoto(Camera.PictureSourceType.PHOTOLIBRARY)
 
-  capturePhoto: ->
-    @takePhoto(Camera.PictureSourceType.CAMERA)
+    takePhoto: (sourceType) ->
+      options = {
+        quality: 50
+        destinationType: Camera.DestinationType.FILE_URI
+        sourceType: sourceType
+        encodingType: Camera.EncodingType.JPEG
+        popoverOptions: CameraPopoverOptions
+        saveToPhotoAlbum: false
+        correctOrientation: true
+      }
 
-  selectPhoto: ->
-    @takePhoto(Camera.PictureSourceType.PHOTOLIBRARY)
+      $cordovaCamera.getPicture(options)
 
-  takePhoto: (sourceType) ->
-    options = {
-      quality: 50
-      destinationType: Camera.DestinationType.FILE_URI
-      sourceType: sourceType
-      encodingType: Camera.EncodingType.JPEG
-      popoverOptions: CameraPopoverOptions
-      saveToPhotoAlbum: false
-      correctOrientation: true
-    }
-
-    @cordovaCamera.getPicture(options)
-
-  cleanup: ->
-    @cordovaCamera.cleanup(console.log, console.log);
-
-app.service('CameraService', CameraService)
+    cleanup: ->
+      $cordovaCamera.cleanup(console.log, console.log);
