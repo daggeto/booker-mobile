@@ -23,7 +23,7 @@ var paths = {
   sass: ['./src/sass/**/*.scss'],
   coffee: ['./src/coffee/**/*.coffee'],
   slim: ['./src/slim/**/*.slim'],
-  ng_annotate: ['./www/js/*.js']
+  ng_annotate: ['./www/js/*.js'],
 };
 
 gulp.task('clean', function(done){
@@ -124,9 +124,9 @@ gulp.task('prod',
   gulpSequence(
     'clean',
     'sass',
+    'slim-cache',
     'prod-coffee',
     'ng_annotate' ,
-    'slim-cache',
     'slim-index',
     'inject-scripts'
   )

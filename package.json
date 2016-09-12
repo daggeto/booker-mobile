@@ -16,6 +16,7 @@
   "devDependencies": {
     "async": "^2.0.1",
     "bower": "^1.7.9",
+    "cordova-uglify": "^0.2.5",
     "del": "^2.2.2",
     "gulp": "^3.9.1",
     "gulp-angular-templatecache": "^2.0.0",
@@ -30,9 +31,11 @@
     "gulp-sequence": "^0.4.6",
     "gulp-slim": "^0.3.0",
     "gulp-uglify": "^2.0.0",
+    "gulp-useref": "^3.1.2",
     "gulp-util": "^3.0.7",
     "ionic-minify": "^2.0.10",
     "jshint": "^2.9.3",
+    "mv": "^2.1.1",
     "pump": "^1.0.1",
     "shelljs": "^0.6.0"
   },
@@ -57,6 +60,8 @@
   ],
   "jshintConfig": {
     "expr": true,
-    "boss": true
+    "boss": true,
+    "-W058": true,
+    "-W056": true
   }
 }
