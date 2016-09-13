@@ -13,7 +13,7 @@ app = angular.module(
     'ngMessages',
     'ionic.cloud',
     'ngAnimate',
-    'templates'
+    @@templates
   ]
 )
 .config((AjaxInterceptorProvider, $authProvider, API_URL) ->

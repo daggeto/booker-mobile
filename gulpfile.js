@@ -6,8 +6,6 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var changed = require('gulp-changed');
-var ngAnnotate = require('gulp-ng-annotate');
-var sh = require('shelljs');
 var coffee = require('gulp-coffee');
 var slim = require("gulp-slim");
 var inject = require('gulp-inject');
@@ -18,12 +16,12 @@ var pump = require('pump');
 var templateCache = require('gulp-angular-templatecache');
 var ngAnnotate = require('gulp-ng-annotate');
 var flatten = require('gulp-flatten');
+var replace = require('gulp-replace-task');
 
 var paths = {
   sass: ['./src/sass/**/*.scss'],
   coffee: ['./src/coffee/**/*.coffee'],
-  slim: ['./src/slim/**/*.slim'],
-  ng_annotate: ['./www/js/*.js'],
+  slim: ['./src/slim/**/*.slim']
 };
 
 gulp.task('clean', function(done){
@@ -48,12 +46,11 @@ gulp.task('sass', function(done) {
     .on('end', done);
 });
 
-gulp.task('coffee', function(done) {
-  gulp.src(paths.coffee)
-    .pipe(coffee({bare: true})
-    .on('error', gutil.log.bind(gutil, 'Coffee Error')))
-    .pipe(gulp.dest('./www/js'))
-    .on('end', done)
+gulp.task('ng_annotate', function (done) {
+  gulp.src('./www/js/**/*.js')
+    .pipe(ngAnnotate({single_quotes: true}))
+    .pipe(gulp.dest('./www/js/'))
+    .on('end', done);
 });
 
 gulp.task('inject-scripts', function (done) {
@@ -65,35 +62,33 @@ gulp.task('inject-scripts', function (done) {
     .on('end', done);
 });
 
-gulp.task('watch', function() {
-  gulp.watch(paths.sass, ['sass'])
-  gulp.watch(paths.coffee, ['coffee'])
-  gulp.watch(paths.slim, ['slim'])
+// Development
+gulp.task('default', gulpSequence('compile_dev', 'inject-scripts'));
+
+gulp.task('compile_dev', function(done) {
+  gulpSequence(['sass', 'js', 'slim'], done)
 });
 
-gulp.task('watch-prod', function(){
-  gulp.watch(paths.coffee, ['annotate-coffee'])
+gulp.task('js', function(done){
+  gulpSequence('coffee', 'ng_annotate', done)
 });
 
-gulp.task('annotate-coffee',gulpSequence('prod-coffee', 'ng_annotate'));
-
-gulp.task('prod-coffee', function(done){
-  pump([
-      gulp.src(paths.coffee),
-      coffee({bare: true}),
-      concat('script.js'),
-      gulp.dest('./www/js/')
-    ],
-    done
-  );
-});
-
-gulp.task('slim-cache', function (done) {
-  gulp.src(paths.slim)
-    .pipe(slim({pretty: true, options: "attr_list_delims={'(' => ')', '[' => ']'}"}))
-    .pipe(templateCache({standalone:true}))
+gulp.task('coffee', function(done) {
+  gulp.src(paths.coffee)
+    .pipe(
+      replace({
+        patterns: [
+          {
+            match: 'templates',
+            replacement: ''
+          }
+        ]
+      })
+    )
+    .pipe(coffee({bare: true})
+    .on('error', gutil.log.bind(gutil, 'Coffee Error')))
     .pipe(gulp.dest('./www/js'))
-    .on('end', done);
+    .on('end', done)
 });
 
 gulp.task('slim', function(done){
@@ -104,30 +99,51 @@ gulp.task('slim', function(done){
     .on('end', done);
 });
 
-gulp.task('slim-index', function (done) {
+gulp.task('watch', function() {
+  gulp.watch(paths.sass, ['sass'])
+  gulp.watch(paths.coffee, ['js'])
+  gulp.watch(paths.slim, ['slim'])
+});
+
+// Production
+gulp.task('prod', gulpSequence('compile_prod','ng_annotate' , 'slim_index', 'inject-scripts'));
+
+gulp.task('compile_prod', function(done){
+  gulpSequence(['clean', 'sass', 'slim_cache', 'coffee_prod'], done)
+});
+
+gulp.task('slim_cache', function (done) {
+  gulp.src(paths.slim)
+    .pipe(slim({pretty: true, options: "attr_list_delims={'(' => ')', '[' => ']'}"}))
+    .pipe(templateCache({standalone:true}))
+    .pipe(gulp.dest('./www/js'))
+    .on('end', done);
+});
+
+gulp.task('coffee_prod', function(done){
+  pump([
+      gulp.src(paths.coffee),
+      replace({
+        patterns: [
+          {
+            match: 'templates',
+            replacement: "'templates'"
+          }
+        ]
+      }),
+      coffee({bare: true}),
+      concat('script.js'),
+      gulp.dest('./www/js/')
+    ],
+    done
+  );
+});
+
+gulp.task('slim_index', function (done) {
   gulp.src('./src/slim/index.slim')
     .pipe(slim({pretty: true, options: "attr_list_delims={'(' => ')', '[' => ']'}"}))
     .pipe(gulp.dest("./www"))
     .on('end', done);
 });
 
-gulp.task('ng_annotate', function (done) {
-  gulp.src('./www/js/*.js')
-    .pipe(ngAnnotate({single_quotes: true}))
-    .pipe(gulp.dest('./www/js/'))
-    .on('end', done);
-});
 
-gulp.task('default', ['sass', 'coffee', 'slim-cache', 'slim-index']);
-gulp.task('index', gulpSequence('default', 'inject-scripts'));
-gulp.task('prod',
-  gulpSequence(
-    'clean',
-    'sass',
-    'slim-cache',
-    'prod-coffee',
-    'ng_annotate' ,
-    'slim-index',
-    'inject-scripts'
-  )
-)
