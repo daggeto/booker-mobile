@@ -1,6 +1,9 @@
 app.controller 'ProfileEditController',
   ($scope, currentUser, ProfileImage, ImageService, AuthService) ->
     new class ProfileEditController
+      constructor: ->
+        @currentUser = currentUser
+
       onPhotoTaken: (response) ->
         @superAfterUpload = response.afterPhotoUpload
         return @updatePhoto(response) if currentUser.profile_image

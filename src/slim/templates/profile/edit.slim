@@ -7,7 +7,7 @@ ion-view[view-title="My Profile"]
         | Back
     h1.title My Profile
   ion-content.profile[lazy-scroll]
-    img.profile--image[
+    img[
       image-lazy-src="{{vm.currentUser.profile_image.preview_url}}"
       lazy-scroll-resize="true"
       image-lazy-loader="ios"
