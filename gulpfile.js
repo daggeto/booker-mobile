@@ -17,6 +17,7 @@ var templateCache = require('gulp-angular-templatecache');
 var ngAnnotate = require('gulp-ng-annotate');
 var flatten = require('gulp-flatten');
 var replace = require('gulp-replace-task');
+var args  = require('yargs').argv;
 
 var paths = {
   sass: ['./src/sass/**/*.scss'],
@@ -53,7 +54,13 @@ gulp.task('ng_annotate', function (done) {
     .on('end', done);
 });
 
-gulp.task('inject-scripts', function (done) {
+gulp.task('move_lib', function (done){
+  gulp.src('./src/lib/**/*')
+    .pipe(gulp.dest('./www/lib/'))
+    .on('end', done);
+});
+
+gulp.task('inject_scripts', function (done) {
   var sources = gulp.src(['./www/js/**/*.js'], {read: false});
 
   gulp.src('./www/index.html')
@@ -63,10 +70,10 @@ gulp.task('inject-scripts', function (done) {
 });
 
 // Development
-gulp.task('default', gulpSequence('compile_dev', 'inject-scripts'));
+gulp.task('default', gulpSequence('compile_dev', 'inject_scripts'));
 
 gulp.task('compile_dev', function(done) {
-  gulpSequence(['sass', 'js', 'slim'], done)
+  gulpSequence(['sass', 'js', 'slim', 'move_lib'], done)
 });
 
 gulp.task('js', function(done){
@@ -106,10 +113,10 @@ gulp.task('watch', function() {
 });
 
 // Production
-gulp.task('prod', gulpSequence('compile_prod','ng_annotate' , 'slim_index', 'inject-scripts'));
+gulp.task('prod', gulpSequence('compile_prod','ng_annotate' , 'slim_index', 'inject_scripts'));
 
 gulp.task('compile_prod', function(done){
-  gulpSequence(['clean', 'sass', 'slim_cache', 'coffee_prod'], done)
+  gulpSequence(['clean', 'sass', 'slim_cache', 'coffee_prod', 'move_lib'], done)
 });
 
 gulp.task('slim_cache', function (done) {
