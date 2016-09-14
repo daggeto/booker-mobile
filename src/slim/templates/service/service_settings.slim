@@ -7,7 +7,7 @@ ion-view
     h1.title Settings
     .buttons
       button.button.button-clear.button-positive.pull-right[ng-click="vm.save()"] Save
-  ion-content
+  ion-content[lazy-scroll]
     ui-view[name="photos"]
     .list
       ion-toggle[ng-model="vm.service.published" ng-change="vm.togglePublication()"] Provider Settings

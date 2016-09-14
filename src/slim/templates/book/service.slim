@@ -3,7 +3,7 @@ ion-view[can-swipe-back="true"]
     .buttons
       a.button.icon-left.ion-chevron-left.button-clear.button-dark[ng-click="vm.back()"] Back
     h1.title {{vm.service.name}}
-  ion-content.has-header
+  ion-content.has-header[lazy-scroll]
     photos-carousel[photos='vm.service.service_photos']
     .book-service--description
       | {{vm.service.description}}
