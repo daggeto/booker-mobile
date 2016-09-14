@@ -1,7 +1,7 @@
 {
-  "name": "angular-sanitize",
-  "version": "1.5.3",
-  "description": "AngularJS module for sanitizing HTML",
+  "name": "angular-messages",
+  "version": "1.5.8",
+  "description": "AngularJS module that provides enhanced support for displaying messages within templates",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,7 +14,6 @@
     "angular",
     "framework",
     "browser",
-    "html",
     "client-side"
   ],
   "author": "Angular Core Team <angular-core+npm@google.com>",
@@ -22,5 +21,12 @@
   "bugs": {
     "url": "https://github.com/angular/angular.js/issues"
   },
-  "homepage": "http://angularjs.org"
+  "homepage": "http://angularjs.org",
+  "jspm": {
+    "shim": {
+      "angular-messages": {
+        "deps": ["angular"]
+      }
+    }
+  }
 }
