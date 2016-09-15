@@ -7,6 +7,8 @@ app.controller 'EventsController',
         @service = service
         @Event = Event
 
+        @initialEventStatus = @event.status
+
         @bind()
 
       bind: ->
@@ -71,5 +73,5 @@ app.controller 'EventsController',
       isEditState: ->
         $state.is('service.calendar.edit_event')
 
-      isEventNotFree: (event) ->
-        event.status == EVENT_STATUS.PENDING || event.status == EVENT_STATUS.BOOKED
+      isEditable: (event) ->
+        @initialEventStatus == EVENT_STATUS.FREE

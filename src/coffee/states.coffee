@@ -89,7 +89,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
           Event.$new()
       views:
         '@':
-          templateUrl: 'templates/calendar/event.html'
+          templateUrl: 'templates/calendar/event/add.html'
           controller: 'EventsController as vm')
 
     .state('service.calendar.edit_event'
@@ -103,7 +103,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
           eventsService.findById($stateParams.event_id).$promise
       views:
         '@':
-          templateUrl: 'templates/calendar/event.html'
+          templateUrl: 'templates/calendar/event/edit.html'
           controller: 'EventsController as vm')
 
     .state('service.calendar.preview_event'
@@ -116,7 +116,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
           eventsService.findById($stateParams.event_id).$promise
       views:
         '@':
-          templateUrl: 'templates/calendar/preview_event.html'
+          templateUrl: 'templates/calendar/event/preview.html'
           controller: 'EventsController as vm')
 
     .state('service.service_settings'
