@@ -18,6 +18,16 @@ var ngAnnotate = require('gulp-ng-annotate');
 var flatten = require('gulp-flatten');
 var replace = require('gulp-replace-task');
 var args  = require('yargs').argv;
+var fs = require('fs');
+
+var getSettings = function (){
+  var env = args.env || 'dev';
+
+  var filename = env + '.json';
+  return JSON.parse(fs.readFileSync('./config/' + filename, 'utf8'));
+};
+
+var settings = getSettings();
 
 var paths = {
   sass: ['./src/sass/**/*.scss'],
@@ -87,7 +97,11 @@ gulp.task('coffee', function(done) {
         patterns: [
           {
             match: 'templates',
-            replacement: ''
+            replacement: settings.templates
+          },
+          {
+            match: 'api_url',
+            replacement: settings.apiUrl
           }
         ]
       })
@@ -135,6 +149,10 @@ gulp.task('coffee_prod', function(done){
           {
             match: 'templates',
             replacement: "'templates'"
+          },
+          {
+            match: 'api_url',
+            replacement: args.apiUrl
           }
         ]
       }),
