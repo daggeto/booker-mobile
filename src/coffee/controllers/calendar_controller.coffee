@@ -60,7 +60,7 @@ app.controller 'CalendarController',
       actionButtons: (event) ->
         buttons = []
 
-        buttons.push @button('Preview', 'ion-eye', @onPreview, event) if event.past
+        buttons.push @button('Preview', 'ion-eye', @onPreview, event)
 
         unless event.past || Event.isEventNotFree(event)
           buttons.push @button('Edit', 'ion-edit', @onEdit, event)
@@ -68,6 +68,9 @@ app.controller 'CalendarController',
         if event.status == EVENT_STATUS.PENDING
           buttons.push @button('Approve', 'ion-checkmark-round', @approveEvent, event)
           buttons.push @button('Disapprove', 'ion-close-round', @disapproveEvent, event)
+
+        if event.status == EVENT_STATUS.BOOKED && !event.past
+          buttons.push @button('Cancel', 'ion-close-round', @cancelEvent, event)
 
         buttons
 
@@ -104,6 +107,9 @@ app.controller 'CalendarController',
 
       disapproveEvent: (event) =>
         @changeStatus('disapprove', event.reservation)
+
+      cancelEvent: (event) =>
+        @changeStatus('cancel_by_service', event.reservation)
 
       changeStatus: (action, reservation) =>
         ReservationsService.do(action, reservation.id).then (response) =>

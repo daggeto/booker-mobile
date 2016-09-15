@@ -40,5 +40,5 @@ app.controller 'ReservationsController',
           @cancelReservation(reservation) if confirmed
 
       cancelReservation: (reservation) ->
-        ReservationsService.do('cancel', reservation.id).then =>
+        ReservationsService.do('cancel_by_client', reservation.id).then =>
           @reloadReservations()
