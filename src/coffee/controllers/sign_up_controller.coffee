@@ -10,7 +10,7 @@ app.controller 'SignUpController', ($scope, AuthService) ->
       return unless form.$valid
 
       AuthService.signup(@signup_data)
-        .then (response) =>
+        .then =>
           $scope.navigator.go('login', message: 'You are registered. You an login now.')
         .catch (error) =>
           errors = error.data.errors

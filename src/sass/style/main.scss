@@ -28,6 +28,10 @@ $default-padding: 16px;
   }
 }
 
+.padding-left {
+  padding-left: $size-small;
+}
+
 .pull-left {
   float: left;
 }
@@ -88,4 +92,8 @@ $default-padding: 16px;
   color: $gray;
   font-size: $font-default;
   padding : $r-size-small;
+}
+
+.border-left {
+  border-left: $border-default;
 }

@@ -24,8 +24,8 @@ app.factory 'Event', ($resource, EVENT_STATUS, API_URL) ->
       {
         description: ''
         status: EVENT_STATUS.FREE
-        start_at: ''
-        end_at: ''
+        start_at: null
+        end_at: null
       }
 
     isEventNotFree: (event) ->

@@ -1,42 +1,45 @@
 ion-view
-  ion-header-bar[align-title="center" ]
-    .buttons
-      a.button.icon-left.ion-chevron-left.button-clear.button-dark[
-        ng-click="navigator.back()"] Back
-    h1.title {{vm.calendar.selectedDate.format() | date }}
+  form[name="editEventForm" ng-submit="vm.save(editEventForm)" novalidate]
+    ion-header-bar.b-header[align-title="center" ]
+      .buttons
+        a.button.icon-left.ion-chevron-left.button-clear.button-dark[
+          ng-click="navigator.back()"] Back
+      h1.title {{vm.calendar.selectedDate.format() | date }}
 
-    .buttons
-      button.button.button-clear.button-positive.pull-right[ng-click="vm.save()"] Save
-  ion-content[scroll="false"]
-    .list
-      label.item.item-input.padding
-        span.input-label Description:
-        input[type="text" ng-model="vm.event.description"]
+      .buttons
+        button.button.button-clear.button-positive.pull-right[
+          ng-click="editEventForm.submit()"
+        ] Save
+    ion-content[scroll="false"]
+      .list
+        label.item.item-input.padding
+          span.input-label Description:
+          input[type="text" ng-model="vm.event.description"]
 
-      label.item.item-select.padding[ng-show="vm.isEditable()"]
-        span.input-label Status:
-        select[
-          ng-model="vm.event.status"
-          ng-options="status.value as status.label for status in vm.Event.statuses"]
+        .row.b-event--time-group
+          .col.b-event--time
+            .col From:
+            .col.item-input
+              input[
+                required
+                name="start_at"
+                type="time"
+                ng-model="vm.event.start_at"
+                ng-change="vm.startAtChanged()"
+                placeholder="H:mm"
+              ]
+          .col.b-event--time.border-left
+            .col To:
+            .col.item-input
+              input[type="time" ng-model="vm.event.end_at" placeholder="H:mm"]
+        error-messages.padding-left[
+          form='editEventForm'
+          for='start_at'
+          required="From time is required"
+        ]
 
-      label.item.item-input.padding[
-        ion-datetime-picker time
-        default-date="vm.calendar.selectedDate"
-        title="Time From"
-        name="from"
-        ng-model="vm.event.start_at"
-        ng-show="vm.isEditable()"
-      ]
-        .col.input-label From:
-        .col.align-right {{ vm.event.start_at | date: "H:mm" }}
-
-      label.item.item-input.padding[
-        ion-datetime-picker time
-        default-date="vm.calendar.selectedDate"
-        title="Time To"
-        name="to"
-        ng-model="vm.event.end_at"
-        ng-show="vm.isEditable()"
-      ]
-        .col.input-label To:
-        .col.align-right {{ vm.event.end_at | date: "H:mm" }}
+        label.item.item-select.padding[ng-show="vm.isEditable()"]
+          span.input-label Status:
+          select[
+            ng-model="vm.event.status"
+            ng-options="status.value as status.label for status in vm.Event.statuses"]

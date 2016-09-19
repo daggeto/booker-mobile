@@ -1,71 +1,81 @@
 app.controller 'EventsController',
-  ($scope, $state, $stateParams, ionicToast, Event, EventsService, event, service, EVENT_STATUS) ->
+  (
+    $scope,
+    $state,
+    $stateParams,
+    ionicToast,
+    moment,
+    Event,
+    EventsService,
+    event,
+    service,
+    EVENT_STATUS
+  ) ->
     new class EventsController
       constructor:  ->
+        @ERROR_FIELDS = ['start_at']
+
         @calendar = $stateParams.calendar
-        @event = event
         @service = service
+        @event = event
         @Event = Event
 
-        @initialEventStatus = @event.status
+        @initialEventStatus = event.status
 
-        @bind()
+        @initEvent()
 
-      bind: ->
-        $scope.$on 'timeCommited', @changeEndDate if @isAddState()
+      initEvent: ->
+        unless event.start_at
+          event.start_at = @modifyDate(new Date())
+          @recalculateEndDate()
+        else
+          event.start_at = new Date(event.start_at)
+          event.end_at = new Date(event.end_at)
 
-      changeEndDate: (_, params) =>
-        return unless params.timePickerName == 'from'
-        return if event.end_at && moment(params.date).isBefore(event.end_at)
+      recalculateEndDate: ->
+        event.end_at =
+          moment(event.start_at)
+            .add(@service.duration, 'minutes')
+            .startOf('minute')
+            .toDate()
 
-        event.end_at = moment(params.date).add(@service.duration, 'minutes').toDate()
+      modifyDate: (date) =>
+        date_moment = moment(date)
 
-      save: =>
+        moment(@calendar.selectedDate)
+        .hours(date_moment.hours())
+        .minutes(date_moment.minutes())
+        .toDate()
+
+      save: (form) =>
+        @form = form
+
         return unless @validateTime()
 
         event.service_id = @service.id
-        event.start_at = @modifyDate(event.start_at)
-        event.end_at = @modifyDate(event.end_at)
 
-        if @isAddState()
-          EventsService.save(event).then(@response).catch(@failure)
+        return EventsService.save(event).then(@response).catch(@failure) if @isAddState()
 
-        if @isEditState()
-          EventsService.update(event).then(@response).catch(@failure)
-
-      response: (response) =>
-        $state.transitionTo('service.calendar', {id: @service.id}, reload: true)
-
-      failure: (response) =>
-        @showToast(response.data.message)
+        EventsService.update(event).then(@response).catch(@failure) if @isEditState()
 
       validateTime: ->
-        return false unless @checkRequired(event.start_at, 'Time From')
-        return false unless @checkRequired(event.end_at, 'Time To')
-
         if moment(event.start_at).isAfter(event.end_at)
-          @showToast("Time From can't be after Time To")
+          @form['start_at'].$error.serverMessage = "Time From can't be after Time To"
+          return false
+
+        if event.start_at < new Date()
+          @form['start_at'].$error.serverMessage = 'Time should be in future'
           return false
 
         true
 
-      checkRequired: (value, fieldName) ->
-        if value == ''
-           @showToast("#{fieldName} is required")
-           return false
+      response: (response) =>
+        $state.transitionTo('service.calendar', {id: @service.id}, reload: true)
 
-         true
-
-      modifyDate: (date) =>
-        date_moment= moment(date)
-
-        moment(@calendar.selectedDate)
-          .hours(date_moment.hours())
-          .minutes(date_moment.minutes())
-          .format(@calendar.dateTimeFormat)
-
-      showToast: (message) ->
-        ionicToast.show(message, 'bottom', false, 3000);
+      failure: (error) =>
+        errors = error.data.errors
+        for key, value of errors when key in @ERROR_FIELDS
+          @form[key].$error.serverMessage = value[0]
 
       isAddState: ->
         $state.is('service.calendar.add_event')

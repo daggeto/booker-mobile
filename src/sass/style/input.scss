@@ -1,5 +1,7 @@
 $wrapper-height: 10em;
 $textarea-height: 100%;
+$time-width: 7em;
+$time-font-size: 2.5em;
 
 .b-textarea {
   height: $wrapper-height;
@@ -12,5 +14,21 @@ $textarea-height: 100%;
 .b-input {
   input {
     text-align: right;
+  }
+}
+
+.b-event {
+  &--time-group {
+    padding: $size-small;
+  }
+
+  &--time {
+    padding: 0;
+
+    input {
+      font-size: $time-font-size;
+      font-weight: lighter;
+      width: $time-width;
+    }
   }
 }
