@@ -70,7 +70,10 @@ app.controller 'EventsController',
         true
 
       response: (response) =>
-        $state.transitionTo('service.calendar', {id: @service.id}, reload: true)
+        $state.transitionTo('service.calendar',
+          id: @service.id
+          selectedDate: @calendar.selectedDate 
+        )
 
       failure: (error) =>
         errors = error.data.errors
