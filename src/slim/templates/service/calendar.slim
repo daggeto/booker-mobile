@@ -36,8 +36,8 @@ ion-view[can-swipe-back="true"]
     ]
       .hint-text.flexbox.center[ng-hide="vm.calendar.events.length > 0"] No events
       event[ng-repeat="event in vm.calendar.events track by event.id"
-        event="event"
         name="event.label"
-        target="event"
+        event="event"
+        reservation="event.reservation"
         avatar="{{event.user.profile_image.preview_url}}"
       ]

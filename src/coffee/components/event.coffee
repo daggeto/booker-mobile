@@ -2,17 +2,17 @@ app.directive('event', ->
   restrict: 'E'
   scope:
     event: '='
+    reservation: '='
     name: '='
-    target: '='
     avatar: '@'
 
   templateUrl: 'templates/components/event.html',
 
   link: (scope, element) ->
     element.on 'click', =>
-      scope.$emit('onEventClick', target: scope.target)
+      scope.$emit('onEventClick', event: scope.event, reservation: scope.reservation)
     element.find('img').on 'click', (event) =>
-      scope.$emit('onEventAvatarClick', target: scope.target)
+      scope.$emit('onEventAvatarClick', event: scope.event, reservation: scope.reservation)
       event.stopPropagation()
 
 )

@@ -6,6 +6,9 @@ app.factory 'UserServicesService', ($cacheFactory, UserService) ->
     service_photos: (params) ->
       UserService.$service_photos.query(params).$promise
 
+    reservations: (service_id, group = true) ->
+      UserService.$r.get(id: service_id, action: 'reservations', group: group).$promise
+
     findById: (id) ->
       UserService.$r.get(id: id).$promise
 

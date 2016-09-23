@@ -128,6 +128,14 @@ app.config ($stateProvider, $urlRouterProvider) ->
         'photos@service.service_settings':
           templateUrl: 'templates/service/photos.html'
           controller: 'ServicePhotosController as vm')
+
+    .state('service.reservations'
+      url: '/reservations/'
+      views:
+        'reservations@service':
+          templateUrl: "templates/service/reservations.html"
+          controller: 'ServiceReservationsController as vm')
+
     .state('book_service',
       cache: false,
       url: '/book_service/:id',

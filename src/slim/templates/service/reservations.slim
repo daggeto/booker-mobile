@@ -1,0 +1,19 @@
+ion-view[view-title="Reservations"]
+  ion-header-bar.b-header[align-title="center"]
+    .buttons
+      a.button.icon-left.ion-chevron-left.button-clear.button-dark[
+        ng-click="navigator.back()"
+      ]
+        | Back
+    h1.title  Reservations
+  ion-content.padding
+    ion-refresher[on-refresh="vm.reloadReservations()"]
+    .day-reservations[ng-repeat="(day, day_reservations) in vm.reservations"]
+      .list.card
+        .item.item-divider.align-center {{day | todayTomorrow}}
+        event[ng-repeat="reservation in day_reservations"
+          name="reservation.event.label"
+          event="reservation.event"
+          reservation="reservation"
+          avatar="{{reservation.event.user.profile_image.preview_url}}"
+        ]
