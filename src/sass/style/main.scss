@@ -28,6 +28,10 @@ $default-padding: 16px;
   }
 }
 
+.no-padding {
+  padding: 0;
+}
+
 .padding-left {
   padding-left: $size-small;
 }
@@ -96,4 +100,8 @@ $default-padding: 16px;
 
 .border-left {
   border-left: $border-default;
+}
+
+.hidden {
+  display: none;
 }

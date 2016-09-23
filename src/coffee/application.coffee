@@ -12,7 +12,7 @@ app = angular.module(
     'ng-token-auth',
     'ngMessages',
     'ionic.cloud',
-    'ngAnimate',
+    'ngAnimate'
     @@templates
   ]
 )

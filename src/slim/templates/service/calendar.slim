@@ -16,7 +16,7 @@ ion-view[can-swipe-back="true"]
       .col-center[ng-click="vm.calendar.previousWeek()"]
         .ion-chevron-left.calendar__arrow.pull-right
       .col
-        .button-bar
+        .button-bar[on-swipe-left="vm.onWeekSwipe('left')" on-swipe-right="vm.onWeekSwipe('right')"]
           .button.calendar--day[
             ng-repeat="day in vm.calendar.selectedWeek"
             ng-class="{
@@ -25,11 +25,16 @@ ion-view[can-swipe-back="true"]
             }"
             ng-click="vm.selectDate(day.moment)"
           ]
+            .day--name{{ day.name }}
             | {{ day.number }}
 
       .col-center[ng-click="vm.calendar.nextWeek()"]
         .ion-chevron-right.calendar__arrow.pull-left
-    .list.card[ng-show="vm.calendar.events.length > 0"]
+    .list.card[
+      on-swipe-left="vm.onDaySwipe('left')"
+      on-swipe-right="vm.onDaySwipe('right')"
+    ]
+      .hint-text.flexbox.center[ng-hide="vm.calendar.events.length > 0"] No events
       event[ng-repeat="event in vm.calendar.events track by event.id"
         event="event"
         name="event.label"

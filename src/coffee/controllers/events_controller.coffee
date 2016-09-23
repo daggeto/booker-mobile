@@ -45,6 +45,7 @@ app.controller 'EventsController',
         moment(@calendar.selectedDate)
         .hours(date_moment.hours())
         .minutes(date_moment.minutes())
+        .startOf('minute')
         .toDate()
 
       save: (form) =>
@@ -59,12 +60,12 @@ app.controller 'EventsController',
         EventsService.update(event).then(@response).catch(@failure) if @isEditState()
 
       validateTime: ->
-        if moment(event.start_at).isAfter(event.end_at)
-          @form['start_at'].$error.serverMessage = "Time From can't be after Time To"
+        if (event.start_at > event.end_at)
+          @form['start_at'].$error.message = "Time From can't be after Time To"
           return false
 
         if event.start_at < new Date()
-          @form['start_at'].$error.serverMessage = 'Time should be in future'
+          @form['start_at'].$error.message = 'Time should be in future'
           return false
 
         true
@@ -72,7 +73,7 @@ app.controller 'EventsController',
       response: (response) =>
         $state.transitionTo('service.calendar',
           id: @service.id
-          selectedDate: @calendar.selectedDate 
+          selectedDate: @calendar.selectedDate
         )
 
       failure: (error) =>

@@ -20,6 +20,19 @@ app.factory('Calendar', (moment)->
       @startOfWeek.subtract(1 , 'week')
       @recalculateWeek()
 
+    previousDay: ->
+      @selectedDate = @selectedDate.subtract(1 , 'day')
+
+      @previousWeek() unless @isInSelectedWeek(@selectedDate)
+
+    nextDay: ->
+      @selectedDate = @selectedDate.add(1 , 'day')
+
+      @nextWeek() unless @isInSelectedWeek(@selectedDate)
+
+    isInSelectedWeek: (date) ->
+      date.isSameOrAfter(@selectedWeek[0].moment) && date.isSameOrBefore(@selectedWeek[6].moment)
+
     recalculateWeek: ->
       @selectedWeek = [0..6].map (index, i ) =>
         day = moment(@startOfWeek).add(i, 'day')

@@ -18,17 +18,13 @@ $time-font-size: 2.5em;
 }
 
 .b-event {
-  &--time-group {
-    padding: $size-small;
-  }
-
   &--time {
-    padding: 0;
+    padding: $size-default;
+    text-align: center;
 
     input {
-      font-size: $time-font-size;
-      font-weight: lighter;
-      width: $time-width;
+      display: inline-block;
+      margin-left: $size-small;
     }
   }
 }

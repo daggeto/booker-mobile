@@ -128,6 +128,18 @@ app.controller 'CalendarController',
       addEvent: ->
         $scope.navigator.go('service.calendar.add_event', calendar: @calendar)
 
+      onWeekSwipe: (direction) =>
+        @calendar.nextWeek() if direction == 'left'
+        @calendar.previousWeek() if direction == 'right'
+
+        @reloadEvents()
+
+      onDaySwipe: (direction) =>
+        @calendar.nextDay() if direction == 'left'
+        @calendar.previousDay() if direction == 'right'
+
+        @reloadEvents()
+
       isPast: ->
         @calendar.selectedDate.isBefore(@calendar.currentDate)
 

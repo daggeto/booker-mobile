@@ -5,3 +5,5 @@ node_modules/
 platforms/
 plugins/
 config/dev.json
+.DS_Store
+

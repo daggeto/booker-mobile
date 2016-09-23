@@ -16,27 +16,22 @@ ion-view
           span.input-label Description:
           input[type="text" ng-model="vm.event.description"]
 
-        .row.b-event--time-group
-          .col.b-event--time
-            .col From:
-            .col.item-input
-              input[
-                required
-                name="start_at"
-                type="time"
-                ng-model="vm.event.start_at"
-                ng-change="vm.startAtChanged()"
-                placeholder="H:mm"
-              ]
-          .col.b-event--time.border-left
-            .col To:
-            .col.item-input
-              input[type="time" ng-model="vm.event.end_at" placeholder="H:mm"]
-        error-messages.padding-left[
-          form='editEventForm'
-          for='start_at'
-          required="From time is required"
-        ]
+        .row.no-padding
+          .col.item.item-input.b-event--time
+            | From:
+            input[
+              name="start_at"
+              type="time"
+              ng-model="vm.event.start_at"
+              ng-change="vm.startAtChanged()"
+            ]
+          .col.item.item-input.b-event--time
+            | To:
+            input[type="time" ng-model="vm.event.end_at" placeholder="H:mm"]
+          error-messages.padding-left[
+            form='editEventForm'
+            for='start_at'
+          ]
 
         label.item.item-select.padding[ng-show="vm.isEditable()"]
           span.input-label Status:
