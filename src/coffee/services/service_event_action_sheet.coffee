@@ -19,11 +19,9 @@ app.factory 'ServiceEventActionSheet',
           destructiveText: @buttonText('Delete', 'ion-trash-b')
           cancelText: 'Close'
           destructiveButtonClicked: =>
-            return @showConfirm(event) unless event.status == EVENT_STATUS.FREE
+            return @deleteEvent(event) if event.status == EVENT_STATUS.FREE
 
-            @deleteEvent(event)
-
-            true
+            @showConfirm(event, 'Do you really want to delete this event?', @deleteEvent)
 
       actionButtons: (event, reservation) =>
         buttons = []
@@ -38,7 +36,14 @@ app.factory 'ServiceEventActionSheet',
           buttons.push @button('Disapprove', 'ion-close-round', @disapproveEvent, reservation)
 
         if event.status == EVENT_STATUS.BOOKED && !event.past
-          buttons.push @button('Cancel', 'ion-close-round', @cancelEvent, reservation)
+          buttons.push(
+            @button(
+              'Cancel Reservation',
+              'ion-close-round',
+              @showCancelConfirmation,
+              reservation
+            )
+          )
 
         buttons
 
@@ -61,6 +66,9 @@ app.factory 'ServiceEventActionSheet',
       disapproveEvent: (reservation) =>
         @doAction('disapprove', reservation)
 
+      showCancelConfirmation: (reservation) =>
+        @showConfirm(reservation, 'Do you really want to cancel reservation?', @cancelEvent)
+
       cancelEvent: (reservation) =>
         @doAction('cancel_by_service', reservation)
 
@@ -74,16 +82,18 @@ app.factory 'ServiceEventActionSheet',
       onPreview: (event) =>
         Navigator.go("service.calendar.preview_event", event_id: event.id, calendar: @calendar)
 
-      showConfirm: (event) =>
+      showConfirm: (target, message, callback) =>
         popup = $ionicPopup.confirm
           title: 'This time is reserved'
-          template: 'Do you really want to delete this event?'
+          template: message
 
-        popup.then (confirmed) =>
-          @deleteEvent(event) if confirmed
+        popup.then (confirmed) ->
+          callback(target) if confirmed
 
         true
 
       deleteEvent: (event) =>
         EventsService.delete(event.id).then =>
           @afterActionSelected()
+
+        true
