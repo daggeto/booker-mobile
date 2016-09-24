@@ -1,5 +1,13 @@
 app.factory 'ServiceEventActionSheet',
-  ($ionicActionSheet, $ionicPopup, Navigator, ReservationsService, Event, EVENT_STATUS) ->
+  (
+    $ionicActionSheet,
+    $ionicPopup,
+    Navigator,
+    ReservationsService,
+    Event,
+    EventsService,
+    EVENT_STATUS
+  ) ->
     new class ServiceEventActionSheet
       show: (event, reservation, afterActionSelected) =>
         @afterActionSelected = afterActionSelected
@@ -8,7 +16,14 @@ app.factory 'ServiceEventActionSheet',
           titleText: 'Options'
           buttons: @actionButtons(event, reservation)
           buttonClicked: @buttonClicked
+          destructiveText: @buttonText('Delete', 'ion-trash-b')
           cancelText: 'Close'
+          destructiveButtonClicked: =>
+            return @showConfirm(event) unless event.status == EVENT_STATUS.FREE
+
+            @deleteEvent(event)
+
+            true
 
       actionButtons: (event, reservation) =>
         buttons = []
@@ -58,3 +73,17 @@ app.factory 'ServiceEventActionSheet',
 
       onPreview: (event) =>
         Navigator.go("service.calendar.preview_event", event_id: event.id, calendar: @calendar)
+
+      showConfirm: (event) =>
+        popup = $ionicPopup.confirm
+          title: 'This time is reserved'
+          template: 'Do you really want to delete this event?'
+
+        popup.then (confirmed) =>
+          @deleteEvent(event) if confirmed
+
+        true
+
+      deleteEvent: (event) =>
+        EventsService.delete(event.id).then =>
+          @afterActionSelected()

@@ -18,7 +18,7 @@ app.controller 'CalendarController',
 
         @calendar = new Calendar($stateParams.selectedDate)
 
-        $scope.$on('$ionicView.enter', (event, data) =>
+        $scope.$on('$ionicView.enter', =>
           @reloadEvents()
         )
 
