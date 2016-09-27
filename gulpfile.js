@@ -142,26 +142,26 @@ gulp.task('slim_cache', function (done) {
 });
 
 gulp.task('coffee_prod', function(done){
-  pump([
-      gulp.src(paths.coffee),
-      replace({
-        patterns: [
-          {
-            match: 'templates',
-            replacement: "'templates'"
-          },
-          {
-            match: 'api_url',
-            replacement: args.apiUrl
-          }
-        ]
-      }),
-      coffee({bare: true}),
-      concat('script.js'),
-      gulp.dest('./www/js/')
-    ],
-    done
-  );
+    gulp.src(paths.coffee)
+      .pipe(
+        replace({
+          patterns: [
+            {
+              match: 'templates',
+              replacement: settings.templates
+            },
+            {
+              match: 'api_url',
+              replacement: settings.apiUrl
+            }
+          ]
+        })
+      )
+      .pipe(coffee({bare: true}))
+      .on('error', gutil.log.bind(gutil, 'Coffee Error'))
+      .pipe(concat('script.js'))
+      .pipe(gulp.dest('./www/js/'))
+      .on('end', done)
 });
 
 gulp.task('slim_index', function (done) {
