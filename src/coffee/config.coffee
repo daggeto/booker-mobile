@@ -1,4 +1,10 @@
-app.config ($ionicConfigProvider, $ionicCloudProvider) ->
+app.config (
+  $ionicConfigProvider,
+  $ionicCloudProvider,
+  $translateProvider,
+  LOCALE,
+  TRANSLATIONS
+) ->
   $ionicConfigProvider.tabs.position('bottom');
 
   $ionicConfigProvider.views.swipeBackEnabled(false);
@@ -14,6 +20,10 @@ app.config ($ionicConfigProvider, $ionicCloudProvider) ->
         android:
           icon: 'ic_notification'
           iconColor: '#3ea6ee'
+
+  $translateProvider
+    .translations(LOCALE, TRANSLATIONS)
+    .preferredLanguage(LOCALE)
 
 app.factory('AuthInterceptor', ($rootScope, $q, AUTH_EVENTS, SERVER_EVENTS) ->
   { responseError: (response) ->

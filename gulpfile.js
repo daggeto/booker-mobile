@@ -20,15 +20,6 @@ var replace = require('gulp-replace-task');
 var args  = require('yargs').argv;
 var fs = require('fs');
 
-var getSettings = function (){
-  var env = args.env || 'dev';
-
-  var filename = env + '.json';
-  return JSON.parse(fs.readFileSync('./config/' + filename, 'utf8'));
-};
-
-var settings = getSettings();
-
 var paths = {
   sass: ['./src/sass/**/*.scss'],
   coffee: ['./src/coffee/**/*.coffee'],
@@ -92,20 +83,7 @@ gulp.task('js', function(done){
 
 gulp.task('coffee', function(done) {
   gulp.src(paths.coffee)
-    .pipe(
-      replace({
-        patterns: [
-          {
-            match: 'templates',
-            replacement: settings.templates
-          },
-          {
-            match: 'api_url',
-            replacement: settings.apiUrl
-          }
-        ]
-      })
-    )
+    .pipe(replaceParams())
     .pipe(coffee({bare: true})
     .on('error', gutil.log.bind(gutil, 'Coffee Error')))
     .pipe(gulp.dest('./www/js'))
@@ -143,20 +121,7 @@ gulp.task('slim_cache', function (done) {
 
 gulp.task('coffee_prod', function(done){
     gulp.src(paths.coffee)
-      .pipe(
-        replace({
-          patterns: [
-            {
-              match: 'templates',
-              replacement: settings.templates
-            },
-            {
-              match: 'api_url',
-              replacement: settings.apiUrl
-            }
-          ]
-        })
-      )
+      .pipe(replaceParams())
       .pipe(coffee({bare: true}))
       .on('error', gutil.log.bind(gutil, 'Coffee Error'))
       .pipe(concat('script.js'))
@@ -171,4 +136,40 @@ gulp.task('slim_index', function (done) {
     .on('end', done);
 });
 
+function replaceParams() {
+  var settings = getSettings();
 
+  var translations = getTranslations(settings.locale);
+
+  return replace({
+    patterns: [
+      {
+        match: 'templates',
+        replacement: settings.templates
+      },
+      {
+        match: 'api_url',
+        replacement: settings.apiUrl
+      },
+      {
+        match: 'locale',
+        replacement: settings.locale
+      },
+      {
+        match: 'translations',
+        replacement: translations
+      }
+    ]
+  })
+}
+
+var getSettings = function (){
+  var env = args.env || 'dev';
+
+  var filename = env + '.json';
+  return JSON.parse(fs.readFileSync('./config/' + filename, 'utf8'));
+};
+
+var getTranslations = function (locale) {
+  return JSON.parse(fs.readFileSync('./translations/' + locale + '.json', 'utf8'));
+}
