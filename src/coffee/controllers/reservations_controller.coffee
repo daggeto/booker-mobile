@@ -1,5 +1,13 @@
 app.controller 'ReservationsController',
-  ($scope, $ionicActionSheet, $ionicPopup, currentUser, UsersService, ReservationsService) ->
+  (
+    $scope,
+    $ionicActionSheet,
+    $ionicPopup,
+    currentUser,
+    UsersService,
+    ReservationsService
+    translateFilter
+  ) ->
     new class ReservationsController
       constructor: ->
         @currentUser = currentUser
@@ -16,9 +24,11 @@ app.controller 'ReservationsController',
 
       onEventClick: (_, data) =>
         $ionicActionSheet.show
-          titleText: 'Modify your reservation'
-          destructiveText: '<i class="icon ion-close-round"></i> Cancel Reservation'
-          cancelText: 'Close'
+          titleText: translateFilter('reservations.actions.title')
+          destructiveText:
+            '<i class="icon ion-close-round"></i> ' +
+              translateFilter('reservations.actions.cancel')
+          cancelText: translateFilter('close')
           destructiveButtonClicked: =>
             @showConfirm(data.reservation)
 
@@ -33,7 +43,9 @@ app.controller 'ReservationsController',
 
       showConfirm: (reservation) =>
         popup = $ionicPopup.confirm
-          title: 'Do you realy want to cancel this reservation?',
+          title: translateFilter('reservations.actions.confirm_cancel')
+          okText: translateFilter('yes')
+          cancelText: translateFilter('close')
 
         popup.then (confirmed) =>
           @cancelReservation(reservation) if confirmed

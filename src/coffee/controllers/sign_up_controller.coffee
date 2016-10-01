@@ -1,4 +1,4 @@
-app.controller 'SignUpController', ($scope, AuthService) ->
+app.controller 'SignUpController', ($scope, translateFilter, AuthService) ->
   new class SignUpController
     constructor:  ->
       @ERROR_FIELDS = ['email', 'password', 'password_confirmation']
@@ -11,7 +11,7 @@ app.controller 'SignUpController', ($scope, AuthService) ->
 
       AuthService.signup(@signup_data)
         .then =>
-          $scope.navigator.go('login', message: 'You are registered. You an login now.')
+          $scope.navigator.go('login', message: translateFilter('sign_up.success_message'))
         .catch (error) =>
           errors = error.data.errors
           for key, value of errors when key in @ERROR_FIELDS

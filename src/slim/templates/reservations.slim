@@ -3,8 +3,8 @@ ion-view[view-title="Reservations"]
     .buttons
       a.button.icon-left.ion-chevron-left.button-clear.button-dark[
         ng-click="navigator.back()"
-      ]
-        | Back
-    h1.title My Reservations
+        translate
+      ] back
+    h1.title[translate] reservations.title
   ion-content.padding
     user-reservations[reservations="vm.reservations"]

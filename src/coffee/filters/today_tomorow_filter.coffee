@@ -1,12 +1,12 @@
-app.filter('todayTomorrow', ->
+app.filter('todayTomorrow', (translateFilter) ->
   (date) ->
     moment(date).calendar(
       null,
-      sameDay: '[Today]',
-      nextDay: '[Tomorrow]',
+      sameDay: '[' + translateFilter('date.today') + ']',
+      nextDay: '[' + translateFilter('date.tomorrow') + ']',
       nextWeek: 'dddd',
-      lastDay: '[Yesterday]',
-      lastWeek: '[Last] dddd',
+      lastDay: '[' + translateFilter('date.yesterday') + ']',
+      lastWeek: '[' + translateFilter('date.last') + '] dddd',
       sameElse: 'DD/MM/YYYY'
     )
 )

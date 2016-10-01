@@ -1,5 +1,5 @@
-app.filter 'price', (currencyFilter) ->
+app.filter 'price', (currencyFilter, translateFilter) ->
   (price) ->
-    return 'Free' if price == 0
+    return translateFilter('free') if price == 0
 
     currencyFilter(price)

@@ -1,4 +1,4 @@
-app.factory 'Event', ($resource, EVENT_STATUS, API_URL) ->
+app.factory 'Event', ($resource, EVENT_STATUS, API_URL, translateFilter) ->
   new class Event
     URL = "#{API_URL}/api/v1/events/:id/:action.json"
     params =
@@ -13,9 +13,18 @@ app.factory 'Event', ($resource, EVENT_STATUS, API_URL) ->
 
     statuses:
       [
-        { value: EVENT_STATUS.FREE, label: 'Free' }
-        { value: EVENT_STATUS.PENDING, label: 'Pending' }
-        { value: EVENT_STATUS.BOOKED, label: 'Booked' }
+        {
+          value: EVENT_STATUS.FREE,
+          label: translateFilter("event.status.#{EVENT_STATUS.FREE}")
+        }
+        {
+          value: EVENT_STATUS.PENDING,
+          label: translateFilter("event.status.#{EVENT_STATUS.PENDING}")
+        }
+        {
+          value: EVENT_STATUS.BOOKED,
+          label: translateFilter("event.status.#{EVENT_STATUS.BOOKED}")
+        }
       ]
 
     $r: $resource(URL, params, methods)

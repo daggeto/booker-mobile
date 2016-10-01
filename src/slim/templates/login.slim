@@ -1,15 +1,20 @@
 ion-view[name="login-view"]
   ion-header-bar[align-title="center" ]
-    h1.title Login
+    h1.title[translate] login.title
   ion-content
     .message__success.align-center[ng-if="vm.message"] {{vm.message}}
     div[class="list"]
       label[class="item item-input item-floating-label"]
-        span[class="input-label"] Email
-        input[type="email" placeholder="Email" ng-model="vm.data.email"]
+        span[class="input-label" translate] form.email
+        input[type="email" placeholder="{{ 'form.email' | translate }}" ng-model="vm.data.email"]
       label[class="item item-input item-floating-label"]
-        span[class="input-label"] Password
-        input[type="password" placeholder="Password" ng-model="vm.data.password"]
+        span[class="input-label" translate ] form.password
+        input[
+          type="password"
+          placeholder="{{ 'form.password' | translate }}"
+          ng-model="vm.data.password"
+        ]
     div[class="padding"]
-      button[class="button button-block button-calm" ng-click="vm.login()"] Login
-      button[class="button button-block" ng-click="navigator.go('signup')"] Sign Up
+      button[class="button button-block button-calm" ng-click="vm.login()" translate] login.login
+      button[class="button button-block" ng-click="navigator.go('signup')" translate ]
+        | login.sign_up

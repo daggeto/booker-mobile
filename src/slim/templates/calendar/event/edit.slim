@@ -3,22 +3,25 @@ ion-view
     ion-header-bar.b-header[align-title="center" ]
       .buttons
         a.button.icon-left.ion-chevron-left.button-clear.button-dark[
-          ng-click="navigator.back()"] Back
+          ng-click="navigator.back()"
+          translate
+        ] back
       h1.title {{vm.calendar.selectedDate.format() | date }}
 
       .buttons
         button.button.button-clear.button-positive.pull-right[
           ng-click="editEventForm.submit()"
-        ] Save
+          translate
+        ] save
     ion-content[scroll="false"]
       .list
         label.item.item-input.padding
-          span.input-label Description:
+          span.input-label[translate] form.description
           input[type="text" ng-model="vm.event.description"]
 
         .row.no-padding
           .col.item.item-input.b-event--time
-            | From:
+            | {{ 'form.from' | translate }}
             input[
               name="start_at"
               type="time"
@@ -26,7 +29,7 @@ ion-view
               ng-change="vm.startAtChanged()"
             ]
           .col.item.item-input.b-event--time
-            | To:
+            | {{ 'form.to' | translate }}
             input[type="time" ng-model="vm.event.end_at" placeholder="H:mm"]
           error-messages.padding-left[
             form='editEventForm'
@@ -34,7 +37,7 @@ ion-view
           ]
 
         label.item.item-select.padding[ng-show="vm.isEditable()"]
-          span.input-label Status:
+          span.input-label[translate] form.status
           select[
             ng-model="vm.event.status"
             ng-options="status.value as status.label for status in vm.Event.statuses"]

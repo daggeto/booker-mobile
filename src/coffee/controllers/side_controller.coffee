@@ -1,5 +1,13 @@
 app.controller 'SideController',
-  ($scope, $state, $ionicSlideBoxDelegate, $ionicPopup, currentUser, UserServicesService) ->
+  (
+    $scope,
+    $state,
+    $ionicSlideBoxDelegate,
+    $ionicPopup,
+    translateFilter,
+    currentUser,
+    UserServicesService
+  ) ->
     new class SideController
       constructor: ->
         @currentUser = currentUser
@@ -11,15 +19,16 @@ app.controller 'SideController',
 
       showAlert: ->
         popup = $ionicPopup.confirm
-          title: 'Start to sell your time!',
-          template: 'Here you can setup your service information and your time when you are available.'
-          okText: 'Create Service'
+          title: translateFilter('side.new_service.title')
+          template: translateFilter('side.new_service.template')
+          okText: translateFilter('side.new_service.begin')
+          cancelText: translateFilter('side.new_service.cancel')
 
         popup.then (confirmed) =>
-          createService() if confirmed
+          @createService() if confirmed
 
       createService: =>
-        UserServicesService.save(confirmed: true).then(goToService, $scope.error)
+        UserServicesService.save(confirmed: true).then(@goToService, $scope.error)
 
       goToService: (service) =>
         currentUser.service = service
@@ -28,11 +37,3 @@ app.controller 'SideController',
       slideTo: (index, view) ->
         $ionicSlideBoxDelegate.slide(index)
         state.go(view, {movieid: 1})
-
-      isServicePublished: ->
-        currentUser.service.published
-
-      publicationText: ->
-        return 'Published' if currentUser.service.published
-
-        'Unpublished'

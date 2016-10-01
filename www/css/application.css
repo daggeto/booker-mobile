@@ -82,6 +82,9 @@
 
 .b-header {
   box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.3); }
+  .b-header h1.title {
+    left: 0;
+    right: 0; }
 
 .validation__text {
   color: #ff3333;

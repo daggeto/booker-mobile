@@ -3,14 +3,14 @@ ion-view[view-title="Reservations"]
     .buttons
       a.button.icon-left.ion-chevron-left.button-clear.button-dark[
         ng-click="navigator.back()"
-      ]
-        | Back
-    h1.title  Reservations
+        translate
+      ] back
+    h1.title[translate] service.reservations.title
   ion-content.padding
     ion-refresher[on-refresh="vm.reloadReservations()"]
     .day-reservations[ng-repeat="(day, day_reservations) in vm.reservations"]
       .list.card
-        .item.item-divider.align-center {{day | todayTomorrow}}
+        .item.item-divider.align-center {{ day | todayTomorrow }}
         event[ng-repeat="reservation in day_reservations"
           name="reservation.event.label"
           event="reservation.event"

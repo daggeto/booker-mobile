@@ -6,39 +6,54 @@ app.factory 'ServiceEventActionSheet',
     ReservationsService,
     Event,
     EventsService,
-    EVENT_STATUS
+    EVENT_STATUS,
+    translateFilter
   ) ->
     new class ServiceEventActionSheet
       show: (event, reservation, afterActionSelected) =>
         @afterActionSelected = afterActionSelected
 
         $ionicActionSheet.show
-          titleText: 'Options'
+          titleText: translateFilter('event.actions.title')
           buttons: @actionButtons(event, reservation)
           buttonClicked: @buttonClicked
-          destructiveText: @buttonText('Delete', 'ion-trash-b')
-          cancelText: 'Close'
+          destructiveText: @buttonText(translateFilter('delete'), 'ion-trash-b')
+          cancelText: translateFilter('close')
           destructiveButtonClicked: =>
             return @deleteEvent(event) if event.status == EVENT_STATUS.FREE
 
-            @showConfirm(event, 'Do you really want to delete this event?', @deleteEvent)
+            @showConfirm(event, translateFilter('event.actions.confirm_delete'), @deleteEvent)
 
       actionButtons: (event, reservation) =>
         buttons = []
 
-        buttons.push @button('Preview', 'ion-eye', @onPreview, event)
+        buttons.push @button(translateFilter('event.actions.preview'), 'ion-eye', @onPreview, event)
 
         unless event.past || Event.isEventNotFree(event)
-          buttons.push @button('Edit', 'ion-edit', @onEdit, event)
+          buttons.push @button(translateFilter('event.actions.edit'), 'ion-edit', @onEdit, event)
 
         if event.status == EVENT_STATUS.PENDING
-          buttons.push @button('Approve', 'ion-checkmark-round', @approveEvent, reservation)
-          buttons.push @button('Disapprove', 'ion-close-round', @disapproveEvent, reservation)
+          buttons.push(
+            @button(
+              translateFilter('event.actions.approve'),
+              'ion-checkmark-round',
+              @approveEvent,
+              reservation
+            )
+          )
+          buttons.push(
+            @button(
+              translateFilter('event.actions.disapprove'),
+              'ion-close-round',
+              @disapproveEvent,
+              reservation
+            )
+          )
 
         if event.status == EVENT_STATUS.BOOKED && !event.past
           buttons.push(
             @button(
-              'Cancel Reservation',
+              translateFilter('event.actions.cancel'),
               'ion-close-round',
               @showCancelConfirmation,
               reservation
@@ -67,7 +82,11 @@ app.factory 'ServiceEventActionSheet',
         @doAction('disapprove', reservation)
 
       showCancelConfirmation: (reservation) =>
-        @showConfirm(reservation, 'Do you really want to cancel reservation?', @cancelEvent)
+        @showConfirm(
+          reservation,
+          translateFilter('event.actions.confirm_cancel'),
+          @cancelEvent
+        )
 
       cancelEvent: (reservation) =>
         @doAction('cancel_by_service', reservation)
@@ -84,8 +103,9 @@ app.factory 'ServiceEventActionSheet',
 
       showConfirm: (target, message, callback) =>
         popup = $ionicPopup.confirm
-          title: 'This time is reserved'
           template: message
+          okText: translateFilter('yes')
+          cancelText: translateFilter('close')
 
         popup.then (confirmed) ->
           callback(target) if confirmed

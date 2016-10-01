@@ -1,9 +1,17 @@
-app.factory 'BookingService', ($q, $ionicPopup, ionicToast, ReservationsService, EVENT_STATUS) ->
+app.factory 'BookingService', (
+  $q,
+  $ionicPopup,
+  ionicToast,
+  ReservationsService,
+  translateFilter,
+  EVENT_STATUS
+) ->
   new class BookingService
     book: (event) ->
       confirmBooking = $ionicPopup.confirm
-        title: 'Please confirm your reservation',
-        okText: 'Yes'
+        title: translateFilter('book.confirm')
+        okText: translateFilter('yes')
+        cancelText: translateFilter('close')
 
       confirmBooking.then (confirmed) =>
         @bookingConfirmed(event) if confirmed

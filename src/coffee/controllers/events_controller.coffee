@@ -9,7 +9,8 @@ app.controller 'EventsController',
     EventsService,
     event,
     service,
-    EVENT_STATUS
+    EVENT_STATUS,
+    translateFilter
   ) ->
     new class EventsController
       constructor:  ->
@@ -61,11 +62,13 @@ app.controller 'EventsController',
 
       validateTime: ->
         if (event.start_at > event.end_at)
-          @form['start_at'].$error.message = "Time From can't be after Time To"
+          @form['start_at'].$error.message = translateFilter('event.error.not_after')
+
           return false
 
         if event.start_at < new Date()
-          @form['start_at'].$error.message = 'Time should be in future'
+          @form['start_at'].$error.message = translateFilter('event.error.only_future')
+
           return false
 
         true

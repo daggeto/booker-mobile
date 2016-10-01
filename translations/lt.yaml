@@ -1,0 +1,103 @@
+back: Atgal
+close: Grįžti
+yes: Taip
+save: Saugoti
+edit: Keisit
+delete: Ištrinti
+free: Nemokama
+upload_photo_button: Ikelti nuotrauką
+errors:
+  something_wrong: Oj, kažkas negerai.
+  unauthorized: Autorizuoti nepavyko
+  try_login_again: Pameginkite prisijungti dar kartą
+login:
+  title: Prisijungti
+  login: Prisijungti
+  sign_up: Registruotis
+sign_up:
+  title: Registracija
+  sign_up: Registruotis
+  success_message: Sekmingai registravotes ir galite prisijungti
+form:
+  email: E. Paštas
+  password: Slaptažodis
+  confirm_password: Pakartoti slaptažodį
+  name: Pavadinimas
+  description: Aprašymas
+  duration: Trukmė
+  price: Kaina
+  phone_number: Telefonas
+  address: Adresas
+  from: Nuo
+  to: Iki
+  status: Busena
+  errors:
+    required: Laukas privalomas
+    email_wrong: Blogas E. Paštas
+    min_length: Per trumpas slaptažodis. Min. 8 simboliai
+side:
+  service_settings: Paslaugos Nustatymai
+  profile: Profilis
+  reservations: Rezervacijos
+  published: Matomas
+  unpublished: Nematomas
+  new_service:
+    title: Pradėk pardavinėti savo laiką!
+    template: >
+      Čia galėsite užpildyti savo paslaugos informaciją ir nustatyti laiką kada galite
+      teikti paslaugą
+    begin: Pradėti
+    cancel: Grįžti
+reservations:
+  title: Reservacijos
+  actions:
+    title: Pakeisti
+    cancel: Nutraukti
+    confirm_cancel: Ar tikrai norite atmesti rezervaciją?
+date:
+  today: Šiandien
+  tomorrow: Rytoj
+  yesterday: Vakar
+  last: Praeitas
+book:
+  confirm: Patvirtinkite rezervaciją
+search:
+  no_results: Nieko nerasta
+  placeholder: Paieška...
+service:
+  settings:
+    title: Nustatymai
+    published: Matomas
+    visible_now: Tavo paslauga dabar yra matoma visiems
+  calendar:
+    title: Kalendorius
+    add: Pridėti
+    no_events: Nėra įvykių
+  reservations:
+    title: Reservacijos
+upload_photo:
+  actions:
+    title: Įkelti nuotrauką
+    camera: Kamera
+    gallery: Galerija
+event:
+  status:
+    free: Laisva
+    pending: Laukia
+    booked: Rezervuota
+  actions:
+    title: Keisti
+    confirm_delete: Ar tikrai norite ištrinti įvykį?
+    preview: Peržiurėti
+    edit: Keisti
+    approve: Patvirtinti
+    disapprove: Atmesti
+    cancel: Nutraukti
+    confirm_cancel: Ar tikrai norite nutraukti rezervaciją?
+    booked: Laikas rezervuotas
+  error:
+    not_after: Laikas Nuo privalo but anksčiau nei Laikas Iki
+    only_future: Laikas privalo buti ateityje
+profile:
+  title: Profilis
+  logout: Atsijungti

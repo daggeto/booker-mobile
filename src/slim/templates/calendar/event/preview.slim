@@ -2,22 +2,22 @@ ion-view
   ion-header-bar[align-title="center" ]
     .buttons
       a.button.icon-left.ion-chevron-left.button-clear.button-dark[
-        ng-click="navigator.back()"] Back
+        ng-click="navigator.back()"
+        translate
+      ] back
     h1.title {{vm.calendar.selectedDate.format() | date }}
   ion-content[scroll="false"]
     .list
       label.item.item-input.padding
-        .col.input-label Description:
+        .col.input-label[translate] form.description
         .col.align-right {{vm.event.description}}
 
-      label.item.item-input.padding
-        .col.input-label Status:
-        .col.align-right{{vm.event.status}}
+      .row.no-padding
+        .col.item.item-input.b-event--time
+          | {{ vm.event.start_at | date: "H:mm" }}
+        .col.item.item-input.b-event--time
+          | {{ vm.event.end_at | date: "H:mm" }}
 
       label.item.item-input.padding
-        .col.input-label From:
-        .col.align-right {{ vm.event.start_at | date: "H:mm" }}
-
-      label.item.item-input.padding
-        .col.input-label To:
-        .col.align-right {{ vm.event.end_at | date: "H:mm" }}
+        .col.input-label[translate] form.status
+        .col.align-right {{ 'event.status.' + vm.event.status | translate }}

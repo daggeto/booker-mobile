@@ -63,6 +63,3 @@ app.controller 'CalendarController',
 
       isPast: ->
         @calendar.selectedDate.isBefore(@calendar.currentDate)
-
-      back: ->
-        $scope.navigator.go('app.main')

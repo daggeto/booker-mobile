@@ -1,0 +1,101 @@
+back: Back
+close: Close
+yes: Yes
+save: Save
+edit: Edit
+delete: Delete
+free: Free
+upload_photo: Upload Photo
+errors:
+  something_wrong: Ups, something wrong
+  unauthorized: Unauthorized
+  try_login_again: Try to login again
+login:
+  title: Login
+  login: Login
+  sign_up: Sign Up
+sign_up:
+  title: Sign Up
+  sign_up: Sign Up
+  success_message: You are registered and you can login now
+form:
+  email: Email
+  password: Password
+  confirm_password: Confirm Password
+  name: Name
+  description: Description
+  duration: Duration
+  price: Price
+  phone_number: Phone Number
+  address: Address
+  from: From
+  to: To
+  status: Status
+  errors:
+    required: Field is required
+    email_wrong: Wrong email
+    min_length: At least 8 symbols
+side:
+  service_settings: Service Settings
+  profile: Profile
+  reservations: Reservations
+  published: Visible
+  unpublished: Unvisible
+  new_service:
+    title: Start to sell your time!
+    template: Here you can setup your service information and your time when you are available.
+    begin: Begin
+    cancel: Cancel
+reservations:
+  title: Reservations
+  actions:
+    title: Modify
+    cancel: Cancel Reservation
+    confirm_cancel: Do you realy want to cancel this reservation?
+date:
+  today: Today
+  tomorrow: Tomorrow
+  yesterday: Yesterday
+  last: Last
+book:
+  confirm: Please confirm your reservation
+search:
+  no_results: No results
+  placeholder: Search...
+service:
+  settings:
+    title: Settings
+    published: Visible
+    visible_now: Your service will be visible in feed now
+  calendar:
+    title: Calendar
+    add: Add
+    no_events: No events
+  reservations:
+    title: Reservations
+upload_photo:
+  actions:
+    title: Upload Photo
+    camera: Camera
+    gallery: Gallery
+event:
+  status:
+    free: Free
+    pending: Pending
+    booked: Booked
+  actions:
+    title: Event Acions
+    confirm_delete: Do you really want to delete this event?
+    preview: Preview
+    edit: Edit
+    approve: Approve
+    disapprove: Disapprove
+    cancel: Cancel Reservation
+    confirm_cancel: Do you really want to cancel reservation?'
+    booked: This time is booked
+  error:
+    not_after: Time From can't be after Time To
+    only_future: Time should be in future
+profile:
+  title: Profile
+  logout: Logout

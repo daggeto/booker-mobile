@@ -1,15 +1,18 @@
-ion-view[can-swipe-back="true"]
-  ion-header-bar.b-header[align-title="center" ]
+ion-view
+  ion-header-bar.b-header[align-title="center"]
     .buttons
-      a.button.icon-left.ion-chevron-left.button-clear.button-dark[ng-click="vm.back()"] Back
-    h1.title Calendar
+      a.button.icon-left.ion-chevron-left.button-clear.button-dark[
+        ng-click="navigator.back()"
+        translate
+      ] back
+    h1.title[translate] service.calendar.title
     .buttons
-      button.button.button-clear.button-positive.pull-right[
+      a.button.button-clear.button-positive.pull-right[
         ng-click="vm.addEvent()"
         ng-hide="vm.isPast()"
+        ng-bind="'service.calendar.add' | translate"
       ]
-        | Add Event
-  ion-content.padding.calendar
+  ion-content.padding.calendar[lazy-scroll]
     .row.calendar__month
       .col {{ vm.calendar.startOfWeek | amDateFormat: 'MMMM' }}
     .row
@@ -19,9 +22,9 @@ ion-view[can-swipe-back="true"]
         .button-bar[on-swipe-left="vm.onWeekSwipe('left')" on-swipe-right="vm.onWeekSwipe('right')"]
           .button.calendar--day[
             ng-repeat="day in vm.calendar.selectedWeek"
-            ng-class="{
-              'calendar--day--active': vm.calendar.isDateSelected(day.moment),
-              'calendar--day--current': vm.calendar.isCurrent(day.moment)
+            ng-class="{\
+              'calendar--day--active': vm.calendar.isDateSelected(day.moment),\
+              'calendar--day--current': vm.calendar.isCurrent(day.moment)\
             }"
             ng-click="vm.selectDate(day.moment)"
           ]
@@ -34,7 +37,10 @@ ion-view[can-swipe-back="true"]
       on-swipe-left="vm.onDaySwipe('left')"
       on-swipe-right="vm.onDaySwipe('right')"
     ]
-      .hint-text.flexbox.center[ng-hide="vm.calendar.events.length > 0"] No events
+      .hint-text.flexbox.center[
+        ng-hide="vm.calendar.events.length > 0"
+        translate
+      ] service.calendar.no_events
       event[ng-repeat="event in vm.calendar.events track by event.id"
         name="event.label"
         event="event"

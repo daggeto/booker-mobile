@@ -5,9 +5,8 @@ app.config (
   LOCALE,
   TRANSLATIONS
 ) ->
-  $ionicConfigProvider.tabs.position('bottom');
-
-  $ionicConfigProvider.views.swipeBackEnabled(false);
+  $ionicConfigProvider.tabs.position('bottom')
+  $ionicConfigProvider.views.swipeBackEnabled(false)
 
   $ionicCloudProvider.init
     core:

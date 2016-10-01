@@ -19,11 +19,13 @@ var flatten = require('gulp-flatten');
 var replace = require('gulp-replace-task');
 var args  = require('yargs').argv;
 var fs = require('fs');
+var YAML = require('yamljs');
 
 var paths = {
   sass: ['./src/sass/**/*.scss'],
   coffee: ['./src/coffee/**/*.coffee'],
-  slim: ['./src/slim/**/*.slim']
+  slim: ['./src/slim/**/*.slim'],
+  translations: ['./translations/*.yaml']
 };
 
 gulp.task('clean', function(done){
@@ -101,6 +103,7 @@ gulp.task('slim', function(done){
 gulp.task('watch', function() {
   gulp.watch(paths.sass, ['sass'])
   gulp.watch(paths.coffee, ['js'])
+  gulp.watch(paths.translations, ['js'])
   gulp.watch(paths.slim, ['slim'])
 });
 
@@ -171,5 +174,5 @@ var getSettings = function (){
 };
 
 var getTranslations = function (locale) {
-  return JSON.parse(fs.readFileSync('./translations/' + locale + '.json', 'utf8'));
-}
+  return YAML.load('./translations/' + locale + '.yaml');
+};

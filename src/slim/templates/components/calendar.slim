@@ -8,9 +8,9 @@
       .button-bar
         .button.calendar--day[
           ng-repeat="day in vm.calendar.selectedWeek"
-          ng-class="{
-            'calendar--day--active': vm.calendar.isDateSelected(day.moment),
-            'calendar--day--current': vm.calendar.isCurrent(day.moment)
+          ng-class="{ \
+            'calendar--day--active': vm.calendar.isDateSelected(day.moment),\
+            'calendar--day--current': vm.calendar.isCurrent(day.moment)\
             }"
           ng-click="vm.selectDate(day.moment)"
         ]

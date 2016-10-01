@@ -1,5 +1,5 @@
 app.controller 'UploadPhotoController',
-  ($scope, $ionicActionSheet, $ionicLoading, $q, CameraService) ->
+  ($scope, $ionicActionSheet, $ionicLoading, $q, CameraService, translateFilter) ->
     new class UploadPhotoController
       constructor: ->
         buttons: []
@@ -10,19 +10,19 @@ app.controller 'UploadPhotoController',
             { text: @cameraText(), photo_id: $scope.photo_id },
             { text: @galleryText(), photo_id: $scope.photo_id }
           ]
-          titleText: 'Take a photo'
-          cancelText: 'Close'
+          titleText: translateFilter('upload_photo.actions.title')
+          cancelText: translateFilter('close')
           buttonClicked: @buttonClicked
 
       cameraText: ->
-        text = 'Camera'
+        text = translateFilter('upload_photo.actions.camera')
 
         text = "<i class=\"icon ion-camera\"></i> #{text}"  if ionic.Platform.isAndroid()
 
         text
 
       galleryText: ->
-        text = 'Gallery'
+        text = translateFilter('upload_photo.actions.gallery')
 
         text = "<i class=\"icon ion-images\"></i> #{text}"  if ionic.Platform.isAndroid()
 

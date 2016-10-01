@@ -31,9 +31,21 @@ app = angular.module(
     emailRegistrationPath: '/user'
     storage: 'localStorage'
 )
-.run(($rootScope, $state, $ionicPlatform, $ionicPopup, $locale, $log, $auth,
-  Navigator, amMoment, AjaxInterceptor, NotificationService,
-  AuthService, AUTH_EVENTS, SERVER_EVENTS) ->
+.run (
+  $rootScope,
+  $state,
+  $ionicPlatform,
+  $ionicPopup,
+  $log,
+  $auth,
+  $translate,
+  Navigator,
+  AjaxInterceptor,
+  NotificationService,
+  AuthService,
+  AUTH_EVENTS,
+  SERVER_EVENTS
+) ->
   $ionicPlatform.ready =>
     NotificationService.registerToken()
 
@@ -55,22 +67,20 @@ app = angular.module(
         $state.transitionTo('login')
   )
 
-  $rootScope.$on(AUTH_EVENTS.notAuthorized, (event) ->
+  $rootScope.$on(AUTH_EVENTS.notAuthorized, ->
     $state.go('login')
     $auth.deleteData('auth_headers')
-    $ionicPopup.alert(
-      title: 'Unauthorized!'
-      template: 'You are not allowed to access this resource.')
-  )
 
-  $rootScope.$on(SERVER_EVENTS.not_found, (event) ->
-    $ionicPopup.alert(
-      title: 'Ups! Little problems.'
-      template: 'Try to login again')
-  )
+    $ionicPopup.alert
+      template: $translate('errors.unauthorized'))
+
+  $rootScope.$on SERVER_EVENTS.not_found, ->
+    $ionicPopup.alert
+      title: $translate('errors.something_wrong')
+      template: $translate('errors.try_login_again')
 
   $rootScope.error = (message) ->
-    $ionicPopup.alert(template: 'Ups! Little problems.')
+    $ionicPopup.alert(template: $translate('errors.something_wrong'))
     $log.error(message)
 
   $rootScope.navigator = Navigator
@@ -84,4 +94,3 @@ app = angular.module(
   AjaxInterceptor.run()
 
   return
-)
