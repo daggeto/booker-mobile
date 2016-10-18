@@ -1,4 +1,4 @@
-app.controller 'BookEventController', ($scope, $state, service, BookingService) ->
+app.controller 'BookEventController', ($scope, $state, service, BookingService, Event) ->
   new class BookEventController
     constructor: ->
       @service = service
@@ -9,6 +9,8 @@ app.controller 'BookEventController', ($scope, $state, service, BookingService) 
       $scope.$on('bookEvent', @bookEvent)
 
     bookEvent: (_, data) =>
+      return if Event.isEventNotFree(data.event)
+
       BookingService.book(data.event).then =>
         $scope.$broadcast('reloadEvents')
 

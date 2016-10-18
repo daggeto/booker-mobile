@@ -82,7 +82,7 @@ app.controller 'EventsController',
       failure: (error) =>
         errors = error.data.errors
         for key, value of errors when key in @ERROR_FIELDS
-          @form[key].$error.serverMessage = value[0]
+          @form[key].$error.message = value[0]
 
       isAddState: ->
         $state.is('service.calendar.add_event')

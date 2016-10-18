@@ -8,7 +8,7 @@ app.controller 'FeedController', ($scope, $state, UserServicesService, BookingSe
     bindListeners: ->
       $scope.$on('bookEvent', (_, data) =>
         BookingService.book(data.event).then (response) =>
-          @reloadService(response.service, data.index)
+          @reloadService(response.service, data.index) if response
       )
 
     refreshServices: ->
