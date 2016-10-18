@@ -1,4 +1,10 @@
-app.factory 'NotificationService', ($rootScope, $ionicPush, Navigator, DeviceService) ->
+app.factory 'NotificationService', (
+  $rootScope,
+  $ionicPush,
+  $cordovaLocalNotification,
+  Navigator,
+  DeviceService
+) ->
     new class NotificationService
       constructor: ->
         $ionicPush.emitter.on('push:notification', @onNotification)
@@ -15,7 +21,7 @@ app.factory 'NotificationService', ($rootScope, $ionicPush, Navigator, DeviceSer
         @navigateFromNotification(payload)
 
       onForeground: (message) ->
-        @cordovaLocalNotification.schedule
+        $cordovaLocalNotification.schedule
           id: 1
           title: message.title,
           text: message.text,
