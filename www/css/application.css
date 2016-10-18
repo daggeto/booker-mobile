@@ -336,7 +336,7 @@
     overflow: hidden; }
   .service__price {
     font-size: 1em;
-    text-align: center; }
+    text-align: right; }
   .service__address {
     font-size: 1em;
     color: #2aa9d4; }
