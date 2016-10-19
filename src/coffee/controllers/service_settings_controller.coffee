@@ -16,7 +16,9 @@ app.controller 'ServiceSettingsController', (
           { value: 60, label: '60 min' }
       ]
 
-      save: ->
+      save: (form) ->
+        return unless form.$valid
+
         UserServicesService.update(service).then(@afterSave, $scope.error)
 
       afterSave: (response) =>
