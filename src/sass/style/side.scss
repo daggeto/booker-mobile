@@ -1,0 +1,20 @@
+.side-list {
+  &--item {
+    display: flex;
+    padding: $r-size-small $r-size-micro;
+    align-items: center;
+
+    &--icon {
+      font-size: $font-default;
+      margin-right: $r-size-micro;
+    }
+
+    &--title {
+      flex-grow: 3;
+    }
+
+    %--status {
+      flex-grow: 2;
+    }
+  }
+}

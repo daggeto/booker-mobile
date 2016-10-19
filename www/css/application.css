@@ -7,9 +7,6 @@
 .main-slides {
   padding: 20px 0 35px 0; }
 
-.side-list__item {
-  padding: 16px; }
-
 .no-padding-grid .row {
   padding: 0; }
   .no-padding-grid .row .col {
@@ -147,6 +144,16 @@
   .b-event--time input {
     display: inline-block;
     margin-left: 5px; }
+
+.side-list--item {
+  display: flex;
+  padding: 1em 0.5em;
+  align-items: center; }
+  .side-list--item--icon {
+    font-size: 1.5em;
+    margin-right: 0.5em; }
+  .side-list--item--title {
+    flex-grow: 3; }
 
 .book-service--description {
   padding: 1em; }

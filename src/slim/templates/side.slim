@@ -3,10 +3,15 @@ ion-scroll[lazy-scroll]
     .photo-preview
       img[ng-src="{{vm.currentUser.profile_image.preview_url}}"]
   ion-lists.side-list[can-swipe="true"]
-    ion-item[ng-click="vm.providerSettingsClicked()"]
-      | {{ 'side.service_settings' | translate }}
-      .pull-right[ng-if="vm.currentUser.service"]
+    ion-item.side-list--item[ng-click="vm.providerSettingsClicked()"]
+      i.side-list--item--icon.ion-ios-settings
+      .side-list--item--title[translate] side.service_settings
+      .side-list--item--status.pull-right[ng-if="vm.currentUser.service"]
         .green-text[ng-show="vm.currentUser.service.published" translate] side.published
         .red-text[ng-hide="vm.currentUser.service.published" translate] side.unpublished
-    ion-item[ng-click="navigator.go('app.main.profile_edit')" translate] side.profile
-    ion-item[ng-click="navigator.go('app.main.reservations')" translate] side.reservations
+    ion-item.side-list--item[ng-click="navigator.go('app.main.profile_edit')"]
+      i.side-list--item--icon.ion-person
+      .side-list--item--title[translate] side.profile
+    ion-item.side-list--item[ng-click="navigator.go('app.main.reservations')" ]
+      i.side-list--item--icon.ion-ios-list-outline
+      .side-list--item--title[translate] side.reservations

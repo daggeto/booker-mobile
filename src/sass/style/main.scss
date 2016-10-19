@@ -1,5 +1,3 @@
-$default-padding: 16px;
-
 .main-panel {
 	height: 100%;
 }
@@ -10,12 +8,6 @@ $default-padding: 16px;
 
 .main-slides {
   padding: 20px 0 35px 0;
-}
-
-.side-list {
-  &__item {
-    padding: $default-padding;
-  }
 }
 
 .no-padding-grid {
