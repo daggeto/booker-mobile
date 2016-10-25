@@ -19,6 +19,9 @@ app.config (
         android:
           icon: 'ic_notification'
           iconColor: '#3ea6ee'
+        ios:
+          badge: true,
+          sound: true
 
   $translateProvider
     .translations(LOCALE, TRANSLATIONS)
