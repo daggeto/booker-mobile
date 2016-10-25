@@ -2,6 +2,7 @@ app.factory 'NotificationService', (
   $rootScope,
   $ionicPush,
   $cordovaLocalNotification,
+  $q,
   Navigator,
   DeviceService
 ) ->
@@ -28,6 +29,7 @@ app.factory 'NotificationService', (
           data: message.payload
           icon: 'ic_notification'
           color: '3ea6ee'
+          sound: 'default'
 
 
       onBackground: (message) ->
@@ -37,10 +39,21 @@ app.factory 'NotificationService', (
         Navigator.go(payload.state, payload.stateParams)
 
       registerToken: =>
+        d = $q.defer()
+
         $ionicPush.register().then (token) =>
-          console.log("Token registerd #{token}")
+          console.log("Token registered #{token}")
           $ionicPush.saveToken(token)
+          d.resolve(token)
+
+      unregisterToken: ->
+        $ionicPush.unregister()
 
       saveToken: ->
-        if $ionicPush.storage.get('push_token')
-          DeviceService.save(token: $ionicPush.token.token, platform: ionic.Platform.platform())
+        return @saveTokenToServer() if $ionicPush.storage.get('push_token')
+
+        @registerToken().then =>
+          @saveTokenToServer()
+
+      saveTokenToServer: ->
+        DeviceService.save(token: $ionicPush.token.token, platform: ionic.Platform.platform())

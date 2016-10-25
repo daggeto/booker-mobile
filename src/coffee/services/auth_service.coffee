@@ -26,6 +26,7 @@ app.factory 'AuthService', ($q, $auth, NotificationService, LOCAL_CURRENT_USER_I
       @isAuthenticated = true
 
       @destroyUserCredentials()
+      NotificationService.unregisterToken()
 
       $auth.signOut()
         .then => console.log('Loggout success')
