@@ -32,8 +32,8 @@ app.controller 'ServiceSettingsController', (
           .catch(@togglePublicationFail)
 
       togglePublicationSuccess: (response) =>
-        ionicToast.show(translateFilter('service.settings.visible_now'), 'bottom', true, 3000);
+        ionicToast.show(translateFilter('service.settings.visible_now'), 'bottom', false, 3000);
 
       togglePublicationFail: (response) =>
-        ionicToast.show(response.data.errors[0], 'bottom', true, 3000);
+        ionicToast.show(response.data.errors[0], 'bottom', false, 3000);
         @service = response.data.service
