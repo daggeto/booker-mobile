@@ -17,7 +17,11 @@ login:
 sign_up:
   title: Sign Up
   sign_up: Sign Up
+  i_agree: I agree with terms and conditions
   success_message: You are registered and you can login now
+terms:
+  title: Terms
+
 form:
   email: Email
   password: Password
@@ -33,6 +37,7 @@ form:
   status: Status
   errors:
     required: Field is required
+    terms_required: You must agree with terms
     email_wrong: Wrong email
     min_length: At least 8 symbols
 side:

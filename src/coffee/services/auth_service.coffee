@@ -23,7 +23,7 @@ app.factory 'AuthService', ($q, $auth, NotificationService, LOCAL_CURRENT_USER_I
       NotificationService.saveToken()
 
     logout: ->
-      @isAuthenticated = true
+      @isAuthenticated = false
 
       @destroyUserCredentials()
       NotificationService.unregisterToken()

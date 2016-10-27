@@ -12,6 +12,10 @@ app.config ($stateProvider, $urlRouterProvider) ->
       controller: 'SignUpController as vm'
       templateUrl: 'templates/signup.html')
 
+    .state('terms'
+      url: '/terms'
+      templateUrl: 'templates/terms.html')
+
     .state('app'
       url: '/app'
       abstract: true

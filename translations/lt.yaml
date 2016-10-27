@@ -17,7 +17,18 @@ login:
 sign_up:
   title: Registracija
   sign_up: Registruotis
+  i_agree: Sutinku su taisyklėmis
   success_message: Sekmingai registravotes ir galite prisijungti
+terms:
+  title: Taisyklės
+  body: |
+    Įrašydamas šią programą Jūs sutinkate laikytis visu žemiau aprašytų taisyklių:
+    <li>Įkeliamose nuotraukose negali buti įžeižiančio, nemalonaus ar nepageidaujamo turinio.</li>
+    <li>Įkeliamouse tekstuose negali buti įžeižiančio, nemalonaus ar nepageidaujamo turinio.</li>
+    Jei Jūs nesutinkate su taisyklėmis, Jūs negalite naudotis šia programa.
+    Jeigu matote netinkama nuotrauką ar tekstą paslaugoje,
+    tai galite pranešti apie paslaugą paspaude mygtuką, kuris randasi kiekvienos paslaugos puslapyje.
+    Paslauga surinkusi 5 pranešimus bus blokuojama.
 form:
   email: E. Paštas
   password: Slaptažodis
@@ -33,6 +44,7 @@ form:
   status: Busena
   errors:
     required: Laukas privalomas
+    terms_required: Privalote sutikti su taisyklėmis
     email_wrong: Blogas E. Paštas
     min_length: Per trumpas slaptažodis. Min. 8 simboliai
 side:
@@ -49,7 +61,7 @@ side:
     begin: Pradėti
     cancel: Grįžti
 reservations:
-  title: Reservacijos
+  title: Rezervacijos
   actions:
     title: Pakeisti
     cancel: Nutraukti

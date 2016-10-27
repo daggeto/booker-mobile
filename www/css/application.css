@@ -145,6 +145,9 @@
     display: inline-block;
     margin-left: 5px; }
 
+.b-terms-checkbox .checkbox {
+  right: auto !important; }
+
 .side-list--item {
   display: flex;
   padding: 1em 0.5em;
@@ -157,6 +160,11 @@
 
 .book-service--description {
   padding: 1em; }
+
+.terms .body {
+  font-size: 1.5em;
+  padding: 10px;
+  font-weight: lighter; }
 
 .event--content {
   position: relative;

@@ -6,7 +6,7 @@ ion-view[name="registration-view"]
         translate
       ] back
     h1.title[translate] sign_up.title
-  ion-content
+  ion-content.sign_up
     form[name="signupForm"  ng-submit="vm.sign_up(signupForm)" novalidate]
       div[class="list"]
         label[class="item item-input item-floating-label"]
@@ -57,6 +57,17 @@ ion-view[name="registration-view"]
             for="password_confirmation"
             required="{{ 'form.errors.required' | translate }}"
             min-length="{{ 'form.errors.min_length' | translate }}"
+          ]
+
+        .item.item-checkbox.b-terms-checkbox
+          label.checkbox
+            input[type="checkbox" name="terms" ng-model="vm.signup_data.terms"]
+
+          .span
+            a[ng-click="navigator.go('terms')" translate] sign_up.i_agree
+          error-messages[
+            form="signupForm"
+            for="terms"
           ]
 
       div[class="padding"]
