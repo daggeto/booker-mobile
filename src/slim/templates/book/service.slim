@@ -2,10 +2,12 @@ ion-view[can-swipe-back="true"]
   ion-header-bar.b-header[align-title="center" ]
     .buttons
       a.button.icon-left.ion-chevron-left.button-clear.button-dark[
-        ng-click="vm.back()"
+        ng-click="navigator.back()"
         translate
       ] back
     h1.title {{vm.service.name}}
+    .buttons.actions
+      service-actions.action[service="vm.service"]
   ion-content.has-header[lazy-scroll]
     photos-carousel[photos='vm.service.service_photos']
     .book-service--description

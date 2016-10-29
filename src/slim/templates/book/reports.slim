@@ -1,0 +1,23 @@
+ion-view[can-swipe-back="true"]
+  form[name="sendReportForm" ng-submit="vm.send(sendReportForm)" novalidate]
+    ion-header-bar.b-header[align-title="center" ]
+      .buttons
+        a.button.icon-left.ion-chevron-left.button-clear.button-dark[
+          ng-click="navigator.back()"
+          translate
+        ] back
+      h1.title {{ 'service.reports.title' | translate }}
+      .buttons
+        button.button.button-clear.button-positive.pull-right[
+          ng-click="sendReportForm.submit()" translate
+        ] send
+    ion-content.has-header[lazy-scroll]
+      .list
+        label.item.item-input.item-stacked-label.padding
+          span.input-label[translate] form.message
+          textarea[name="message" ng-model="vm.message" required]
+          error-messages.service-settings--error[
+            form='sendReportForm'
+            for="message"
+            required="{{ 'form.errors.required' | translate }}"
+          ]

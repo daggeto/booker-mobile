@@ -1,6 +1,7 @@
 $normal-size: 1.8em;
 $padding: 5px;
 $width: 1.2em;
+$action-width: 20px;
 
 .b-action-button {
   font-size: $normal-size;
@@ -15,4 +16,16 @@ $width: 1.2em;
     left: 0;
     right: 0;
   }
+
+  .actions {
+    font-size: $normal-size;
+    padding: $padding;
+  }
+
+  .action {
+    width: $action-width;
+    text-align: center;
+  }
 }
+
+

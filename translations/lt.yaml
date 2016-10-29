@@ -6,6 +6,7 @@ edit: Keisit
 delete: Ištrinti
 free: Nemokama
 upload_photo_button: Ikelti nuotrauką
+send: Siųsti
 errors:
   something_wrong: Oj, kažkas negerai.
   unauthorized: Autorizuoti nepavyko
@@ -42,6 +43,7 @@ form:
   from: Nuo
   to: Iki
   status: Busena
+  message: Pranešimas
   errors:
     required: Laukas privalomas
     terms_required: Privalote sutikti su taisyklėmis
@@ -87,6 +89,11 @@ service:
     no_events: Nėra įvykių
   reservations:
     title: Reservacijos
+  reports:
+    title: Prenešti
+  actions:
+    title: Veiksmai
+    report: Pranešti
 upload_photo:
   actions:
     title: Įkelti nuotrauką

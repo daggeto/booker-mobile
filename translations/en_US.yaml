@@ -6,6 +6,7 @@ edit: Edit
 delete: Delete
 free: Free
 upload_photo: Upload Photo
+send: Send
 errors:
   something_wrong: Ups, something wrong
   unauthorized: Unauthorized
@@ -21,7 +22,6 @@ sign_up:
   success_message: You are registered and you can login now
 terms:
   title: Terms
-
 form:
   email: Email
   password: Password
@@ -35,6 +35,7 @@ form:
   from: From
   to: To
   status: Status
+  message: Message
   errors:
     required: Field is required
     terms_required: You must agree with terms
@@ -78,6 +79,11 @@ service:
     no_events: No events
   reservations:
     title: Reservations
+  reports:
+      title: Report
+  actions:
+    title: Actions
+    report: Report
 upload_photo:
   actions:
     title: Upload Photo

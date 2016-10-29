@@ -82,6 +82,12 @@
   .b-header h1.title {
     left: 0;
     right: 0; }
+  .b-header .actions {
+    font-size: 1.8em;
+    padding: 5px; }
+  .b-header .action {
+    width: 20px;
+    text-align: center; }
 
 .validation__text {
   color: #ff3333;

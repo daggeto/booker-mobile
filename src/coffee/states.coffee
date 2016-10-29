@@ -150,6 +150,14 @@ app.config ($stateProvider, $urlRouterProvider) ->
         service: (UserServicesService, $stateParams) ->
           UserServicesService.findById($stateParams.id))
 
+    .state('book_service.reports',
+      cache: false,
+      url: '/reports',
+      views:
+        '@':
+          controller: 'ReportsController as vm',
+          templateUrl: 'templates/book/reports.html')
+
   $urlRouterProvider.otherwise( ($injector, $location) ->
     $state = $injector.get("$state")
     $state.go('app.main')

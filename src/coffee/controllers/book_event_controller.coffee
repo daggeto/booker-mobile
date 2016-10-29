@@ -14,5 +14,3 @@ app.controller 'BookEventController', ($scope, $state, service, BookingService, 
       BookingService.book(data.event).then =>
         $scope.$broadcast('reloadEvents')
 
-    back: ->
-      $scope.navigator.back()
