@@ -1,5 +1,6 @@
 $profile-image-width: 100%;
 $profile-image-height: $r-size-big;
+$avatar-size: 20em;
 
 .profile {
   .image-loader-container {
@@ -8,5 +9,20 @@ $profile-image-height: $r-size-big;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  &--avatar {
+    padding: $size-default;
+    text-align: center;
+
+    img {
+      border-radius: 50%;
+      width: $avatar-size;
+      height: $avatar-size;
+    }
+  }
+
+  &--email {
+    text-align: center;
   }
 }

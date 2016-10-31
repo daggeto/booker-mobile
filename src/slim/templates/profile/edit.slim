@@ -7,11 +7,13 @@ ion-view[view-title="My Profile"]
       ] back
     h1.title[translate] profile.title
   ion-content.profile[lazy-scroll]
-    img[
-      image-lazy-src="{{vm.currentUser.profile_image.preview_url}}"
-      lazy-scroll-resize="true"
-      image-lazy-loader="ios"
-    ]
+    .profile--avatar
+      img[
+        image-lazy-src="{{vm.currentUser.profile_image.preview_url}}"
+        lazy-scroll-resize="true"
+        image-lazy-loader="ios"
+      ]
+    .profile--email {{vm.currentUser.email}}
     .row
       .col
         upload-photo.pull-right[on-photo-taken="vm.onPhotoTaken(response)"]
