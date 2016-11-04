@@ -6,7 +6,7 @@ img.service__thumbnail[
   ]
 .service__details
   .row
-    .col-75.service__description[ng-click="vm.goTo('book_service', {id: service.id})"]
+    .col-66.service__description[ng-click="vm.goTo('book_service', {id: service.id})"]
       | {{service.name}}
     .col.service__book-button
       book-button[ng-if='service.nearest_event' event="service.nearest_event" index="$index"]

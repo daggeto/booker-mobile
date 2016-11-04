@@ -370,6 +370,7 @@
     font-size: 1em;
     text-align: right; }
   .service__address {
+    padding: 0.1em;
     font-size: 1em;
     color: #2aa9d4; }
   .service .image-loader-container {
