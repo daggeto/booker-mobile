@@ -1,4 +1,4 @@
-app.factory 'AuthService', ($q, $auth, NotificationService, LOCAL_CURRENT_USER_ID) ->
+app.factory 'AuthService', ($q, $auth, $ionicHistory, NotificationService, LOCAL_CURRENT_USER_ID) ->
   new class AuthService
     constructor: ->
       @isAuthenticated = $auth.retrieveData('auth_headers') != null
@@ -27,6 +27,7 @@ app.factory 'AuthService', ($q, $auth, NotificationService, LOCAL_CURRENT_USER_I
 
       @destroyUserCredentials()
       NotificationService.unregisterToken()
+      $ionicHistory.clearCache()
 
       $auth.signOut()
         .then => console.log('Loggout success')

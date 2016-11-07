@@ -23,7 +23,6 @@ app.config ($stateProvider, $urlRouterProvider) ->
 
     .state('app.main'
       url: '/main'
-      cache: false
       resolve:
         UsersService: 'UsersService'
         currentUser: ($window, UsersService, LOCAL_CURRENT_USER_ID, $auth) ->
