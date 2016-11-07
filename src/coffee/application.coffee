@@ -60,6 +60,10 @@ app = angular.module(
     if window.StatusBar
       StatusBar.styleDefault();
 
+    setTimeout(
+      -> navigator.splashscreen.hide()
+    , 300)
+
   $rootScope.$on('$stateChangeStart', (event, next, nextParams, fromState) ->
     if !AuthService.isAuthenticated
       unless next.name in ['login', 'signup', 'terms']

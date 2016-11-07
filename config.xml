@@ -21,6 +21,8 @@
   <preference name="orientation" value="portrait"/>
   <preference name="AndroidPersistentFileLocation" value="Compatibility"/>
   <preference name="StatusBarOverlaysWebView" value="false"/>
+  <preference name="AutoHideSplashScreen" value="false"/>
+  <preference name="ShowSplashScreenSpinner" value="false"/>
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>
@@ -54,9 +56,11 @@
     <icon src="resources/ios/icon/icon-small.png" width="29" height="29"/>
     <icon src="resources/ios/icon/icon-small@2x.png" width="58" height="58"/>
     <icon src="resources/ios/icon/icon-small@3x.png" width="87" height="87"/>
-    <splash src="resources/ios/splash/Default-568h@2x~iphone.png" width="640" height="1136"/>
-    <splash src="resources/ios/splash/Default-Portrait~ipad.png" width="768" height="1024"/>
     <splash src="resources/ios/splash/Default@2x~iphone.png" width="640" height="960"/>
+    <splash src="resources/ios/splash/Default-568h@2x~iphone.png" width="640" height="1136"/>
+    <splash src="resources/ios/splash/Default-667h.png" width="750" height="1334"/>
+    <splash src="resources/ios/splash/Default-736h.png" width="1242" height="2208"/>
+    <splash src="resources/ios/splash/Default-Portrait~ipad.png" width="768" height="1024"/>
     <splash src="resources/ios/splash/Default~iphone.png" width="320" height="480"/>
   </platform>
   <plugin name="cordova-plugin-device" spec="~1.1.2"/>
