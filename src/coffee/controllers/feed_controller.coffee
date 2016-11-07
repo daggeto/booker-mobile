@@ -1,6 +1,6 @@
 app.controller 'FeedController', ($scope, $state, UserServicesService, BookingService) ->
   new class FeedController
-    constructor:  ->
+    constructor: ->
       @bindListeners()
 
       @refreshServices()

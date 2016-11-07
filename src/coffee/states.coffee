@@ -7,7 +7,6 @@ app.config ($stateProvider, $urlRouterProvider) ->
       templateUrl: 'templates/login.html')
 
     .state('signup'
-      cache: false
       url: '/signup'
       controller: 'SignUpController as vm'
       templateUrl: 'templates/signup.html')
