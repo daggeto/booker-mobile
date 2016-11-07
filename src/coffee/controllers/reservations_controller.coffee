@@ -37,7 +37,7 @@ app.controller 'ReservationsController',
       onEventAvatarClick: (_, data) =>
         $scope.navigator.go('book_service', id: data.reservation.service.id)
 
-      reloadReservations: ->
+      reloadReservations: =>
         UsersService.reservations(user_id: currentUser.id, group: true).then (response) =>
           @reservations = response.reservations
 

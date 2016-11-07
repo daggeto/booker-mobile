@@ -7,4 +7,5 @@ ion-view[view-title="Reservations"]
       ] back
     h1.title[translate] reservations.title
   ion-content.padding
+    ion-refresher[on-refresh="vm.reloadReservations()"]
     user-reservations[reservations="vm.reservations"]
