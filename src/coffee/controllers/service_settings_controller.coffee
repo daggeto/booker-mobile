@@ -1,7 +1,7 @@
 app.controller 'ServiceSettingsController', (
   $scope,
   service,
-  ionicToast,
+  ToastService,
   UserServicesService,
   translateFilter
 ) ->
@@ -32,8 +32,8 @@ app.controller 'ServiceSettingsController', (
           .catch(@togglePublicationFail)
 
       togglePublicationSuccess: (response) =>
-        ionicToast.show(translateFilter('service.settings.visible_now'), 'bottom', false, 3000);
+        ToastService.show(translateFilter('service.settings.visible_now'), 'bottom', false, 3000)
 
       togglePublicationFail: (response) =>
-        ionicToast.show(response.data.errors[0], 'bottom', false, 3000);
+        ToastService.error(response.data.errors[0], 'bottom', false, 3000);
         @service = response.data.service

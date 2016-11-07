@@ -1,7 +1,7 @@
 app.factory 'BookingService', (
   $q,
   $ionicPopup,
-  ionicToast,
+  ToastService,
   ReservationsService,
   translateFilter,
   EVENT_STATUS
@@ -29,9 +29,9 @@ app.factory 'BookingService', (
       )
 
     bookSuccess: (response) =>
-      ionicToast.show(response.message, 'bottom', false, 3000);
+      ToastService.show(response.message, 'bottom', false, 3000);
       @resolveMethod(response)
 
     bookFailed: (response) =>
-      ionicToast.show(response.data.message, 'bottom', false, 3000);
+      ToastService.error(response.data.message, 'bottom', false, 3000);
       @rejectMethod

@@ -1,0 +1,10 @@
+.b-toast {
+  &--icon {
+    padding: $size-default;
+    font-size: $font-small;
+
+    &__error {
+      color: $red;
+    }
+  }
+}

@@ -183,6 +183,12 @@
   padding: 10px;
   font-weight: lighter; }
 
+.b-toast--icon {
+  padding: 10px;
+  font-size: 1em; }
+  .b-toast--icon__error {
+    color: #ff3333; }
+
 .event--content {
   position: relative;
   height: 3em; }
