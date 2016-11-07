@@ -1,0 +1,16 @@
+ion-view[view-title="User Profile"]
+  ion-header-bar.b-header[align-title="center"]
+    .buttons
+      a.button.icon-left.ion-chevron-left.button-clear.button-dark[
+        ng-click="navigator.back()"
+        translate
+      ] back
+    h1.title {{vm.user.email}}
+  ion-content.profile[lazy-scroll]
+    .profile--avatar
+      img[
+        image-lazy-src="{{vm.user.profile_image.preview_url}}"
+        lazy-scroll-resize="true"
+        image-lazy-loader="ios"
+      ]
+    .profile--email {{vm.user.email}}

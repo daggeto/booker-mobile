@@ -64,6 +64,19 @@ app.config ($stateProvider, $urlRouterProvider) ->
           controller: 'ProfileEditController as vm'
     )
 
+    .state('app.main.profile'
+      url: '/profile/:user_id'
+      cache: false
+      resolve:
+        UsersService: 'UsersService'
+        user: (UsersService, $stateParams) ->
+          UsersService.findById($stateParams.user_id)
+      views:
+        '@':
+          templateUrl: 'templates/profile/show.html'
+          controller: 'ProfileController as vm'
+    )
+
     .state('service'
       abstract: true
       cache: false
