@@ -25,7 +25,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
       url: '/main'
       resolve:
         UsersService: 'UsersService'
-        currentUser: ($window, UsersService, LOCAL_CURRENT_USER_ID, $auth) ->
+        currentUser: ($window, UsersService, LOCAL_CURRENT_USER_ID) ->
           currentUserId = $window.localStorage.getItem(LOCAL_CURRENT_USER_ID)
           UsersService.findById(currentUserId)
 

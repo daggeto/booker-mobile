@@ -6,9 +6,6 @@ ion-scroll[lazy-scroll]
     ion-item.side-list--item[ng-click="vm.providerSettingsClicked()"]
       i.side-list--item--icon.ion-ios-settings
       .side-list--item--title[translate] side.service_settings
-      .side-list--item--status.pull-right[ng-if="vm.currentUser.service"]
-        .green-text[ng-show="vm.currentUser.service.published" translate] side.published
-        .red-text[ng-hide="vm.currentUser.service.published" translate] side.unpublished
     ion-item.side-list--item[ng-click="navigator.go('app.main.profile_edit')"]
       i.side-list--item--icon.ion-person
       .side-list--item--title[translate] side.profile
