@@ -147,11 +147,6 @@
   .b-icon__active {
     color: #000000; }
 
-.b-textarea {
-  height: 10em; }
-  .b-textarea textarea {
-    height: 100%; }
-
 .b-input input {
   text-align: right; }
 
