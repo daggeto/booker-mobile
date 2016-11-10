@@ -19,8 +19,8 @@ app = angular.module(
 )
 .config((AjaxInterceptorProvider, $authProvider, API_URL) ->
   AjaxInterceptorProvider.config(
-    title: "Ups",
-    defaultMessage: "I crashed :("
+    defaultMessage: "Network error. Please check your connection."
+
   )
 
   $authProvider.configure

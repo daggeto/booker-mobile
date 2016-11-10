@@ -2,15 +2,16 @@ back: Atgal
 close: Grįžti
 yes: Taip
 save: Saugoti
-edit: Keisit
+edit: Keisti
 delete: Ištrinti
 free: Nemokama
-upload_photo_button: Ikelti nuotrauką
+upload_photo_button: Įkelti nuotrauką
 send: Siųsti
 errors:
-  something_wrong: Oj, kažkas negerai.
-  unauthorized: Autorizuoti nepavyko
-  try_login_again: Pameginkite prisijungti dar kartą
+  something_wrong: Oj, kažkas negerai
+  unauthorized: Nepavyko autorizuoti
+  try_login_again: Pamėginkite prisijungti dar kartą
+  no_network: Nepavyko prisijungti prie serverio. Pamėginkite patikrinti interneto ryšį
 login:
   title: Prisijungti
   login: Prisijungti
@@ -19,19 +20,19 @@ sign_up:
   title: Registracija
   sign_up: Registruotis
   i_agree: Sutinku su taisyklėmis
-  success_message: Sekmingai registravotes ir galite prisijungti
+  success_message: Sėkmingai registravotės ir galite prisijungti
 terms:
   title: Taisyklės
   body: |
-    Įrašydamas šią programą Jūs sutinkate laikytis visu žemiau aprašytų taisyklių:
-    <li>Įkeliamose nuotraukose negali buti įžeižiančio, nemalonaus ar nepageidaujamo turinio.</li>
-    <li>Įkeliamouse tekstuose negali buti įžeižiančio, nemalonaus ar nepageidaujamo turinio.</li>
+    Įrašydamas šią programą Jūs sutinkate laikytis visų žemiau pateiktų taisyklių:
+    <li>Įkeliamose nuotraukose negali būti įžeidžiančio, nemalonaus ar netinkamo turinio.</li>
+    <li>Įkeliamouse tekstuose negali būti įžeidžiančio, nemalonaus ar netinkamo turinio.</li>
     Jei Jūs nesutinkate su taisyklėmis, Jūs negalite naudotis šia programa.
-    Jeigu matote netinkama nuotrauką ar tekstą paslaugoje,
-    tai galite pranešti apie paslaugą paspaude mygtuką, kuris randasi kiekvienos paslaugos puslapyje.
+    Jeigu matote netinkamą nuotrauką ar tekstą paslaugoje, apie tai galite pranešti paspaude mygtuką, kuris yra
+kiekvienos paslaugos dešiniajame puslapio kampe.
     Paslauga surinkusi 5 pranešimus bus blokuojama.
 form:
-  email: E. Paštas
+  email: El. paštas
   password: Slaptažodis
   confirm_password: Pakartoti slaptažodį
   name: Pavadinimas
@@ -42,15 +43,15 @@ form:
   address: Adresas
   from: Nuo
   to: Iki
-  status: Busena
+  status: Būsena
   message: Pranešimas
   errors:
-    required: Laukas privalomas
+    required: Privalomas laukas
     terms_required: Privalote sutikti su taisyklėmis
-    email_wrong: Blogas E. Paštas
+    email_wrong: Blogas El. paštas
     min_length: Per trumpas slaptažodis. Min. 8 simboliai
 side:
-  service_settings: Paslaugos Nustatymai
+  service_settings: Paslaugos nustatymai
   profile: Profilis
   reservations: Rezervacijos
   published: Matomas
@@ -88,7 +89,7 @@ service:
     add: Pridėti
     no_events: Nėra įvykių
   reservations:
-    title: Reservacijos
+    title: Rezervacijos
   reports:
     title: Prenešti
   actions:
@@ -115,8 +116,8 @@ event:
     confirm_cancel: Ar tikrai norite nutraukti rezervaciją?
     booked: Laikas rezervuotas
   error:
-    not_after: Laikas Nuo privalo but anksčiau nei Laikas Iki
-    only_future: Laikas privalo buti ateityje
+    not_after: Laikas nuo privalo būti anksčiau nei laikas iki
+    only_future: Laikas privalo būti ateityje
 profile:
   title: Profilis
   logout: Atsijungti
