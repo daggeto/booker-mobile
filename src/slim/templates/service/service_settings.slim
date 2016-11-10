@@ -11,60 +11,61 @@ form[name="serviceSettingsForm" ng-submit="vm.save(serviceSettingsForm)" novalid
         ng-click="serviceSettingsForm.submit()" translate
       ] save
   ion-content
-    ui-view[name="photos"]
-    .list
-      ion-toggle[
-        ng-model="vm.service.published"
-        ng-change="vm.togglePublication()"
-      ] {{ 'service.settings.published' | translate }}
+    ion-scroll
+      ui-view[name="photos"]
+      .list
+        ion-toggle[
+          ng-model="vm.service.published"
+          ng-change="vm.togglePublication()"
+        ] {{ 'service.settings.published' | translate }}
 
-      label.item.item-input.b-input.padding
-        span.input-label[translate] form.name
-        input[name="name" type="text" ng-model="vm.service.name" required]
-        error-messages.service-settings--error[
-          form='serviceSettingsForm'
-          for="name"
-          required="{{ 'form.errors.required' | translate }}"
-        ]
+        label.item.item-input.b-input.padding
+          span.input-label[translate] form.name
+          input[name="name" type="text" ng-model="vm.service.name" required]
+          error-messages.service-settings--error[
+            form='serviceSettingsForm'
+            for="name"
+            required="{{ 'form.errors.required' | translate }}"
+          ]
 
-      label.item.item-input.item-stacked-label.padding
-        span.input-label[translate] form.description
-        textarea[name="description" rows="5" ng-model="vm.service.description" required]
-        error-messages.service-settings--error[
-          form='serviceSettingsForm'
-          for="description"
-          required="{{ 'form.errors.required' | translate }}"
-        ]
+        label.item.item-input.item-stacked-label.padding
+          span.input-label[translate] form.description
+          textarea[name="description" rows="5" ng-model="vm.service.description" required]
+          error-messages.service-settings--error[
+            form='serviceSettingsForm'
+            for="description"
+            required="{{ 'form.errors.required' | translate }}"
+          ]
 
-      label.item.item-select.padding
-        span.input-label[translate] form.duration
-        select[
-          ng-model="vm.service.duration"
-          ng-options="dur.value as dur.label for dur in vm.durations"]
+        label.item.item-select.padding
+          span.input-label[translate] form.duration
+          select[
+            ng-model="vm.service.duration"
+            ng-options="dur.value as dur.label for dur in vm.durations"]
 
-      label.item.item-input.b-input.padding
-        span.input-label[translate] form.price
-        input[type="number" ng-model="vm.service.price"]
+        label.item.item-input.b-input.padding
+          span.input-label[translate] form.price
+          input[type="number" ng-model="vm.service.price"]
 
-      label.item.item-input.b-input.padding
-        span.input-label[translate] form.phone_number
-        input[name="phone_number" type="text" ng-model="vm.service.phone" required]
-        error-messages.service-settings--error[
-          form='serviceSettingsForm'
-          for="phone_number"
-          required="{{ 'form.errors.required' | translate }}"
-        ]
+        label.item.item-input.b-input.padding
+          span.input-label[translate] form.phone_number
+          input[name="phone_number" type="text" ng-model="vm.service.phone" required]
+          error-messages.service-settings--error[
+            form='serviceSettingsForm'
+            for="phone_number"
+            required="{{ 'form.errors.required' | translate }}"
+          ]
 
-      label.item.item-input.b-input.padding
-        input-label[translate] form.address
-        input[
-          name="address"
-          type="text"
-          ng-model="vm.service.address"
-          required
-        ]
-        error-messages.service-settings--error[
-          form='serviceSettingsForm'
-          for="address"
-          required="{{ 'form.errors.required' | translate }}"
-        ]
+        label.item.item-input.b-input.padding
+          input-label[translate] form.address
+          input[
+            name="address"
+            type="text"
+            ng-model="vm.service.address"
+            required
+          ]
+          error-messages.service-settings--error[
+            form='serviceSettingsForm'
+            for="address"
+            required="{{ 'form.errors.required' | translate }}"
+          ]

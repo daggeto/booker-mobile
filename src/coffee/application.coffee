@@ -53,7 +53,7 @@ app = angular.module(
       cordova.plugins.notification.local.registerPermission (granted) ->
         console.log("Notifications granted: #{granted}")
     if window.cordova and window.cordova.plugins.Keyboard
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 
       cordova.plugins.Keyboard.disableScroll(true);
 
