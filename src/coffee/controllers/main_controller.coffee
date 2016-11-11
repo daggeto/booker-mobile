@@ -1,10 +1,15 @@
 app.controller 'MainController', ($scope, $ionicSlideBoxDelegate) ->
   new class MainController
-    slideTo: (index) ->
-      $ionicSlideBoxDelegate.slide(index)
+    switchSlide: ->
+      to = 1 - @currentIndex()
+
+      $ionicSlideBoxDelegate.slide(to)
 
     isCurrentSlide: (index) ->
-      $ionicSlideBoxDelegate.currentIndex() == index
+     @currentIndex() == index
 
     isAndroid: ->
       $scope.$root.isAndroid()
+
+    currentIndex: ->
+      $ionicSlideBoxDelegate.currentIndex()
