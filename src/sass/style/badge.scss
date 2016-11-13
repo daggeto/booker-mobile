@@ -1,0 +1,15 @@
+$badge-width: 1.4em;
+$badge-height: 1.4em;
+
+.badge-container{
+  position: relative;
+}
+.badge {
+  position: absolute;
+  width: $badge-width;
+  height: $badge-height;
+  font-size: 0.4em;
+  top: 0;
+  right: 0;
+  padding: 0;
+}

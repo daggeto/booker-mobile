@@ -12,6 +12,9 @@ app.constant('USER_ROLES'
   simple: 'public_role'
 )
 
+app.constant 'EVENTS',
+  UPDATE_CURRENT_USER: 'UPDATE_CURRENT_USER'
+
 app.constant 'EVENT_STATUS',
   FREE: 'free'
   PENDING: 'pending'

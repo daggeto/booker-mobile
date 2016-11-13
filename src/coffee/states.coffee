@@ -17,18 +17,16 @@ app.config ($stateProvider, $urlRouterProvider) ->
 
     .state('app'
       url: '/app'
+      resolve:
+        UsersService: 'UsersService'
+        currentUser: ($window, UsersService) ->
+          UsersService.current()
       abstract: true
       controller: 'MainController as vm'
       templateUrl: 'templates/app.html')
 
     .state('app.main'
       url: '/main'
-      resolve:
-        UsersService: 'UsersService'
-        currentUser: ($window, UsersService, LOCAL_CURRENT_USER_ID) ->
-          currentUserId = $window.localStorage.getItem(LOCAL_CURRENT_USER_ID)
-          UsersService.findById(currentUserId)
-
       views:
         'content@app':
           templateUrl: 'templates/slides.html'
@@ -45,6 +43,14 @@ app.config ($stateProvider, $urlRouterProvider) ->
         'content@app':
           templateUrl: 'templates/components/search_results.html'
           controller: 'SearchResultController as vm'
+    )
+
+    .state('app.main.notifications',
+      url: '/notifications/'
+      views:
+        '@':
+          templateUrl: 'templates/notifications.html'
+          controller: 'NotificationsController as vm'
     )
 
     .state('app.main.reservations'

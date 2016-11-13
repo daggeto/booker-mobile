@@ -1,0 +1,22 @@
+ion-view[view-title="Notifications"]
+  ion-header-bar.b-header[align-title="center"]
+    .buttons
+      a.button.icon-left.ion-chevron-left.button-clear.button-dark[
+        ng-click="navigator.back()"
+        translate
+      ] back
+    h1.title[translate] notifications.title
+  ion-content
+    ion-refresher[on-refresh="vm.reloadNotifications()"]
+
+    .list
+      .item.item-avatar[
+        ng-repeat="notification in vm.notifications"
+        ng-click="navigator.go(notification.payload.state, notification.payload.stateParams)"
+        ng-class="{'notification__unread': notification.unread}"
+      ]
+        img[src="{{notification.avatar_photo.preview_url}}"]
+        h2 {{notification.title}}
+        p[am-time-ago="notification.created_at"]
+        p {{notification.message}}
+

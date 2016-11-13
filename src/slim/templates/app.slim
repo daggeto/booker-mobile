@@ -7,6 +7,13 @@ ion-header-bar.b-header.flexbox
       }"
       ng-click='vm.switchSlide()'
     ]
-  search[ min-length="3"]
+  search[min-length="3"]
+  .buttons[ng-hide="stateIs('app.main.search_results')"]
+    i.icon.ion-ios-bell.b-action-button.b-icon.b-icon__active.badge-container[
+      ng-click="navigator.go('app.main.notifications')"
+    ]
+      span.badge.badge-assertive[
+        ng-show="currentUser.unread_count > 0"
+      ] {{currentUser.unread_count}}
 
 ion-nav-view[name="content" class="main-content"]

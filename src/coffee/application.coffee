@@ -44,7 +44,8 @@ app = angular.module(
   NotificationService,
   AuthService,
   AUTH_EVENTS,
-  SERVER_EVENTS
+  SERVER_EVENTS,
+  EVENTS
 ) ->
   $ionicPlatform.ready =>
     NotificationService.registerToken()
@@ -63,6 +64,10 @@ app = angular.module(
     setTimeout(
       -> navigator.splashscreen.hide()
     , 300)
+
+
+  $ionicPlatform.on 'resume', ->
+    $rootScope.$emit(EVENTS.UPDATE_CURRENT_USER)
 
   $rootScope.$on('$stateChangeStart', (event, next, nextParams, fromState) ->
     if !AuthService.isAuthenticated

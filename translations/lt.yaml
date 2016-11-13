@@ -63,6 +63,9 @@ side:
       teikti paslaugą
     begin: Pradėti
     cancel: Grįžti
+notifications:
+  title: Pranešimai
+  no_notifications: Pranešimų nėra
 reservations:
   title: Rezervacijos
   actions:

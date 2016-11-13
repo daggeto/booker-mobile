@@ -4,7 +4,9 @@ app.factory 'NotificationService', (
   $cordovaLocalNotification,
   $q,
   Navigator,
-  DeviceService
+  DeviceService,
+  Notification,
+  EVENTS
 ) ->
     new class NotificationService
       constructor: ->
@@ -19,9 +21,13 @@ app.factory 'NotificationService', (
       onLocalNotificationClick: (event, notification, state) =>
         payload = JSON.parse(notification.data)
 
+        @markAsRead(payload.notification_id).then => @fireCurrentUserUpdate()
+
         @navigateFromNotification(payload)
 
       onForeground: (message) ->
+        @fireCurrentUserUpdate()
+
         $cordovaLocalNotification.schedule
           id: 1
           title: message.title,
@@ -33,7 +39,12 @@ app.factory 'NotificationService', (
 
 
       onBackground: (message) ->
+        @markAsRead(message.payload.notification_id).then => @fireCurrentUserUpdate()
+
         @navigateFromNotification(message.payload)
+
+      fireCurrentUserUpdate: ->
+        $rootScope.$emit(EVENTS.UPDATE_CURRENT_USER)
 
       navigateFromNotification: (payload) ->
         Navigator.go(payload.state, payload.stateParams)
@@ -57,3 +68,13 @@ app.factory 'NotificationService', (
 
       saveTokenToServer: ->
         DeviceService.save(token: $ionicPush.token.token, platform: ionic.Platform.platform())
+
+      findAll: ->
+        Notification.$r.get().$promise
+
+      markAsRead: (id) ->
+        Notification.$r.post(notification_id: id, action: 'mark_as_read').$promise
+
+      markAllAsRead: ->
+        Notification.$r.post(action: 'mark_all_as_read').$promise
+

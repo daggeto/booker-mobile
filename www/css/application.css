@@ -184,6 +184,21 @@
   .b-toast--icon__error {
     color: #ff3333; }
 
+.badge-container {
+  position: relative; }
+
+.badge {
+  position: absolute;
+  width: 1.4em;
+  height: 1.4em;
+  font-size: 0.4em;
+  top: 0;
+  right: 0;
+  padding: 0; }
+
+.notification__unread {
+  background-color: #E4F1FB; }
+
 .event--content {
   position: relative;
   height: 3em; }

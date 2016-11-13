@@ -52,6 +52,9 @@ side:
     template: Here you can setup your service information and your time when you are available.
     begin: Begin
     cancel: Cancel
+notifications:
+  title: Notifications
+  no_notifications: No notifications
 reservations:
   title: Reservations
   actions:
