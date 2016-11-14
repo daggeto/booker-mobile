@@ -8,7 +8,8 @@ app.controller 'CalendarController',
     EventsService,
     Calendar,
     service,
-    ServiceEventActionSheet
+    ServiceEventActionSheet,
+    Navigator
   ) ->
     new class CalendarController
       constructor:  ->
@@ -25,6 +26,7 @@ app.controller 'CalendarController',
 
       bindListeners: ->
         $scope.$on 'onEventClick', @onEventClick
+        $scope.$on 'onEventAvatarClick', @onEventAvatarClick
 
       reloadEvents: =>
         @loadEvents(@calendar.selectedDate)
@@ -33,14 +35,14 @@ app.controller 'CalendarController',
         UserServicesService.events(
           service_id: service.id
           start_at: date.format()
-        ).then(((response) =>
+        ).then (response) =>
           @calendar.events = response
-        ), (refejcted) ->
-          console.log('rejected')
-        )
 
       onEventClick: (_, data)=>
         ServiceEventActionSheet.show(data.event, data.reservation, @reloadEvents)
+
+      onEventAvatarClick: (_, data) =>
+        Navigator.go('app.main.profile', user_id: data.event.user.id)
 
       selectDate: (date) ->
         @calendar.selectDate(date)
