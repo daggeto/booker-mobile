@@ -9,6 +9,10 @@ $event-add-color: #387ef5;
 
 
 .calendar {
+  .events {
+    width: 100%;
+  }
+
   &__month {
     text-align: center;
   }

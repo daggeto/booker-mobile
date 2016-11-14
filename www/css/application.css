@@ -261,6 +261,14 @@
   line-height: 1.2rem;
   padding: 0 0.3rem; }
 
+.event-button--title {
+  margin-bottom: 10px;
+  font-size: 1.9em;
+  font-weight: lighter; }
+
+.event-button--subtitle {
+  font-size: 0.9em; }
+
 .photo-actions {
   position: absolute;
   width: 100%;
@@ -305,6 +313,9 @@
   font-size: 5em; }
   .take-photo-buttons i {
     margin: 0 0.1em; }
+
+.calendar .events {
+  width: 100%; }
 
 .calendar__month {
   text-align: center; }

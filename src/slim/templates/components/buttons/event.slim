@@ -1,0 +1,8 @@
+.row
+  .col.event-button--title.align-center
+    | {{event.start_at | amDateFormat: 'HH:mm' }} -
+     {{event.end_at | amDateFormat: 'HH:mm' }}
+.row
+  .col.event--status.event-button--subtitle.align-center[class="event--status__{{event.status}}"]
+    | {{event.status_label | uppercase}}
+

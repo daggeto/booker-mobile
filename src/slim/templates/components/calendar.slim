@@ -20,12 +20,13 @@
     .col-center[ng-click="vm.calendar.nextWeek()"]
       .ion-chevron-right.calendar__arrow.pull-left
   .row
-    ion-lists.calendar__list.center
-      ion-item.calendar--event.col.middle.center[
+    .hint-text.flexbox.center[
+      ng-hide="vm.calendar.events.length > 0"
+      translate
+    ] service.calendar.no_events
+    .list.card.events[ng-show="vm.calendar.events.length > 0"]
+      event-button.item.no-padding-grid[
         ng-repeat="event in vm.calendar.events track by event.id"
-        ng-click="vm.eventClick(event)"
-        class="calendar--event--{{event.status}}"
+        event="event"
       ]
-        .calendar--time
-          | {{event.start_at | amDateFormat: 'HH:mm' }}
-            - {{event.end_at | amDateFormat: 'HH:mm' }}
+

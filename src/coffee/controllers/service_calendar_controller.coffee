@@ -11,6 +11,7 @@ app.controller 'ServiceCalendarController',
 
       bindEvents: ->
         $scope.$on('reloadEvents', @reloadEvents)
+        $scope.$on('onEventButtonClick', @eventClick)
 
       reloadEvents: =>
         @loadEvents(@calendar.selectedDate)
@@ -35,5 +36,5 @@ app.controller 'ServiceCalendarController',
       isPast: (date) ->
         date.isBefore(@calendar.currentDate)
 
-      eventClick: (event) ->
-        $scope.$emit('bookEvent', { event: event })
+      eventClick: (_, data) ->
+        $scope.$emit('bookEvent', { event: data.event })

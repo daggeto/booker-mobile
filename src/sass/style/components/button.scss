@@ -4,6 +4,8 @@ $book-button-font-size: 0.8em;
 $book-button-line-height: 1.2rem;
 $book-button-padding: 0 0.3rem;
 
+$event-button-title-size: 1.9em;
+$event-button-sub-title-size: 0.9em;
 .button-float{
   background: $assertive !important;
   color:white !important;
@@ -39,4 +41,16 @@ $book-button-padding: 0 0.3rem;
   font-size: $book-button-font-size;
   line-height: $book-button-line-height;
   padding: $book-button-padding;
+}
+
+.event-button {
+  &--title {
+    margin-bottom: $size-default;
+    font-size: $event-button-title-size;
+    font-weight: lighter;
+  }
+
+  &--subtitle {
+    font-size: $event-button-sub-title-size;
+  }
 }
