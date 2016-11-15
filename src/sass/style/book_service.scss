@@ -2,4 +2,12 @@
   &--description {
     padding: $r-size-small;
   }
+
+  &--phone {
+    padding: $r-size-small;
+
+    i {
+      margin-right: $size-micro;
+    }
+  }
 }

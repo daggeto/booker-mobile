@@ -173,6 +173,11 @@
 .book-service--description {
   padding: 1em; }
 
+.book-service--phone {
+  padding: 1em; }
+  .book-service--phone i {
+    margin-right: 3px; }
+
 .terms .body {
   font-size: 1.5em;
   padding: 10px;
