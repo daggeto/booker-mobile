@@ -15,6 +15,11 @@ ion-view[name="login-view"]
           ng-model="vm.data.password"
         ]
     div[class="padding"]
-      button[class="button button-block button-calm" ng-click="vm.login()" translate] login.login
+      button[
+        id="login"
+        class="button button-block button-calm"
+        ng-click="vm.login()"
+        translate
+      ] login.login
       button[class="button button-block" ng-click="navigator.go('signup')" translate ]
         | login.sign_up

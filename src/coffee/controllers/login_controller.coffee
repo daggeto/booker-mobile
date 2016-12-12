@@ -1,10 +1,10 @@
 app.controller 'LoginController', ($scope, $stateParams, AuthService) ->
   new class LoginController
-    constructor:  ->
+    constructor: ->
       @data = {}
 
       @message = $stateParams.message
 
     login: ->
-      AuthService.login(@data).then (authenticated) =>
+      AuthService.login(@data).then =>
         $scope.navigator.home(message: '')

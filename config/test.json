@@ -1,0 +1,5 @@
+{
+  "templates": "'templates'",
+  "apiUrl": "http://localhost:3000",
+  "locale": "en_US"
+}

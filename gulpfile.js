@@ -20,6 +20,8 @@ var replace = require('gulp-replace-task');
 var args  = require('yargs').argv;
 var fs = require('fs');
 var YAML = require('yamljs');
+var requireDir = require('require-dir');
+
 
 var paths = {
   sass: ['./src/sass/**/*.scss'],
@@ -176,3 +178,5 @@ var getSettings = function (){
 var getTranslations = function (locale) {
   return YAML.load('./translations/' + locale + '.yaml');
 };
+
+requireDir('./gulp-tasks');
