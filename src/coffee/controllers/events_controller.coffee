@@ -21,6 +21,7 @@ app.controller 'EventsController',
         @Event = Event
 
         @initialEventStatus = event.status
+        @duration = service.duration
 
         @initEvent()
 
@@ -35,7 +36,7 @@ app.controller 'EventsController',
       recalculateEndDate: ->
         event.end_at =
           moment(event.start_at)
-            .add(@service.duration, 'minutes')
+            .add(@duration, 'minutes')
             .startOf('minute')
             .toDate()
 
@@ -47,6 +48,9 @@ app.controller 'EventsController',
         .minutes(date_moment.minutes())
         .startOf('minute')
         .toDate()
+
+      startAtChanged: =>
+        @recalculateEndDate() if event.start_at > event.end_at
 
       save: (form) =>
         @form = form
