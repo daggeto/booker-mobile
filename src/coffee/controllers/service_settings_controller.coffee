@@ -10,10 +10,12 @@ app.controller 'ServiceSettingsController', (
         @service = service
 
       durations: [
-          { value: 15, label: '15 min' }
-          { value: 30, label: '30 min' }
-          { value: 45, label: '45 min' }
-          { value: 60, label: '60 min' }
+          { value: 15, label: '15 min.' }
+          { value: 30, label: '30 min.' }
+          { value: 45, label: '45 min.' }
+          { value: 60, label: '1 val.' }
+          { value: 90, label: '1 val. 30 min.' }
+          { value: 120, label: '2 val.' }
       ]
 
       save: (form) ->
