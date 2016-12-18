@@ -22,7 +22,6 @@ app.controller 'ServiceCalendarController',
           service_id: service.id
           action: 'future'
           start_at: date.format()
-          'status[]': [EVENT_STATUS.FREE, EVENT_STATUS.PENDING]
         ).then(((response) =>
           @calendar.update(response)
         ), (rejected) ->
