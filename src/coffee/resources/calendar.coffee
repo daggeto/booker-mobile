@@ -8,7 +8,7 @@ app.factory('Calendar', ($rootScope, moment)->
     constructor: (selectedDate) ->
       @currentDate = moment().startOf('day')
       @selectedDate = moment(selectedDate || @currentDate).startOf('day')
-      @startOfWeek = moment(@currentDate).startOf('isoweek')
+      @startOfWeek = moment(selectedDate || @currentDate).startOf('isoweek')
       @events = []
       @availableDays = {}
       @recalculateWeek()
