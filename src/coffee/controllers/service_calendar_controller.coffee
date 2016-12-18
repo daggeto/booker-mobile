@@ -12,9 +12,10 @@ app.controller 'ServiceCalendarController',
       bindEvents: ->
         $scope.$on('reloadEvents', @reloadEvents)
         $scope.$on('onEventButtonClick', @eventClick)
+        $scope.$on('onDateSelected', @reloadEvents)
 
-      reloadEvents: =>
-        @loadEvents(@calendar.selectedDate)
+      reloadEvents: (_ = null, data = {}) =>
+        @loadEvents(data.date || @calendar.selectedDate)
 
       loadEvents: (date) =>
         UserServicesService.events(
@@ -22,8 +23,8 @@ app.controller 'ServiceCalendarController',
           action: 'future'
           start_at: date.format()
           'status[]': [EVENT_STATUS.FREE, EVENT_STATUS.PENDING]
-        ).then(((events) =>
-          @calendar.events = events
+        ).then(((response) =>
+          @calendar.update(response)
         ), (rejected) ->
           console.log(rejected)
         )
@@ -31,7 +32,6 @@ app.controller 'ServiceCalendarController',
       selectDate: (date) =>
         return if @isPast(date)
         @calendar.selectDate(date)
-        @loadEvents(date)
 
       isPast: (date) ->
         date.isBefore(@calendar.currentDate)

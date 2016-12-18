@@ -1,7 +1,8 @@
-$day-width: 20px;
+$day-width: 40px;
 $day-padding: 0 5px !important;
 $list-width: 95%;
 $event_height: 60px;
+$flag-top: -4px;
 $event-free-color: #8BC34A;
 $event-pending-color: #FFC107;
 $event-booked-color: #F44336;
@@ -9,6 +10,8 @@ $event-add-color: #387ef5;
 
 
 .calendar {
+  width: 100%;
+
   .events {
     width: 100%;
   }
@@ -17,11 +20,26 @@ $event-add-color: #387ef5;
     text-align: center;
   }
 
-  &--day {
+  .row {
+    padding: 0;
+  }
+
+  &--week {
     font-size: $font-small;
-    min-width: $day-width;
-    min-height: $day-width;
-    padding: $day-padding;
+
+    &--day {
+      position: relative;
+      padding: $size-default;
+      width: $day-width;
+      text-align: center;
+    }
+  }
+
+  &--day {
+    padding: $size-small;
+    font-size: $font-small;
+    width: $day-width;
+    text-align: center;
 
     &--active {
       background-color: #e5e5e5;
@@ -29,6 +47,20 @@ $event-add-color: #387ef5;
 
     &--current {
       color: red;
+    }
+
+    &--flag {
+      color: $green;
+      font-size: $font-micro;
+      text-align: center;
+    }
+
+    &--name {
+      width: $day-width;
+    }
+
+    &:focus {
+      background-color: #2aa9d4;
     }
   }
 
@@ -96,6 +128,6 @@ $event-add-color: #387ef5;
   }
 
   &__arrow {
-    font-size: $font-big
+    font-size: $font-big;
   }
 }

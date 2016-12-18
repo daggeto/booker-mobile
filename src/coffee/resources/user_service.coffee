@@ -7,7 +7,7 @@ app.factory 'UserService', ($resource, API_URL) ->
             method: 'POST'
         )
 
-    $events: $resource("#{API_URL}/api/v1/services/:service_id/events/:action.json",
+    $events: $resource("#{API_URL}/api/v11/services/:service_id/events/:action.json",
                service_id: '@service_id',
                action: '@action'
              )

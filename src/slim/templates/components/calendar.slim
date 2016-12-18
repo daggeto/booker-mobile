@@ -1,24 +1,38 @@
-.padding.calendar
+.padding.calendar[lazy-scroll]
   .row.calendar__month
     .col {{ vm.calendar.startOfWeek | amDateFormat: 'MMMM' }}
   .row
-    .col-center[ng-click="vm.calendar.previousWeek()"]
-      .ion-chevron-left.calendar__arrow.pull-right
-    .col
-      .button-bar
-        .button.calendar--day[
-          ng-repeat="day in vm.calendar.selectedWeek"
-          ng-class="{ \
-            'calendar--day--active': vm.calendar.isDateSelected(day.moment),\
-            'calendar--day--current': vm.calendar.isCurrent(day.moment)\
-            }"
-          ng-click="vm.selectDate(day.moment)"
-        ]
-          .day--name{{ day.name }}
-          | {{ day.number }}
-
-    .col-center[ng-click="vm.calendar.nextWeek()"]
-      .ion-chevron-right.calendar__arrow.pull-left
+    .col-10[ng-click="vm.calendar.previousWeek()"]
+      .ion-chevron-left.calendar__arrow.pull-left
+    .col-80.calendar--week
+      .row
+        .col.calendar--week--day[ng-repeat="day in vm.calendar.selectedWeek"] {{ day.name }}
+    .col-10[ng-click="vm.calendar.nextWeek()"]
+      .ion-chevron-right.calendar__arrow.pull-right
+  .row
+    .col-offset-10
+    .col-80
+      .row
+        .col.calendar--day--flag[ng-repeat="day in vm.calendar.selectedWeek"]
+          .ion-ios-circle-filled[ng-if="day.available"]
+    .col-offset-10
+  .row
+    .col-offset-10
+    .col-80[
+      on-swipe-left="vm.onWeekSwipe('left')"
+      on-swipe-right="vm.onWeekSwipe('right')"
+      ]
+        .row
+          .col.calendar--day[
+            ng-repeat="day in vm.calendar.selectedWeek"
+            ng-class="{\
+                'calendar--day--active': vm.calendar.isDateSelected(day.moment),\
+                'calendar--day--current': vm.calendar.isCurrent(day.moment)\
+              }"
+            ng-click="vm.selectDate(day.moment)"
+          ]
+            | {{ day.number }}
+    .col-offset-10
   .row
     .hint-text.flexbox.center[
       ng-hide="vm.calendar.events.length > 0"
@@ -29,4 +43,3 @@
         ng-repeat="event in vm.calendar.events track by event.id"
         event="event"
       ]
-

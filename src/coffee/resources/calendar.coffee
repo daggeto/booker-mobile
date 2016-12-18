@@ -1,8 +1,8 @@
-app.factory('Calendar', (moment)->
+app.factory('Calendar', ($rootScope, moment)->
   class Calendar
     @dateTimeFormat = 'YYYY-MM-DD H:mm'
-    dayFormat = 'DD'
-    weekDayFormat = 'ddd'
+    dayFormat = 'D'
+    weekDayFormat = 'dd'
     month = 'MMMM'
 
     constructor: (selectedDate) ->
@@ -10,15 +10,18 @@ app.factory('Calendar', (moment)->
       @selectedDate = moment(selectedDate || @currentDate).startOf('day')
       @startOfWeek = moment(@currentDate).startOf('isoweek')
       @events = []
+      @availableDays = {}
       @recalculateWeek()
 
     nextWeek: ->
       @startOfWeek.add(1 , 'week')
       @recalculateWeek()
+      @selectDate(@selectedWeek[0].moment)
 
     previousWeek: ->
       @startOfWeek.subtract(1 , 'week')
       @recalculateWeek()
+      @selectDate(@selectedWeek[0].moment)
 
     previousDay: ->
       @selectedDate = @selectedDate.subtract(1 , 'day')
@@ -40,6 +43,7 @@ app.factory('Calendar', (moment)->
           name: day.format(weekDayFormat)
           number: day.format(dayFormat)
           moment: day
+          available: @availableDays[day.dayOfYear()] > 0
         }
 
     isDateSelected: (date)->
@@ -50,4 +54,11 @@ app.factory('Calendar', (moment)->
 
     selectDate: (date) ->
       @selectedDate = moment(date)
+      $rootScope.$broadcast('onDateSelected', date: date)
+
+
+    update: (params) ->
+      @events = params.events if params.events
+      @availableDays = params.available_days if params.available_days
+      @recalculateWeek()
 )

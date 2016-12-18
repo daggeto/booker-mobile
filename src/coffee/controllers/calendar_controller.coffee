@@ -27,26 +27,23 @@ app.controller 'CalendarController',
       bindListeners: ->
         $scope.$on 'onEventClick', @onEventClick
         $scope.$on 'onEventAvatarClick', @onEventAvatarClick
+        $scope.$on 'onDateSelected', @reloadEvents
 
-      reloadEvents: =>
-        @loadEvents(@calendar.selectedDate)
+      reloadEvents: (_ = null, data = {}) =>
+        @loadEvents(data.date || @calendar.selectedDate)
 
       loadEvents: (date) =>
         UserServicesService.events(
           service_id: service.id
           start_at: date.format()
         ).then (response) =>
-          @calendar.events = response
+          @calendar.update(response)
 
       onEventClick: (_, data)=>
         ServiceEventActionSheet.show(data.event, data.reservation, @reloadEvents)
 
       onEventAvatarClick: (_, data) =>
         Navigator.go('app.main.profile', user_id: data.event.user.id)
-
-      selectDate: (date) ->
-        @calendar.selectDate(date)
-        @loadEvents(date)
 
       addEvent: ->
         $scope.navigator.go('service.calendar.add_event', calendar: @calendar)

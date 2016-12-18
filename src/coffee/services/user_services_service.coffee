@@ -1,7 +1,7 @@
 app.factory 'UserServicesService', ($cacheFactory, UserService) ->
   new class UserServicesService
     events: (params) ->
-      UserService.$events.query(params).$promise
+      UserService.$events.get(params).$promise
 
     service_photos: (params) ->
       UserService.$service_photos.query(params).$promise
