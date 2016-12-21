@@ -117,6 +117,10 @@
 .profile .list {
   margin-bottom: 0; }
 
+.profile--warning {
+  color: #ffa500;
+  font-weight: lighter; }
+
 .day-reservations .card {
   margin: 0; }
 

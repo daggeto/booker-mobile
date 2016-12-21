@@ -20,6 +20,9 @@ ion-view[view-title="My Profile"]
         label.item
           h3[translate] profile.personal_info
         label.item {{vm.currentUser.email}}
+        label.item.profile--warning[ng-hide="vm.userData.first_name || vm.userData.last_name"]
+          i.ion-alert>
+          | {{ 'profile.enter_name' | translate }}
         label.item.item-input
           input[
             type="text"

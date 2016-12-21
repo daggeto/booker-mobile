@@ -29,4 +29,9 @@ $avatar-size: 20em;
   .list {
     margin-bottom: 0;
   }
+
+  &--warning {
+    color: $orange;
+    font-weight: lighter;
+  }
 }
