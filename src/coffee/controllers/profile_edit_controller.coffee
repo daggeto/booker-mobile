@@ -1,8 +1,11 @@
 app.controller 'ProfileEditController',
-  ($scope, currentUser, ProfileImage, ImageService, AuthService) ->
+  ($scope, currentUser, ProfileImage, ImageService, AuthService, Context) ->
     new class ProfileEditController
       constructor: ->
-        @currentUser = currentUser
+        @currentUser = {}
+
+        Context.resolveCurrentUser().then (user) =>
+          @currentUser = user
 
       onPhotoTaken: (response) ->
         @superAfterUpload = response.afterPhotoUpload

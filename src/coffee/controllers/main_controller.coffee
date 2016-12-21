@@ -1,21 +1,5 @@
-app.controller 'MainController', (
-  $rootScope,
-  $scope,
-  $ionicSlideBoxDelegate,
-  UsersService,
-  currentUser,
-  EVENTS
-) ->
+app.controller 'MainController', ($scope, $ionicSlideBoxDelegate) ->
   new class MainController
-    constructor: ->
-      $rootScope.currentUser = currentUser
-
-      $rootScope.$on EVENTS.UPDATE_CURRENT_USER, @refreshCurrentUser
-
-    refreshCurrentUser: ->
-      UsersService.current().then (response) ->
-        $rootScope.currentUser = response
-
     switchSlide: ->
       to = 1 - @currentIndex()
 

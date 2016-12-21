@@ -13,7 +13,7 @@ ion-header-bar.b-header.flexbox
       ng-click="navigator.go('app.main.notifications')"
     ]
       span.badge.badge-assertive[
-        ng-show="currentUser.unread_count > 0"
-      ] {{currentUser.unread_count}}
+        ng-show="context.currentUser.unread_count > 0"
+      ] {{context.currentUser.unread_count}}
 
 ion-nav-view[name="content" class="main-content"]

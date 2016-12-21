@@ -18,9 +18,9 @@ app.config ($stateProvider, $urlRouterProvider) ->
     .state('app'
       url: '/app'
       resolve:
-        UsersService: 'UsersService'
-        currentUser: ($window, UsersService) ->
-          UsersService.current()
+        Context: 'Context'
+        currentUser: ($window, Context) ->
+          Context.resolveCurrentUser()
       abstract: true
       controller: 'MainController as vm'
       templateUrl: 'templates/app.html')
