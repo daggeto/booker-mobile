@@ -1,6 +1,10 @@
 app.factory 'User', ($resource, API_URL) ->
   new class User
-    $r: $resource("#{API_URL}/api/v1/users/:id.json", id: '@id')
+    methods =
+      update:
+        method: 'PUT'
+
+    $r: $resource("#{API_URL}/api/v1/users/:id.json", { id: '@id' }, methods )
 
     $current: $resource("#{API_URL}/api/v1/users/current.json")
 

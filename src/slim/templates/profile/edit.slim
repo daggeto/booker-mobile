@@ -7,17 +7,31 @@ ion-view[view-title="My Profile"]
       ] back
     h1.title[translate] profile.title
   ion-content[lazy-scroll]
-    .profile[ng-if="vm.currentUser"]
+    .profile
       .profile--avatar
         img[
           image-lazy-src="{{vm.currentUser.profile_image.preview_url}}"
           lazy-scroll-resize="true"
           image-lazy-loader="ios"
         ]
-      .profile--email {{vm.currentUser.email}}
-      .row
-        .col
-          upload-photo.pull-right[on-photo-taken="vm.onPhotoTaken(response)"]
-            button.button.accent-button[translate] upload_photo_button
-    ion-list
-      ion-item[ng-click="vm.logout()" translate] profile.logout
+      upload-photo[on-photo-taken="vm.onPhotoTaken(response)"]
+        button.button.button-block.accent-button[translate] upload_photo_button
+      .list
+        label.item
+          h3[translate] profile.personal_info
+        label.item {{vm.currentUser.email}}
+        label.item.item-input
+          input[
+            type="text"
+            placeholder="{{ 'form.first_name' | translate }}"
+            ng-model="vm.userData.first_name"
+          ]
+        label.item.item-input
+          input[
+            type="text"
+            placeholder="{{ 'form.last_name' | translate }}"
+            ng-model="vm.userData.last_name"
+          ]
+    button.button.button-block.accent-button[ng-click="vm.save()" translate]  save
+
+    button.button.button-block.button-assertive[ng-click="vm.logout()" translate] profile.logout

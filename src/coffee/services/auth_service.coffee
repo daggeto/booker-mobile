@@ -1,4 +1,11 @@
-app.factory 'AuthService', ($q, $auth, $ionicHistory, NotificationService, LOCAL_CURRENT_USER_ID) ->
+app.factory 'AuthService', (
+  $rootScope,
+  $q,
+  $auth,
+  $ionicHistory,
+  NotificationService,
+  LOCAL_CURRENT_USER_ID
+) ->
   new class AuthService
     constructor: ->
       @isAuthenticated = $auth.retrieveData('auth_headers') != null

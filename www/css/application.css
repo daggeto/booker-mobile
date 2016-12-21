@@ -114,6 +114,9 @@
 .profile--email {
   text-align: center; }
 
+.profile .list {
+  margin-bottom: 0; }
+
 .day-reservations .card {
   margin: 0; }
 

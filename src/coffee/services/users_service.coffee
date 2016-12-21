@@ -3,6 +3,9 @@ app.factory 'UsersService', ($cacheFactory, User) ->
     findById: (id) ->
       User.$r.get(id: id).$promise
 
+    update: (params) ->
+      User.$r.update(params).$promise
+
     current: ->
       User.$current.get().$promise
 

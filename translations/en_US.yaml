@@ -23,6 +23,8 @@ sign_up:
 terms:
   title: Terms
 form:
+  first_name: First Name
+  last_name: Last Name
   email: Email
   password: Password
   confirm_password: Confirm Password
@@ -113,3 +115,4 @@ event:
 profile:
   title: Profile
   logout: Logout
+  personal_info: Personal Info

@@ -32,6 +32,8 @@ terms:
     kiekvienos paslaugos dešiniajame puslapio kampe.
     Paslauga surinkusi 5 pranešimus bus blokuojama.
 form:
+  first_name: Vardas
+  last_name: Pavardė
   email: El. paštas
   password: Slaptažodis
   confirm_password: Pakartoti slaptažodį
@@ -124,3 +126,4 @@ event:
 profile:
   title: Profilis
   logout: Atsijungti
+  personal_info: Asmeninė informacija
