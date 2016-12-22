@@ -58,7 +58,7 @@ form:
 side:
   service_settings: Paslaugos nustatymai
   profile: Profilis
-  reservations: Rezervacijos
+  reservations: Mano Rezervacijos
   published: Matomas
   unpublished: Nematomas
   new_service:

@@ -48,7 +48,7 @@ form:
 side:
   service_settings: Service Settings
   profile: Profile
-  reservations: Reservations
+  reservations: My Reservations
   published: Visible
   unpublished: Unvisible
   new_service:
