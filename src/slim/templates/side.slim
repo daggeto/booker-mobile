@@ -6,14 +6,14 @@ ion-scroll[lazy-scroll]
     ion-item.side-list--item[ng-click="vm.providerSettingsClicked()"]
       i.side-list--item--icon.ion-ios-settings
       .side-list--item--title[translate] side.service_settings
-    ion-item.side-list--item.item-icon-left.item-icon-right[
-      ng-click="navigator.go('app.main.profile_edit')"
-    ]
-      i.side-list--item--icon.ion-person
-      .side-list--item--title[translate] side.profile
-      i.side-list--item--icon.ion-alert[
-        ng-hide="context.currentUser.first_name || context.currentUser.last_name"
-      ]
     ion-item.side-list--item[ng-click="navigator.go('app.main.reservations')" ]
       i.side-list--item--icon.ion-ios-list-outline
       .side-list--item--title[translate] side.reservations
+    ion-item.side-list--item.item-icon-left.item-icon-right[
+      ng-click="navigator.go('app.main.profile_edit')"
+      ]
+        i.side-list--item--icon.ion-person
+        .side-list--item--title[translate] side.profile
+        i.side-list--item--icon.ion-alert[
+          ng-hide="context.currentUser.first_name || context.currentUser.last_name"
+        ]
