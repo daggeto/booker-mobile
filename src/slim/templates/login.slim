@@ -2,7 +2,7 @@ ion-view[name="login-view"]
   ion-header-bar[align-title="center" ]
     h1.title[translate] login.title
   ion-content
-    .message__success.align-center[ng-if="vm.message"] {{vm.message}}
+    .align-center[class="message__{{vm.message.severity}}" ng-if="vm.message"] {{vm.message.text }}
     div[class="list"]
       label[class="item item-input item-floating-label"]
         span[class="input-label" translate] form.email
@@ -16,5 +16,8 @@ ion-view[name="login-view"]
         ]
     div[class="padding"]
       button[class="button button-block button-calm" ng-click="vm.login()" translate] login.login
-      button[class="button button-block" ng-click="navigator.go('signup')" translate ]
-        | login.sign_up
+      button[
+        class="button button-block"
+        ng-click="navigator.go('signup', { login_data: vm.data })"
+        translate
+      ] login.sign_up

@@ -21,6 +21,7 @@ sign_up:
   sign_up: Registruotis
   i_agree: Sutinku su taisyklėmis
   success_message: Sėkmingai registravotės ir galite prisijungti
+  fail_message: Nesėkmingas prisijungimas po registracijos. Susisiekite su pagalbos centru.
 terms:
   title: Taisyklės
   body: |

@@ -6,5 +6,5 @@ app.controller 'LoginController', ($scope, $stateParams, AuthService) ->
       @message = $stateParams.message
 
     login: ->
-      AuthService.login(@data).then (authenticated) =>
-        $scope.navigator.home(message: '')
+      AuthService.login(@data).then =>
+        $scope.navigator.home()

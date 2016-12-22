@@ -96,6 +96,10 @@
 .message__success {
   background-color: #c2f0c2; }
 
+.message__warning {
+  color: #ffffff;
+  background-color: #ffa500; }
+
 .profile .image-loader-container {
   width: 100%;
   height: 5em;

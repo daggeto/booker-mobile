@@ -3,11 +3,15 @@ app.config ($stateProvider, $urlRouterProvider) ->
     .state('login'
       cache: false
       url: '/login/:message'
+      params:
+        message: null
       controller: 'LoginController as vm'
       templateUrl: 'templates/login.html')
 
     .state('signup'
       url: '/signup'
+      params:
+        login_data: {}
       controller: 'SignUpController as vm'
       templateUrl: 'templates/signup.html')
 

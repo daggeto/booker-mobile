@@ -20,6 +20,7 @@ sign_up:
   sign_up: Sign Up
   i_agree: I agree with terms and conditions
   success_message: You are registered and you can login now
+  fail_message: Failed to login after sign up. Please contact support.
 terms:
   title: Terms
 form:

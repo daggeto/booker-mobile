@@ -2,4 +2,9 @@
   &__success {
     background-color: $light-green;
   }
+
+  &__warning {
+    color: $white;
+    background-color: $orange;
+  }
 }
