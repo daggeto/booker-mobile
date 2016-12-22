@@ -7,7 +7,7 @@
       .event--sub-title
         .event--status[class="event--status__{{event.status}}"]
           | {{event.status_label | uppercase}}
-        span[ng-show="name"] - {{name}}
+        .event--name[ng-show="name"] {{name}}
 
     .col.col-25.event--avatar
       img[src="{{avatar}}" ng-show="avatar"]

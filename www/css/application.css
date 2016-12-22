@@ -214,16 +214,11 @@
 .notification__unread {
   background-color: #E4F1FB; }
 
-.event--content {
-  position: relative;
-  height: 3em; }
-
 .event--title {
   font-size: 1.5em;
   font-weight: lighter; }
 
 .event--sub-title {
-  position: absolute;
   bottom: 0; }
 
 .event--status {

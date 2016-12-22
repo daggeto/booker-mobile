@@ -9,8 +9,6 @@ $content-height: 3em;
 
 .event {
   &--content {
-    position: relative;
-    height: $content-height;
   }
 
   &--title {
@@ -19,7 +17,6 @@ $content-height: 3em;
   }
 
   &--sub-title {
-    position: absolute;
     bottom: 0;
   }
 
