@@ -218,6 +218,13 @@
 .notification__unread {
   background-color: #E4F1FB; }
 
+.sign_up .list {
+  margin-bottom: 3px; }
+
+.sign_up .terms {
+  font-size: 0.7em;
+  text-align: center; }
+
 .event--title {
   font-size: 1.5em;
   font-weight: lighter; }

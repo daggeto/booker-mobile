@@ -8,7 +8,7 @@ ion-view[name="registration-view"]
     h1.title[translate] sign_up.title
   ion-content.sign_up
     form[name="signupForm"  ng-submit="vm.sign_up(signupForm)" novalidate]
-      div[class="list"]
+      div.list
         label[class="item item-input item-floating-label"]
           span[class="input-label" translate] form.email
           input[
@@ -59,16 +59,14 @@ ion-view[name="registration-view"]
             min-length="{{ 'form.errors.min_length' | translate }}"
           ]
 
-        .item.item-checkbox.b-terms-checkbox
-          label.checkbox
-            input[type="checkbox" name="terms" ng-model="vm.signup_data.terms"]
-
-          .span
-            a[ng-click="navigator.go('terms')" translate] sign_up.i_agree
-          error-messages[
-            form="signupForm"
-            for="terms"
-          ]
+      .terms
+        .span
+          span> {{ 'sign_up.i_agree_1' | translate }}
+          a[ng-click="navigator.go('terms')" translate] sign_up.i_agree_2
+        error-messages[
+          form="signupForm"
+          for="terms"
+        ]
 
       div[class="padding"]
         button[type="submit" class="button button-block button-calm" translate] sign_up.sign_up

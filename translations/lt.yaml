@@ -20,6 +20,8 @@ sign_up:
   title: Registracija
   sign_up: Registruotis
   i_agree: Sutinku su taisyklėmis
+  i_agree_1: Registruodamasis Jūs sutinkate su šios programos
+  i_agree_2: taisyklėmis
   success_message: Sėkmingai registravotės ir galite prisijungti
   fail_message: Nesėkmingas prisijungimas po registracijos. Susisiekite su pagalbos centru.
 terms:

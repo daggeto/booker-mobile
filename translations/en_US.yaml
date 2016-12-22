@@ -18,7 +18,8 @@ login:
 sign_up:
   title: Sign Up
   sign_up: Sign Up
-  i_agree: I agree with terms and conditions
+  i_agree_1: By submitting this from you agree with
+  i_agree_2: terms and conditions
   success_message: You are registered and you can login now
   fail_message: Failed to login after sign up. Please contact support.
 terms:

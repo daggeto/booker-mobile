@@ -2,8 +2,9 @@ app.controller 'SignUpController', ($scope, $stateParams, translateFilter, AuthS
   new class SignUpController
     constructor:  ->
       @ERROR_FIELDS = ['email', 'password', 'password_confirmation']
+      @signup_data = terms: true
 
-      @signup_data = $stateParams.login_data || {}
+      angular.merge(@signup_data, $stateParams.login_data)
 
     sign_up: (form) ->
       return unless @validate(form)

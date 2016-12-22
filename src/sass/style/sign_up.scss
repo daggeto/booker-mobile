@@ -1,0 +1,12 @@
+$terms-font-size: 0.7em;
+
+.sign_up {
+  .list {
+    margin-bottom: $size-micro;
+  }
+
+  .terms {
+    font-size: $terms-font-size;
+    text-align: center;
+  }
+}
