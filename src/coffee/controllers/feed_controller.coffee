@@ -1,4 +1,10 @@
-app.controller 'FeedController', ($scope, $state, UserServicesService, BookingService) ->
+app.controller 'FeedController', (
+  $scope,
+  $state,
+  $interval,
+  UserServicesService,
+  BookingService
+) ->
   new class FeedController
     constructor: ->
       @bindListeners()
@@ -10,6 +16,8 @@ app.controller 'FeedController', ($scope, $state, UserServicesService, BookingSe
         BookingService.book(data.event).then (response) =>
           @reloadService(response.service, data.index) if response
       )
+
+      $interval(@updateLoadedServices, 60000)
 
     refreshServices: ->
       @currentPage = 1
@@ -36,6 +44,22 @@ app.controller 'FeedController', ($scope, $state, UserServicesService, BookingSe
 
     reloadService: (service, index) =>
       @services[index].nearest_event = service.nearest_event
+
+    updateLoadedServices: =>
+      ids = @services.map (item) -> item.id
+
+      UserServicesService
+        .findWithGet(action: 'show_selected', 'ids[]': ids)
+        .then(@replaceNearestEvents)
+        .catch($scope.error)
+
+    replaceNearestEvents: (response) =>
+      @replaceNearestEvent(service, response.services) for service in @services
+
+    replaceNearestEvent: (service, updatedServices) ->
+      updatedService = updatedServices[service.id]
+
+      service.nearest_event = updatedService.nearest_event if updatedService
 
     goTo: (state, params) ->
       $state.go(state, params)
