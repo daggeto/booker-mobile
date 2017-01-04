@@ -1,0 +1,40 @@
+$loader-height: 3px;
+
+.loading-container {
+  display: flex;
+  align-items: flex-start;
+  height: 0;
+
+  .loading {
+    width: 100%;
+    padding: 0;
+    background-color: inherit;
+  }
+}
+
+.b-loader {
+  height: $loader-height;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: $blue-gray;
+}
+.b-loader:before{
+  display: block;
+  position: absolute;
+  content: "";
+  left: -100px;
+  width: 200px;
+  height: 4px;
+  background-color: $blue;
+  animation: loading 2s linear infinite;
+}
+
+@keyframes loading {
+    from {left: -100px; width: 30%;}
+    50% {width: 30%;}
+    70% {width: 70%;}
+    80% { left: 50%;}
+    95% {left: 120%;}
+    to {left: 100%;}
+}

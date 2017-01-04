@@ -225,6 +225,47 @@
   font-size: 0.7em;
   text-align: center; }
 
+.loading-container {
+  display: flex;
+  align-items: flex-start;
+  height: 0; }
+  .loading-container .loading {
+    width: 100%;
+    padding: 0;
+    background-color: inherit; }
+
+.b-loader {
+  height: 3px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: #E4F1FB; }
+
+.b-loader:before {
+  display: block;
+  position: absolute;
+  content: "";
+  left: -100px;
+  width: 200px;
+  height: 4px;
+  background-color: #3ea6ee;
+  animation: loading 2s linear infinite; }
+
+@keyframes loading {
+  from {
+    left: -100px;
+    width: 30%; }
+  50% {
+    width: 30%; }
+  70% {
+    width: 70%; }
+  80% {
+    left: 50%; }
+  95% {
+    left: 120%; }
+  to {
+    left: 100%; } }
+
 .event--title {
   font-size: 1.5em;
   font-weight: lighter; }
