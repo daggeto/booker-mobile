@@ -7,16 +7,14 @@ app.factory 'AuthService', (
   LOCAL_CURRENT_USER_ID
 ) ->
   new class AuthService
-    constructor: ->
-      @isAuthenticated = $auth.retrieveData('auth_headers') != null
+    isAuthenticated: ->
+      $auth.retrieveData('auth_headers') != null
 
     login: (data) ->
       d = $q.defer()
 
       $auth.submitLogin(data)
         .then (user) =>
-          @isAuthenticated = true
-
           @storeUserCredentials(user)
           @saveToken()
 
@@ -30,8 +28,6 @@ app.factory 'AuthService', (
       NotificationService.saveToken()
 
     logout: ->
-      @isAuthenticated = false
-
       @destroyUserCredentials()
       NotificationService.unregisterToken()
       $ionicHistory.clearCache()

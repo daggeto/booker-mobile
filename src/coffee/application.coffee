@@ -19,9 +19,7 @@ app = angular.module(
 )
 .config((AjaxInterceptorProvider, $authProvider, API_URL) ->
   AjaxInterceptorProvider.config(
-    defaultMessage: "Network error. Please check your connection."
-
-  )
+    defaultMessage: "Network error. Please check your connection.")
 
   $authProvider.configure
     apiUrl: API_URL
@@ -70,7 +68,7 @@ app = angular.module(
     $rootScope.$emit(EVENTS.UPDATE_CURRENT_USER)
 
   $rootScope.$on('$stateChangeStart', (event, next, nextParams, fromState) ->
-    if !AuthService.isAuthenticated
+    if !AuthService.isAuthenticated()
       unless next.name in ['login', 'signup', 'terms']
         event.preventDefault()
         $state.transitionTo('login')
