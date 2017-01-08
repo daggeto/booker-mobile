@@ -28,6 +28,8 @@ app.constant 'LOCALE', '@@locale'
 
 app.constant 'TRANSLATIONS', @@translations
 
+app.constant 'APP_VERSION', '@@app_version'
+
 app.constant('$ionicLoadingConfig', {
   templateUrl: 'templates/components/loading.html'
   noBackdrop: 'false'

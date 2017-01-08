@@ -56,6 +56,7 @@ side:
     template: Here you can setup your service information and your time when you are available.
     begin: Begin
     cancel: Cancel
+  help: Help
 notifications:
   title: Notifications
   no_notifications: No notifications
@@ -119,3 +120,7 @@ profile:
   logout: Logout
   personal_info: Personal Info
   enter_name: Enter your first and last name
+support_issue:
+  title: Help
+  what_to_ask: What do you want to ask?
+  explain: Briefly explain your problem or question here

@@ -76,7 +76,7 @@ gulp.task('inject_scripts', function (done) {
 gulp.task('default', gulpSequence('compile_dev', 'inject_scripts'));
 
 gulp.task('compile_dev', function(done) {
-  gulpSequence(['sass', 'js', 'slim', 'move_lib'], done)
+  gulpSequence(['sass', 'js', 'slim', 'replace_build_params', 'move_lib'], done)
 });
 
 gulp.task('js', function(done){
@@ -111,7 +111,17 @@ gulp.task('watch', function() {
 gulp.task('prod', gulpSequence('compile_prod','ng_annotate' , 'slim_index', 'inject_scripts'));
 
 gulp.task('compile_prod', function(done){
-  gulpSequence(['clean', 'sass', 'slim_cache', 'coffee_prod', 'move_lib'], done)
+  gulpSequence(
+    [
+      'clean',
+      'sass',
+      'slim_cache',
+      'coffee_prod',
+      'replace_build_params',
+      'move_lib'
+    ],
+    done
+  )
 });
 
 gulp.task('slim_cache', function (done) {
@@ -139,9 +149,16 @@ gulp.task('slim_index', function (done) {
     .on('end', done);
 });
 
+gulp.task('replace_build_params', function (done) {
+  gulp.src(['./src/config.xml'])
+    .pipe(replaceBuildParams())
+    .pipe(gulp.dest("./"))
+    .on('end', done);
+});
+
 function replaceParams() {
   var settings = getSettings();
-
+  var buildParams = getBuildParams();
   var translations = getTranslations(settings.locale);
 
   return replace({
@@ -161,16 +178,41 @@ function replaceParams() {
       {
         match: 'translations',
         replacement: translations
+      },
+      {
+        match: 'app_version',
+        replacement: buildParams.app_version
       }
     ]
   })
 }
+
+function replaceBuildParams() {
+  var buildParams = getBuildParams();
+
+  return replace({
+    patterns: [
+      {
+        match: 'app_version',
+        replacement: buildParams.app_version
+      },
+      {
+        match: 'app_id',
+        replacement: buildParams.app_id
+      }
+    ]
+  });
+};
 
 var getSettings = function (){
   var env = args.env || 'dev';
 
   var filename = env + '.json';
   return JSON.parse(fs.readFileSync('./config/' + filename, 'utf8'));
+};
+
+var getBuildParams = function (){
+  return JSON.parse(fs.readFileSync('./config/build.json', 'utf8'));
 };
 
 var getTranslations = function (locale) {

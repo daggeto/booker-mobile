@@ -68,6 +68,7 @@ side:
       teikti paslaugą
     begin: Pradėti
     cancel: Grįžti
+  help: Pagalba
 notifications:
   title: Pranešimai
   no_notifications: Pranešimų nėra
@@ -131,4 +132,7 @@ profile:
   logout: Atsijungti
   personal_info: Asmeninė informacija
   enter_name: Įveskite vardą ir pavardę
-
+support_issue:
+  title: Pagalba
+  what_to_ask: Ko norėtumėte Mūsų paklausti?
+  explain: Aiškiai išdėstykite savo klausimą

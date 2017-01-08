@@ -68,7 +68,7 @@ app = angular.module(
     $rootScope.$emit(EVENTS.UPDATE_CURRENT_USER)
 
   $rootScope.$on('$stateChangeStart', (event, next, nextParams, fromState) ->
-    if !AuthService.isAuthenticated()
+    if !AuthService.isAuthenticated
       unless next.name in ['login', 'signup', 'terms']
         event.preventDefault()
         $state.transitionTo('login')

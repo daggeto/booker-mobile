@@ -87,6 +87,14 @@ app.config ($stateProvider, $urlRouterProvider) ->
           controller: 'ProfileController as vm'
     )
 
+    .state('app.main.support_issue'
+      url: '/support_issue'
+      views:
+        '@':
+          templateUrl: 'templates/support_issue.html'
+          controller: 'SupportIssuesController as vm'
+    )
+
     .state('service'
       abstract: true
       cache: false

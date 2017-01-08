@@ -1,0 +1,30 @@
+form[name="supportIssueForm" ng-submit="vm.send(supportIssueForm)" novalidate]
+  ion-view[view-title="Support Issue"]
+    ion-header-bar.b-header[align-title="center"]
+      .buttons
+        a.button.icon-left.ion-chevron-left.button-clear.button-dark[
+          ng-click="navigator.back()"
+          translate
+        ] back
+      h1.title[translate] support_issue.title
+      .buttons
+        button.button.button-clear.button-positive.pull-right[
+          ng-click="serviceSettingsForm.submit()" translate
+        ] send
+    ion-content.support_issue[lazy-scroll]
+      ion-scroll
+        .list
+          label.item.item-input.item-stacked-label.padding
+            span.input-label[translate] support_issue.what_to_ask
+            textarea[
+              name="message"
+              ng-model="vm.support_issue.message"
+              placeholder="{{ 'support_issue.explain' | translate }}"
+              rows="5"
+              required
+            ]
+            error-messages[
+              form='supportIssueForm'
+              for="message"
+              required="{{ 'form.errors.required' | translate }}"
+            ]
