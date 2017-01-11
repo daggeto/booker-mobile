@@ -20,8 +20,6 @@ app.constant 'EVENT_STATUS',
   PENDING: 'pending'
   BOOKED: 'booked'
 
-app.constant 'LOCAL_CURRENT_USER_ID', 'currentUserId'
-
 app.constant 'API_URL', '@@api_url'
 
 app.constant 'LOCALE', '@@locale'

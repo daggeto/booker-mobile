@@ -4,7 +4,7 @@ app.factory 'AuthService', (
   $auth,
   $ionicHistory,
   NotificationService,
-  LOCAL_CURRENT_USER_ID
+  Context
 ) ->
   new class AuthService
     isAuthenticated: ->
@@ -15,7 +15,6 @@ app.factory 'AuthService', (
 
       $auth.submitLogin(data)
         .then (user) =>
-          @storeUserCredentials(user)
           @saveToken()
 
           d.resolve(user)
@@ -28,7 +27,7 @@ app.factory 'AuthService', (
       NotificationService.saveToken()
 
     logout: ->
-      @destroyUserCredentials()
+      @destroyCurrentUser()
       NotificationService.unregisterToken()
       $ionicHistory.clearCache()
 
@@ -39,8 +38,5 @@ app.factory 'AuthService', (
     signup: (data) ->
       $auth.submitRegistration(data)
 
-    storeUserCredentials: (user) ->
-      window.localStorage.setItem(LOCAL_CURRENT_USER_ID, user.id)
-
-    destroyUserCredentials: ->
-      window.localStorage.removeItem(LOCAL_CURRENT_USER_ID)
+    destroyCurrentUser: ->
+      Context.setCurrentUser(null)
