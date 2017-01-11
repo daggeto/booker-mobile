@@ -4,7 +4,9 @@ app.factory 'AuthService', (
   $auth,
   $ionicHistory,
   NotificationService,
-  Context
+  Context,
+  IntervalsService,
+  UPDATE_LOADED_SERVICES_INTERVAL
 ) ->
   new class AuthService
     isAuthenticated: ->
@@ -30,6 +32,7 @@ app.factory 'AuthService', (
       @destroyCurrentUser()
       NotificationService.unregisterToken()
       $ionicHistory.clearCache()
+      IntervalsService.stop(UPDATE_LOADED_SERVICES_INTERVAL)
 
       $auth.signOut()
         .then => console.log('Loggout success')

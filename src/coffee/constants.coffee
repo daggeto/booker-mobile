@@ -20,6 +20,8 @@ app.constant 'EVENT_STATUS',
   PENDING: 'pending'
   BOOKED: 'booked'
 
+app.constant 'UPDATE_LOADED_SERVICES_INTERVAL', 'update_loaded_services_interval'
+
 app.constant 'API_URL', '@@api_url'
 
 app.constant 'LOCALE', '@@locale'

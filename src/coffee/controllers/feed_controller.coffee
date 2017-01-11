@@ -1,9 +1,10 @@
 app.controller 'FeedController', (
   $scope,
   $state,
-  $interval,
+  IntervalsService,
   UserServicesService,
-  BookingService
+  BookingService,
+  UPDATE_LOADED_SERVICES_INTERVAL
 ) ->
   new class FeedController
     constructor: ->
@@ -17,7 +18,7 @@ app.controller 'FeedController', (
           @reloadService(response.service, data.index) if response
       )
 
-      $interval(@updateLoadedServices, 60000)
+      IntervalsService.start(UPDATE_LOADED_SERVICES_INTERVAL, 5000, @updateLoadedServices)
 
     refreshServices: ->
       @currentPage = 1
