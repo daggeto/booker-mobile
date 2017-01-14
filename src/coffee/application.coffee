@@ -63,9 +63,15 @@ app = angular.module(
       -> navigator.splashscreen.hide()
     , 300)
 
+  $rootScope.isAppInForeground = true
 
   $ionicPlatform.on 'resume', ->
     $rootScope.$emit(EVENTS.UPDATE_CURRENT_USER)
+
+    $rootScope.isAppInForeground = true
+
+  $ionicPlatform.on 'pause', ->
+    $rootScope.isAppInForeground = false
 
   $rootScope.$on('$stateChangeStart', (event, next, nextParams, fromState) ->
     if !AuthService.isAuthenticated

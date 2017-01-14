@@ -47,6 +47,8 @@ app.controller 'FeedController', (
       @services[index].nearest_event = service.nearest_event
 
     updateLoadedServices: =>
+      return unless $scope.isAppInForeground
+
       ids = @services.map (item) -> item.id
 
       UserServicesService
