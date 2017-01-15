@@ -18,6 +18,12 @@ app.factory 'LoggerService', ($raven, $log, Context, APP_VERSION) ->
 
       $raven.captureException(exception)
 
+    sendMessage: (message, params) ->
+      $raven.setUserContext(@userInfo())
+      $raven.setExtraContext(params.extraContext)
+
+      $raven.captureMessage(message, level: params.level)
+
     userInfo: ->
       user = Context.getCurrentUser()
 

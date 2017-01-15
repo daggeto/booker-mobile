@@ -6,6 +6,7 @@ app.controller 'EventsController',
     moment,
     Event,
     EventsService,
+    LoggerService,
     event,
     service,
     EVENT_STATUS,
@@ -54,7 +55,7 @@ app.controller 'EventsController',
 
       save: (form) =>
         @form = form
-
+        @warnAboutWrongEvent() if @eventEndsNextDay()
         return unless @validateTime()
 
         event.service_id = @service.id
@@ -95,3 +96,13 @@ app.controller 'EventsController',
 
       isEditable: (event) ->
         @initialEventStatus == EVENT_STATUS.FREE
+
+      warnAboutWrongEvent: ->
+        message = "Saving wrong event dates! #{event.start_at} -> #{event.end_at}"
+        LoggerService.sendMessage(message, level: 'warning', extraContext: event)
+
+      eventEndsNextDay: ->
+        startAtDay = moment(event.start_at)
+        endAtDay = moment(event.end_at)
+
+        startAtDay.diff(endAtDay, 'days')
