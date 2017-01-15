@@ -18,7 +18,7 @@ app.controller 'FeedController', (
           @reloadService(response.service, data.index) if response
       )
 
-      IntervalsService.start(UPDATE_LOADED_SERVICES_INTERVAL, 5000, @updateLoadedServices)
+      IntervalsService.start(UPDATE_LOADED_SERVICES_INTERVAL, 30000, @updateLoadedServices)
 
     refreshServices: ->
       @currentPage = 1

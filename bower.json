@@ -13,6 +13,8 @@
     "ionic-toast": "^0.2.0",
     "ionic-ajax-interceptor": "^1.1.0",
     "ionic-image-lazy-load": "ion-image-lazy-load#*",
-    "ng-token-auth": "^0.0.29"
+    "ng-token-auth": "^0.0.29",
+    "raven-js": "^3.9.1",
+    "angular-raven": "^0.6.2"
   }
 }

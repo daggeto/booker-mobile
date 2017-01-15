@@ -2,6 +2,10 @@ app.config (
   $ionicConfigProvider,
   $ionicCloudProvider,
   $translateProvider,
+  $httpProvider,
+  $authProvider,
+  AjaxInterceptorProvider,
+  API_URL,
   LOCALE,
   TRANSLATIONS
 ) ->
@@ -30,16 +34,15 @@ app.config (
     .translations(LOCALE, TRANSLATIONS)
     .preferredLanguage(LOCALE)
 
-app.factory('AuthInterceptor', ($rootScope, $q, AUTH_EVENTS, SERVER_EVENTS) ->
-  { responseError: (response) ->
-    $rootScope.$broadcast {
-      401: AUTH_EVENTS.notAuthorized
-      403: AUTH_EVENTS.notAuthenticated
-    }[response.status], response
-
-    $q.reject response
- }
-)
-app.config ($httpProvider) ->
   $httpProvider.interceptors.push 'AuthInterceptor'
-  return
+
+  AjaxInterceptorProvider.config(
+    defaultMessage: "Network error. Please check your connection.")
+
+  $authProvider.configure
+    apiUrl: API_URL
+    tokenValidationPath: '/user/validate_token'
+    emailSignInPath: '/user/sign_in'
+    signOutUrl: '/user/sign_out'
+    emailRegistrationPath: '/user'
+    storage: 'localStorage'
