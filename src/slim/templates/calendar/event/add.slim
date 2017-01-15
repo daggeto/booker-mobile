@@ -21,12 +21,18 @@ ion-view
             input[
               name="start_at"
               type="time"
+              align-to="{{vm.calendar.selectedDate.format()}}"
               ng-model="vm.event.start_at"
               ng-change="vm.startAtChanged()"
             ]
           .col.item.item-input.b-event--time
             | {{ 'form.to' | translate }}
-            input[type="time" ng-model="vm.event.end_at" placeholder="H:mm"]
+            input[
+              type="time"
+              ng-model="vm.event.end_at"
+              placeholder="H:mm"
+              align-to="{{vm.calendar.selectedDate.format()}}"
+            ]
         error-messages.item.padding-left[
           form='addEventForm'
           for='start_at'
