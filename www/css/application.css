@@ -187,6 +187,9 @@
     flex-grow: 2; }
   .side-list--item__update {
     color: #47d147; }
+    .side-list--item__update svg {
+      width: 26px;
+      stroke: #47d147; }
 
 .book-service--description {
   padding: 1em; }
