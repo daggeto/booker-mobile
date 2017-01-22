@@ -45,7 +45,13 @@ form[name="serviceSettingsForm" ng-submit="vm.save(serviceSettingsForm)" novalid
 
         label.item.item-input.b-input.padding
           span.input-label[translate] form.price
-          input[type="number" ng-model="vm.service.price"]
+          input[name="price" type="number" ng-model="vm.service.price" required]
+          error-messages.service-settings--error[
+            form='serviceSettingsForm'
+            for="price"
+            required="{{ 'form.errors.required' | translate }}"
+          ]
+
 
         label.item.item-input.b-input.padding
           span.input-label[translate] form.phone_number
