@@ -20,3 +20,10 @@ ion-scroll[lazy-scroll]
     ion-item.side-list--item[ng-click="navigator.go('app.main.support_issue')"]
       i.side-list--item--icon.ion-help-buoy
       .side-list--item--title[translate] side.help
+
+    ion-item.side-list--item.side-list--item__update[
+      ng-click="vm.confirmUpdate()" 
+      ng-show="updateAvailable"
+    ]
+      i.side-list--item--icon.ion-loop
+      .side-list--item--title[translate] side.update.title

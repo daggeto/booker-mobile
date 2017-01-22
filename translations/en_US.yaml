@@ -57,6 +57,9 @@ side:
     begin: Begin
     cancel: Cancel
   help: Help
+  update:
+    title: Update
+    confirm: Do you really want to update?
 notifications:
   title: Notifications
   no_notifications: No notifications

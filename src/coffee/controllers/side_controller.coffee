@@ -6,7 +6,8 @@ app.controller 'SideController',
     $ionicPopup,
     translateFilter,
     currentUser,
-    UserServicesService
+    UserServicesService,
+    AppUpdateService
   ) ->
     new class SideController
       constructor: ->
@@ -21,14 +22,25 @@ app.controller 'SideController',
         popup = $ionicPopup.confirm
           title: translateFilter('side.new_service.title')
           template: translateFilter('side.new_service.template')
-          okText: translateFilter('side.new_service.begin')
-          cancelText: translateFilter('side.new_service.cancel')
+          okText: translateFilter('yes')
+          cancelText: translateFilter('close')
 
         popup.then (confirmed) =>
           @createService() if confirmed
 
       createService: =>
         UserServicesService.save(confirmed: true).then(@goToService, $scope.error)
+
+      confirmUpdate: ->
+        popup = $ionicPopup.confirm
+          title: translateFilter('side.update.confirm')
+          okText: translateFilter('side.new_service.begin')
+          cancelText: translateFilter('side.new_service.cancel')
+
+        popup.then (confirmed) =>
+          return unless confirmed
+
+          AppUpdateService.download()
 
       goToService: (service) =>
         currentUser.service = service

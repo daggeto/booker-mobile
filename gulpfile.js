@@ -176,6 +176,10 @@ function replaceParams() {
         replacement: settings.locale
       },
       {
+        match: 'app_channel',
+        replacement: settings.app_channel
+      },
+      {
         match: 'translations',
         replacement: translations
       },
