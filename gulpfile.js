@@ -113,7 +113,6 @@ gulp.task('prod', gulpSequence('compile_prod','ng_annotate' , 'slim_index', 'inj
 gulp.task('compile_prod', function(done){
   gulpSequence(
     [
-      'clean',
       'sass',
       'slim_cache',
       'coffee_prod',
@@ -203,6 +202,10 @@ function replaceBuildParams() {
       {
         match: 'app_id',
         replacement: buildParams.app_id
+      },
+      {
+        match: 'sender_id',
+        replacement: buildParams.sender_id
       }
     ]
   });

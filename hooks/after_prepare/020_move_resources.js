@@ -6,6 +6,10 @@ var path = require('path');
 var inputFolder = path.join(__dirname, '../../', 'resources/android/custom/');
 var outputFolder = path.join(__dirname, '../../', '/platforms/android/res/');
 
+if (process.env.CORDOVA_PLATFORMS != 'android') {
+  return;
+}
+
 console.log('------------------------------------------------------------------------------------------');
 console.log("Running hook: "+path.basename(process.env.CORDOVA_HOOK));
 console.log('------------------------------------------------------------------------------------------');
