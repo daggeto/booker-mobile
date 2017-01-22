@@ -13,8 +13,12 @@
       flex-grow: 3;
     }
 
-    %--status {
+    &--status {
       flex-grow: 2;
+    }
+
+    &__update {
+      color: $green;
     }
   }
 }

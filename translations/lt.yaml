@@ -69,6 +69,9 @@ side:
     begin: Pradėti
     cancel: Grįžti
   help: Pagalba
+  update:
+    title: Atnaujinti programą
+    confirm: Ar tikrai norite atnaujinti?
 notifications:
   title: Pranešimai
   no_notifications: Pranešimų nėra

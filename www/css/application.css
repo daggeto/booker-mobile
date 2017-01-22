@@ -183,6 +183,10 @@
     margin-right: 0.5em; }
   .side-list--item--title {
     flex-grow: 3; }
+  .side-list--item--status {
+    flex-grow: 2; }
+  .side-list--item__update {
+    color: #47d147; }
 
 .book-service--description {
   padding: 1em; }

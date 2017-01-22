@@ -30,6 +30,8 @@ app.constant 'TRANSLATIONS', @@translations
 
 app.constant 'APP_VERSION', '@@app_version'
 
+app.constant 'APP_CHANNEL', '@@app_channel'
+
 app.constant('$ionicLoadingConfig', {
   templateUrl: 'templates/components/loading.html'
   noBackdrop: 'false'

@@ -18,7 +18,7 @@ app = angular.module(
     'ngMessages',
     'ionic.cloud',
     'ngAnimate',
-    'pascalprecht.translate',
+    'pascalprecht.translate'
     @@templates
   ]
 )
@@ -37,12 +37,15 @@ Raven.context( =>
     NotificationService,
     AuthService,
     LoggerService,
+    AppUpdateService,
     AUTH_EVENTS,
     SERVER_EVENTS,
     EVENTS
   ) ->
     $ionicPlatform.ready =>
       LoggerService.init()
+      AppUpdateService.checkForUpdate().then (updateAvailable) ->
+        $rootScope.updateAvailable = updateAvailable
 
       NotificationService.registerToken()
 
