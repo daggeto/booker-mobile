@@ -1,7 +1,8 @@
-app.factory 'AppUpdateService', ($ionicDeploy, APP_CHANNEL) ->
+app.factory 'AppUpdateService', ($rootScope, $ionicDeploy, APP_CHANNEL) ->
   new class AppUpdateService
     checkForUpdate: ->
-      @doDeploy().check()
+      @doDeploy().check().then (updateAvailable) ->
+        $rootScope.updateAvailable = updateAvailable
 
     download: ->
       @doDeploy().download().then(@extract)
