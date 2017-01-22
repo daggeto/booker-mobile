@@ -44,8 +44,6 @@ Raven.context( =>
   ) ->
     $ionicPlatform.ready =>
       LoggerService.init()
-      AppUpdateService.checkForUpdate().then (updateAvailable) ->
-        $rootScope.updateAvailable = updateAvailable
 
       NotificationService.registerToken()
 
@@ -68,6 +66,9 @@ Raven.context( =>
 
     $ionicPlatform.on 'resume', ->
       $rootScope.$emit(EVENTS.UPDATE_CURRENT_USER) if AuthService.isAuthenticated()
+
+      AppUpdateService.checkForUpdate().then (updateAvailable) ->
+        $rootScope.updateAvailable = updateAvailable
 
       $rootScope.isAppInForeground = true
 
