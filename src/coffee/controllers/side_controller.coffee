@@ -40,7 +40,8 @@ app.controller 'SideController',
         popup.then (confirmed) =>
           return unless confirmed
 
-          AppUpdateService.download()
+          AppUpdateService.checkForUpdate().then (updateAvailable) ->
+            AppUpdateService.download() if updateAvailable
 
       goToService: (service) =>
         currentUser.service = service
