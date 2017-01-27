@@ -55,6 +55,9 @@ app.controller 'EventsController',
 
       save: (form) =>
         @form = form
+
+        return unless @form.$valid
+
         @warnAboutWrongEvent() if @eventEndsNextDay()
         return unless @validateTime()
 
@@ -66,12 +69,12 @@ app.controller 'EventsController',
 
       validateTime: ->
         if (event.start_at > event.end_at)
-          @form['start_at'].$error.message = translateFilter('event.error.not_after')
+          @invalidateFormFor('start_at', translateFilter('event.error.not_after'))
 
           return false
 
         if event.start_at < new Date()
-          @form['start_at'].$error.message = translateFilter('event.error.only_future')
+          @invalidateFormFor('start_at', translateFilter('event.error.only_future'))
 
           return false
 
@@ -86,7 +89,12 @@ app.controller 'EventsController',
       failure: (error) =>
         errors = error.data.errors
         for key, value of errors when key in @ERROR_FIELDS
-          @form[key].$error.message = value[0]
+          @invalidateFormFor(key, value[0])
+
+      invalidateFormFor: (fieldName, message) =>
+        @form[fieldName].$error.message = message
+        @form.$valid = false
+
 
       isAddState: ->
         $state.is('service.calendar.add_event')

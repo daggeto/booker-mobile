@@ -24,20 +24,30 @@ ion-view
               align-to="{{vm.calendar.selectedDate.format()}}"
               ng-model="vm.event.start_at"
               ng-change="vm.startAtChanged()"
+              required
             ]
           .col.item.item-input.b-event--time
             | {{ 'form.to' | translate }}
             input[
+              name="end_at"
               type="time"
               ng-model="vm.event.end_at"
               placeholder="H:mm"
               align-to="{{vm.calendar.selectedDate.format()}}"
+              required
             ]
-        error-messages.item.padding-left[
-          form='addEventForm'
-          for='start_at'
-          ng-show="addEventForm['start_at'].$error.message"
-        ]
+        .row.no-padding[ng-show="addEventForm.$submitted && !addEventForm.$valid"]
+          .col.b-event--time
+            error-messages.padding-left[
+              form='addEventForm'
+              for='start_at'
+              required="{{ 'form.errors.required' | translate }}"
+            ]
+            error-messages.padding-left[
+              form='addEventForm'
+              for='end_at'
+              required="{{ 'form.errors.required' | translate }}"
+            ]
         label.item.item-select.padding
           span.input-label[translate] form.status
           select[

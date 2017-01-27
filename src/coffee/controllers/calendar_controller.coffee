@@ -40,7 +40,7 @@ app.controller 'CalendarController',
           @calendar.update(response)
 
       onEventClick: (_, data)=>
-        ServiceEventActionSheet.show(data.event, data.reservation, @reloadEvents)
+        ServiceEventActionSheet.show(data.event, data.reservation, @reloadEvents, @calendar)
 
       onEventAvatarClick: (_, data) =>
         Navigator.go('app.main.profile', user_id: data.event.user.id)

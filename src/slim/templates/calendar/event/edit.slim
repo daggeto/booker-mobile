@@ -27,14 +27,32 @@ ion-view
               type="time"
               ng-model="vm.event.start_at"
               ng-change="vm.startAtChanged()"
+              align-to="{{vm.calendar.selectedDate.format()}}"
+              required
             ]
           .col.item.item-input.b-event--time
             | {{ 'form.to' | translate }}
-            input[type="time" ng-model="vm.event.end_at" placeholder="H:mm"]
-          error-messages.padding-left[
-            form='editEventForm'
-            for='start_at'
-          ]
+            input[
+              name="end_at"
+              type="time"
+              ng-model="vm.event.end_at"
+              placeholder="H:mm"
+              align-to="{{vm.calendar.selectedDate.format()}}"
+              required
+            ]
+        .row.no-padding[ng-show="editEventForm.$submitted && !editEventForm.$valid"]
+          .col.b-event--time
+            error-messages.padding-left[
+              form='editEventForm'
+              for='start_at'
+              required="{{ 'form.errors.required' | translate }}"
+            ]
+          .col.item.item-input.b-event--time
+            error-messages.padding-left[
+              form='editEventForm'
+              for='end_at'
+              required="{{ 'form.errors.required' | translate }}"
+            ]
 
         label.item.item-select.padding[ng-show="vm.isEditable()"]
           span.input-label[translate] form.status

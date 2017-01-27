@@ -10,7 +10,8 @@ app.factory 'ServiceEventActionSheet',
     translateFilter
   ) ->
     new class ServiceEventActionSheet
-      show: (event, reservation, afterActionSelected) =>
+      show: (event, reservation, afterActionSelected, calendar = {}) =>
+        @calendar = calendar
         @afterActionSelected = afterActionSelected
 
         $ionicActionSheet.show
