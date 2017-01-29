@@ -38,4 +38,4 @@ app.controller 'ServiceSettingsController', (
 
       togglePublicationFail: (response) =>
         ToastService.error(response.data.errors[0], 'bottom', false, 3000);
-        @service = response.data.service
+        service.published = response.data.service.published
