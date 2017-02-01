@@ -3,7 +3,6 @@ app.controller 'ServiceReservationsController',
     $scope,
     $ionicPopup,
     service,
-    ReservationsService,
     UserServicesService
     ServiceEventActionSheet,
   ) ->

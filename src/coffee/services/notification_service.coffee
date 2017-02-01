@@ -77,4 +77,3 @@ app.factory 'NotificationService', (
 
       markAllAsRead: ->
         Notification.$r.post(action: 'mark_all_as_read').$promise
-

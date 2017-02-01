@@ -1,4 +1,5 @@
 app.factory 'BookingService', (
+  $rootScope,
   $q,
   $ionicPopup,
   ToastService,
@@ -30,8 +31,15 @@ app.factory 'BookingService', (
 
     bookSuccess: (response) =>
       ToastService.show(response.message, 'bottom', false, 3000);
+
       @resolveMethod(response)
 
     bookFailed: (response) =>
-      ToastService.error(response.data.message, 'bottom', false, 3000);
+      @showError(response.data.message)
+
       @rejectMethod
+
+    showError: (message) ->
+      return ToastService.error(message) if message
+
+      $rootScope.error()

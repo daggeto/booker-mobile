@@ -31,13 +31,14 @@ Raven.context( =>
     $ionicPopup,
     $log,
     $auth,
-    $translate,
+    translateFilter,
     Navigator,
     AjaxInterceptor,
     NotificationService,
     AuthService,
     LoggerService,
     AppUpdateService,
+    ToastService,
     AUTH_EVENTS,
     SERVER_EVENTS,
     EVENTS
@@ -85,16 +86,11 @@ Raven.context( =>
       $state.go('login')
       $auth.deleteData('auth_headers')
 
-      $ionicPopup.alert
-        template: $translate('errors.unauthorized'))
-
-    $rootScope.$on SERVER_EVENTS.not_found, ->
-      $ionicPopup.alert
-        title: $translate('errors.something_wrong')
-        template: $translate('errors.try_login_again')
+      ToastService.error(translateFilter('errors.something_wrong'))
+    )
 
     $rootScope.error = (message) ->
-      $ionicPopup.alert(template: $translate('errors.something_wrong'))
+      ToastService.error(translateFilter('errors.something_wrong'))
 
     $rootScope.navigator = Navigator
 

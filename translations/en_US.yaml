@@ -8,7 +8,7 @@ free: Free
 upload_photo: Upload Photo
 send: Send
 errors:
-  something_wrong: Ups, something wrong
+  something_wrong: Ups, something wrong. Try again or connect support.
   unauthorized: Unauthorized
   try_login_again: Try to login again
 login:

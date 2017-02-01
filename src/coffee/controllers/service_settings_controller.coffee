@@ -37,5 +37,8 @@ app.controller 'ServiceSettingsController', (
         ToastService.show(translateFilter('service.settings.visible_now'), 'bottom', false, 3000)
 
       togglePublicationFail: (response) =>
+        service.published = 0
+
+        return $scope.error() unless response.data.service
+
         ToastService.error(response.data.errors[0], 'bottom', false, 3000);
-        service.published = response.data.service.published

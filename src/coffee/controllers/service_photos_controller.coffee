@@ -1,5 +1,12 @@
 app.controller 'ServicePhotosController',
-  ($stateParams, $ionicSlideBoxDelegate, UserServicesService, ServicePhotosService, service) ->
+  (
+    $scope,
+    $stateParams,
+    $ionicSlideBoxDelegate,
+    UserServicesService,
+    ServicePhotosService,
+    service
+  ) ->
     new class ServicePhotosController
       constructor: ->
         @service = service
@@ -36,6 +43,8 @@ app.controller 'ServicePhotosController',
         ServicePhotosService.delete(id).then(@reloadPhotos, @error)
 
       error: (error) =>
+        $scope.error(error)
+
         @superAfterUpload()
 
       showAddPhoto: ->

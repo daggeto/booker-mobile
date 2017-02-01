@@ -1,5 +1,6 @@
 app.factory 'ServiceEventActionSheet',
   (
+    $rootScope,
     $ionicActionSheet,
     $ionicPopup,
     Navigator,
@@ -93,8 +94,10 @@ app.factory 'ServiceEventActionSheet',
         @doAction('cancel_by_service', reservation)
 
       doAction: (action, reservation) =>
-        ReservationsService.do(action, reservation.id).then =>
-          @afterActionSelected()
+        ReservationsService.do(action, reservation.id)
+          .then =>
+            @afterActionSelected()
+          .catch($rootScope.error)
 
       onEdit: (event) =>
         Navigator.go("service.calendar.edit_event", event_id: event.id, calendar: @calendar)
@@ -114,7 +117,6 @@ app.factory 'ServiceEventActionSheet',
         true
 
       deleteEvent: (event) =>
-        EventsService.delete(event.id).then =>
-          @afterActionSelected()
+        EventsService.delete(event.id).then(@afterActionSelected).catch($rootScope.error)
 
         true

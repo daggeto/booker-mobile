@@ -36,8 +36,8 @@ app.config (
 
   $httpProvider.interceptors.push 'AuthInterceptor'
 
-  AjaxInterceptorProvider.config(
-    defaultMessage: "Network error. Please check your connection.")
+  AjaxInterceptorProvider.config
+    defaultMessage: "Network error. Please check your connection."
 
   $authProvider.configure
     apiUrl: API_URL

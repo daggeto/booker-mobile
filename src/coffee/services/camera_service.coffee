@@ -20,4 +20,4 @@ app.factory 'CameraService', ($cordovaCamera) ->
       $cordovaCamera.getPicture(options)
 
     cleanup: ->
-      $cordovaCamera.cleanup(console.log, console.log);
+      $cordovaCamera.cleanup(console.log, console.error);

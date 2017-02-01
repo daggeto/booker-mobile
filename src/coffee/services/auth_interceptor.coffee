@@ -3,10 +3,7 @@ app.factory('AuthInterceptor', ($rootScope, $q, $injector, AUTH_EVENTS, SERVER_E
 
     LoggerService = $injector.get('LoggerService')
 
-    $rootScope.$broadcast {
-      401: AUTH_EVENTS.notAuthorized
-      403: AUTH_EVENTS.notAuthenticated
-    }[response.status], response
+    $rootScope.$broadcast { 401: AUTH_EVENTS.notAuthorized }[response.status], response
 
     LoggerService.httpException(response)
 

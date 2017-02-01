@@ -8,7 +8,7 @@ free: Nemokama
 upload_photo_button: Įkelti nuotrauką
 send: Siųsti
 errors:
-  something_wrong: Oj, kažkas negerai
+  something_wrong: Oj, kažkas negerai. Mėginkite dar kartą arba susisiekite su pagalba.
   unauthorized: Nepavyko autorizuoti
   try_login_again: Pamėginkite prisijungti dar kartą
   no_network: Nepavyko prisijungti prie serverio. Pamėginkite patikrinti interneto ryšį

@@ -32,12 +32,16 @@ app.controller 'ProfileEditController',
         @superAfterUpload()
 
       error: (error) =>
+        $scope.error(error)
+
         @superAfterUpload()
 
       save: =>
-        UsersService.update(@userData).then (response) ->
-          Context.setCurrentUser(response.user)
-          $scope.navigator.home()
+        UsersService.update(@userData)
+          .then (response) ->
+            Context.setCurrentUser(response.user)
+            $scope.navigator.home()
+          .catch($scope.error)
 
       logout: ->
         AuthService.logout()
