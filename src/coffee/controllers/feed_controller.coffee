@@ -62,7 +62,9 @@ app.controller 'FeedController', (
     replaceNearestEvent: (service, updatedServices) ->
       updatedService = updatedServices[service.id]
 
-      service.nearest_event = updatedService.nearest_event if updatedService
+      return service.nearest_event = null unless updatedService
+
+      service.nearest_event =  updatedService.nearest_event
 
     goTo: (state, params) ->
       $state.go(state, params)
