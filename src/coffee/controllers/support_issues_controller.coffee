@@ -3,7 +3,8 @@ app.controller 'SupportIssuesController',
     $scope,
     SupportIssuesService,
     ToastService,
-    APP_VERSION
+    LoggerService,
+    translateFilter
   ) ->
     new class SupportIssuesController
       constructor: ->
@@ -12,12 +13,7 @@ app.controller 'SupportIssuesController',
       send: (form) ->
         return unless form.$valid
 
-        device = ionic.Platform.device()
-
-        @support_issue.app_version = APP_VERSION
-        @support_issue.device_details = device
-
-        SupportIssuesService.save(@support_issue).then (response) ->
-          ToastService.show(response.message, 'bottom', false, 3500)
+        LoggerService.sendMessage(@support_issue.message, level: 'info')
+        ToastService.show(translateFilter('support_issue.message_sent'), 'bottom', false, 3500)
 
         $scope.navigator.home()
