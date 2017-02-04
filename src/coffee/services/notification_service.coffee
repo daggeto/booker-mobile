@@ -6,7 +6,9 @@ app.factory 'NotificationService', (
   Navigator,
   DeviceService,
   Notification,
-  EVENTS
+  LoggerService,
+  EVENTS,
+  ERROR_TYPES
 ) ->
     new class NotificationService
       constructor: ->
@@ -52,10 +54,18 @@ app.factory 'NotificationService', (
       registerToken: =>
         d = $q.defer()
 
-        $ionicPush.register().then (token) =>
-          console.log("Token registered #{token}")
-          $ionicPush.saveToken(token)
-          d.resolve(token)
+        $ionicPush.register()
+          .then (token) =>
+            console.log("Token registered #{token}")
+            $ionicPush.saveToken(token)
+            d.resolve(token)
+          .catch (error) ->
+            LoggerService.captureException('Token does not registered',
+              type: ERROR_TYPES.TOKEN,
+              extraContext: error
+            )
+
+
 
       unregisterToken: ->
         $ionicPush.unregister()
@@ -67,7 +77,13 @@ app.factory 'NotificationService', (
           @saveTokenToServer()
 
       saveTokenToServer: ->
-        DeviceService.save(token: $ionicPush.token.token, platform: ionic.Platform.platform())
+        DeviceService
+          .save(token: $ionicPush.token.token, platform: ionic.Platform.platform())
+          .catch(error) ->
+            LoggerService.captureException('Token does not saved',
+              type: ERROR_TYPES.TOKEN,
+              extraContext: error
+          )
 
       findAll: ->
         Notification.$r.get().$promise

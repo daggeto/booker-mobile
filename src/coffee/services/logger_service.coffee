@@ -1,17 +1,17 @@
-app.factory 'LoggerService', ($raven, $log, Context, APP_VERSION) ->
+app.factory 'LoggerService', ($raven, $log, Context, APP_VERSION, ERROR_TYPES) ->
   new class LoggerService
     init: ->
 
     angularException: (exception) ->
-      @captureException(exception, type: 'Angular')
+      @captureException(exception, type: ERROR_TYPES.ANGULAR)
       $log.error(exception)
 
     httpException: (response) ->
       message = "#{response.config.url} : #{response.status}"
 
-      @captureException(new Error(message) , extraContext: response, type: 'Http')
+      @captureException(new Error(message) , extraContext: response, type: ERROR_TYPES.HTTP)
 
-    captureException: (exception, params)->
+    captureException: (exception, params = {})->
       $raven.setUserContext(@userInfo())
       $raven.setTagsContext(type: params.type)
       $raven.setExtraContext(params.extraContext)
