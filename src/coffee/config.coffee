@@ -37,6 +37,7 @@ app.config (
   $translateProvider
     .translations(LOCALE, TRANSLATIONS)
     .preferredLanguage(LOCALE)
+    .useSanitizeValueStrategy('escape')
 
   $httpProvider.interceptors.push 'AuthInterceptor'
 
