@@ -4,11 +4,15 @@ app.config (
   $translateProvider,
   $httpProvider,
   $authProvider,
+  $ravenProvider,
   AjaxInterceptorProvider,
   API_URL,
   LOCALE,
-  TRANSLATIONS
+  TRANSLATIONS,
+  ENVIRONMENT
 ) ->
+  $ravenProvider.development(ENVIRONMENT == 'development');
+
   $ionicConfigProvider.tabs.position('bottom')
   $ionicConfigProvider.views.swipeBackEnabled(false)
 

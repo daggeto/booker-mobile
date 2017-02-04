@@ -179,6 +179,10 @@ function replaceParams() {
         replacement: settings.app_channel
       },
       {
+        match: 'env',
+        replacement: settings.env
+      },
+      {
         match: 'translations',
         replacement: translations
       },

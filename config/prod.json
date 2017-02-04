@@ -1,5 +1,6 @@
 {
   "app_channel": "production",
+  "env": "production",
   "templates": "'templates'",
   "apiUrl": "http://515459.s.dedikuoti.lt",
   "locale": "lt"

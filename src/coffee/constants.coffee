@@ -37,6 +37,8 @@ app.constant 'APP_VERSION', '@@app_version'
 
 app.constant 'APP_CHANNEL', '@@app_channel'
 
+app.constant 'ENVIRONMENT', '@@env'
+
 app.constant('$ionicLoadingConfig', {
   templateUrl: 'templates/components/loading.html'
   noBackdrop: 'false'

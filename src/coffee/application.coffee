@@ -1,5 +1,9 @@
 Raven
-  .config('https://f02365b72b7e42d38235bfe73849e651@sentry.io/129218', release: '@@app_version')
+  .config(
+    'https://f02365b72b7e42d38235bfe73849e651@sentry.io/129218', 
+    release: '@@app_version',
+    environment: '@@env'
+  )
   .install();
 
 app = angular.module(
