@@ -26,7 +26,11 @@ app.controller 'ServiceSettingsController', (
       afterSave: (response) =>
         $scope.navigator.home(reload: true)
 
-      togglePublication: ->
+      togglePublication: (form) ->
+        form.$setSubmitted(true)
+
+        return @resetToggle() if form.$invalid
+
         return UserServicesService.unpublish(service.id) unless service.published
 
         UserServicesService.publish(service.id)
@@ -37,8 +41,11 @@ app.controller 'ServiceSettingsController', (
         ToastService.show(translateFilter('service.settings.visible_now'), 'bottom', false, 3000)
 
       togglePublicationFail: (response) =>
-        service.published = 0
+        @resetToggle()
 
         return $scope.error() unless response.data.service
 
         ToastService.error(response.data.errors[0], 'bottom', false, 3000);
+
+      resetToggle: ->
+        service.published = 0

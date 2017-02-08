@@ -16,7 +16,7 @@ form[name="serviceSettingsForm" ng-submit="vm.save(serviceSettingsForm)" novalid
       .list
         ion-toggle[
           ng-model="vm.service.published"
-          ng-change="vm.togglePublication()"
+          ng-change="vm.togglePublication(serviceSettingsForm)"
         ] {{ 'service.settings.published' | translate }}
 
         label.item.item-input.b-input.padding
