@@ -21,7 +21,12 @@ form[name="serviceSettingsForm" ng-submit="vm.save(serviceSettingsForm)" novalid
 
         label.item.item-input.b-input.padding
           span.input-label[translate] form.name
-          input[name="name" type="text" ng-model="vm.service.name" required]
+          input[
+            name="name"
+            type="text"
+            ng-model="vm.service.name"
+            placeholder="{{ 'service.settings.name' | translate }}"
+            required]
           error-messages.service-settings--error[
             form='serviceSettingsForm'
             for="name"

@@ -96,6 +96,7 @@ service:
     title: Nustatymai
     published: Matomas
     visible_now: Tavo paslauga dabar yra matoma visiems
+    name: Paslaugos pavadinimas
   calendar:
     title: Kalendorius
     add: Pridėti

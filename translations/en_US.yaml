@@ -84,6 +84,7 @@ service:
     title: Settings
     published: Visible
     visible_now: Your service will be visible in feed now
+    name: Service name
   calendar:
     title: Calendar
     add: Add
