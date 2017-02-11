@@ -35,7 +35,12 @@ form[name="serviceSettingsForm" ng-submit="vm.save(serviceSettingsForm)" novalid
 
         label.item.item-input.item-stacked-label.padding
           span.input-label[translate] form.description
-          textarea[name="description" rows="5" ng-model="vm.service.description" required]
+          textarea[
+            name="description"
+            ng-model="vm.service.description"
+            msd-elastic 
+            required
+          ]
           error-messages.service-settings--error[
             form='serviceSettingsForm'
             for="description"

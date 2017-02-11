@@ -1,6 +1,6 @@
 Raven
   .config(
-    'https://f02365b72b7e42d38235bfe73849e651@sentry.io/129218', 
+    'https://f02365b72b7e42d38235bfe73849e651@sentry.io/129218',
     release: '@@app_version',
     environment: '@@env'
   )
@@ -22,7 +22,8 @@ app = angular.module(
     'ngMessages',
     'ionic.cloud',
     'ngAnimate',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'monospaced.elastic'
     @@templates
   ]
 )
