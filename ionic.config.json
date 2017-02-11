@@ -1,6 +1,6 @@
 {
-  "name": "booker-mobile",
-  "app_id": "22e15946",
+  "name": "timespex-mobile",
+  "app_id": "46a02c6b",
   "gulpStartupTasks": [
     "sass",
     "coffee",
