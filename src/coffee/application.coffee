@@ -7,7 +7,7 @@ Raven
   .install();
 
 app = angular.module(
-  'booker',
+  'timespex',
   [
     'ngRaven',
     'ionic',

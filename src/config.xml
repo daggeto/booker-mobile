@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="@@app_id" version="@@app_version" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>Time Booker</name>
+  <name>TimeSpex</name>
   <description>
         This app created to book someones time and to someone book your time.
         If you have free time and service that you can provide, then this app for you.
