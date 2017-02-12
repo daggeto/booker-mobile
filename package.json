@@ -53,7 +53,7 @@
       "id": "phonegap-plugin-push",
       "locator": "phonegap-plugin-push",
       "variables": {
-        "SENDER_ID": "248592828963"
+        "SENDER_ID": "295670871905"
       }
     },
     "de.appplant.cordova.plugin.local-notification",

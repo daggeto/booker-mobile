@@ -189,6 +189,14 @@ function replaceParams() {
       {
         match: 'app_version',
         replacement: buildParams.app_version
+      },
+      {
+        match: 'sender_id',
+        replacement: buildParams.sender_id
+      },
+      {
+        match: 'ionic_app_id',
+        replacement: buildParams.ionic_app_id
       }
     ]
   })

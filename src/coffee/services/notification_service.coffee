@@ -79,7 +79,7 @@ app.factory 'NotificationService', (
       saveTokenToServer: ->
         DeviceService
           .save(token: $ionicPush.token.token, platform: ionic.Platform.platform())
-          .catch(error) ->
+          .catch (error) ->
             LoggerService.captureException('Token does not saved',
               type: ERROR_TYPES.TOKEN,
               extraContext: error

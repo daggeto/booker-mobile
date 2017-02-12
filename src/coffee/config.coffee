@@ -21,11 +21,10 @@ app.config (
 
   $ionicCloudProvider.init
     core:
-      app_id: '22e15946'
-      gcm_key: '248592828963'
+      app_id: "@@ionic_app_id"
     push:
       debug: true,
-      sender_id: '248592828963'
+      sender_id: "@@sender_id"
       pluginConfig:
         android:
           icon: 'ic_notification'
