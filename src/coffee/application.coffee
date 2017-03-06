@@ -83,7 +83,11 @@ Raven.context( =>
     $rootScope.$on('$stateChangeStart', (event, next, nextParams, fromState) ->
       if !AuthService.isAuthenticated()
         unless next.name in ['login', 'signup', 'terms']
+          LoggerService
+            .sendMessage("App logged out from #{fromState.name} to #{next.name}", level: 'warning')
+
           event.preventDefault()
+
           $state.transitionTo('login')
     )
 
