@@ -49,6 +49,8 @@ app.controller 'FeedController', (
     updateLoadedServices: =>
       return unless $scope.isAppInForeground
 
+      return unless @services 
+
       ids = @services.map (item) -> item.id
 
       UserServicesService
