@@ -23,7 +23,8 @@ app = angular.module(
     'ionic.cloud',
     'ngAnimate',
     'pascalprecht.translate',
-    'monospaced.elastic'
+    'monospaced.elastic',
+    'ngCordova.plugins.nativeStorage',
     @@templates
   ]
 )

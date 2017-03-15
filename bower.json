@@ -4,7 +4,8 @@
   "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.2.4",
     "phonegap-plugin-push": "^1.7.3",
-    "angular-translate": "^2.12.1"
+    "angular-translate": "^2.12.1",
+    "ngcordova-wrapper-nativestorage": "git://github.com/TheCocoaProject/ngcordova-wrapper-nativestorage"
   },
   "dependencies": {
     "angular-moment": "^0.10.3",

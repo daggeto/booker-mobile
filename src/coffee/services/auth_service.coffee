@@ -3,12 +3,15 @@ app.factory 'AuthService', (
   $q,
   $auth,
   $ionicHistory,
+  $cordovaNativeStorage,
   NotificationService,
   Context,
   IntervalsService,
   UPDATE_LOADED_SERVICES_INTERVAL
 ) ->
   new class AuthService
+    AUTH_HEADER = 'auth_headers';
+
     isAuthenticated: ->
       $auth.retrieveData('auth_headers') != null
 
@@ -33,6 +36,7 @@ app.factory 'AuthService', (
       NotificationService.unregisterToken()
       $ionicHistory.clearCache()
       IntervalsService.stop(UPDATE_LOADED_SERVICES_INTERVAL)
+      $cordovaNativeStorage.remove(AUTH_HEADER)
 
       $auth.signOut()
         .then => console.log('Loggout success')
