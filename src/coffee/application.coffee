@@ -45,12 +45,14 @@ Raven.context( =>
     LoggerService,
     AppUpdateService,
     ToastService,
+    GoogleAnalyticsService,
     AUTH_EVENTS,
     SERVER_EVENTS,
     EVENTS
   ) ->
     $ionicPlatform.ready =>
       LoggerService.init()
+      GoogleAnalyticsService.init()
       AppUpdateService.checkForUpdate()
       PushNotificationService.registerToken()
 
@@ -69,6 +71,20 @@ Raven.context( =>
         -> navigator.splashscreen.hide()
       , 300)
 
+    $rootScope.$on('$stateChangeStart', (event, next, nextParams, fromState) ->
+      GoogleAnalyticsService.trackEvent('Category', 'StateChanged', 'To', next.name)
+      GoogleAnalyticsService.trackView(next.name)
+
+      if !AuthService.isAuthenticated()
+        unless next.name in ['login', 'signup', 'terms']
+          LoggerService
+            .sendMessage("App logged out from #{fromState.name} to #{next.name}", level: 'warning')
+
+          event.preventDefault()
+
+          $state.transitionTo('login')
+    )
+
     $rootScope.isAppInForeground = true
 
     $ionicPlatform.on 'resume', ->
@@ -80,17 +96,6 @@ Raven.context( =>
 
     $ionicPlatform.on 'pause', ->
       $rootScope.isAppInForeground = false
-
-    $rootScope.$on('$stateChangeStart', (event, next, nextParams, fromState) ->
-      if !AuthService.isAuthenticated()
-        unless next.name in ['login', 'signup', 'terms']
-          LoggerService
-            .sendMessage("App logged out from #{fromState.name} to #{next.name}", level: 'warning')
-
-          event.preventDefault()
-
-          $state.transitionTo('login')
-    )
 
     $rootScope.$on(AUTH_EVENTS.notAuthorized, ->
       $state.go('login')
