@@ -5,8 +5,10 @@ app.factory 'AuthService', (
   $ionicHistory,
   $cordovaNativeStorage,
   NotificationService,
+  TokenService
   Context,
   IntervalsService,
+  LoggerService,
   UPDATE_LOADED_SERVICES_INTERVAL
 ) ->
   new class AuthService
@@ -22,9 +24,10 @@ app.factory 'AuthService', (
         .then (user) =>
           @saveToken()
 
+          TokenService.moveTokenFromLocalStorage()
+
           d.resolve(user)
-        .catch ->
-          d.reject('Login failed')
+        .catch(LoggerService.angularException)
 
       d.promise
 
@@ -36,7 +39,7 @@ app.factory 'AuthService', (
       NotificationService.unregisterToken()
       $ionicHistory.clearCache()
       IntervalsService.stop(UPDATE_LOADED_SERVICES_INTERVAL)
-      $cordovaNativeStorage.remove(AUTH_HEADER)
+      TokenService.remove()
 
       $auth.signOut()
         .then => console.log('Loggout success')

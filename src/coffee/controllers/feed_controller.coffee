@@ -1,6 +1,7 @@
 app.controller 'FeedController', (
   $scope,
   $state,
+  $ionicPlatform,
   IntervalsService,
   UserServicesService,
   BookingService,
@@ -10,7 +11,8 @@ app.controller 'FeedController', (
     constructor: ->
       @bindListeners()
 
-      @refreshServices()
+      $ionicPlatform.ready =>
+        @refreshServices()
 
     bindListeners: ->
       $scope.$on('bookEvent', (_, data) =>
@@ -49,7 +51,7 @@ app.controller 'FeedController', (
     updateLoadedServices: =>
       return unless $scope.isAppInForeground
 
-      return unless @services 
+      return unless @services
 
       ids = @services.map (item) -> item.id
 
