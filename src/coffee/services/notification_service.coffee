@@ -51,6 +51,15 @@ app.factory 'NotificationService', (
       navigateFromNotification: (payload) ->
         Navigator.go(payload.state, payload.stateParams)
 
+      unregisterToken: ->
+        $ionicPush.unregister()
+
+      saveToken: ->
+        return @saveTokenToServer() if $ionicPush.storage.get('push_token')
+
+        @registerToken().then =>
+          @saveTokenToServer()
+
       registerToken: =>
         d = $q.defer()
 
@@ -65,18 +74,9 @@ app.factory 'NotificationService', (
               extraContext: error
             )
 
-
-
-      unregisterToken: ->
-        $ionicPush.unregister()
-
-      saveToken: ->
-        return @saveTokenToServer() if $ionicPush.storage.get('push_token')
-
-        @registerToken().then =>
-          @saveTokenToServer()
-
       saveTokenToServer: ->
+        return unless $ionicPush.token
+
         DeviceService
           .save(token: $ionicPush.token.token, platform: ionic.Platform.platform())
           .catch (error) ->
