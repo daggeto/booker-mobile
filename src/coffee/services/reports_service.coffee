@@ -1,4 +1,5 @@
-app.factory 'ReportsService', (Report) ->
+app.factory 'ReportsService', (Report, AuthWrapper) ->
   new class ReportsService
     save: (params) ->
-      Report.$r.save(params).$promise
+      AuthWrapper.wrap ->
+        Report.$r.save(params).$promise
