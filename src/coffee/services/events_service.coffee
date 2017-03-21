@@ -1,13 +1,17 @@
-app.factory 'EventsService', (Event, $cacheFactory) ->
+app.factory 'EventsService', (Event, AuthWrapper, $cacheFactory) ->
   new class EventsService
     findById: (id) ->
-      Event.$r.get(id: id)
+      AuthWrapper.wrap ->
+        Event.$r.get(id: id).$promise
 
     save: (params) ->
-      Event.$r.save(params).$promise
+      AuthWrapper.wrap ->
+        Event.$r.save(params).$promise
 
     update: (params) ->
-      Event.$r.update(params).$promise
+      AuthWrapper.wrap ->
+        Event.$r.update(params).$promise
 
     delete: (id) ->
-      Event.$r.delete(id: id).$promise
+      AuthWrapper.wrap ->
+        Event.$r.delete(id: id).$promise
