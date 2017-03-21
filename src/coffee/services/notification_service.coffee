@@ -7,6 +7,7 @@ app.factory 'NotificationService', (
   DeviceService,
   Notification,
   LoggerService,
+  AuthWrapper,
   EVENTS,
   ERROR_TYPES
 ) ->
@@ -86,10 +87,13 @@ app.factory 'NotificationService', (
           )
 
       findAll: ->
-        Notification.$r.get().$promise
+        AuthWrapper.wrap ->
+          Notification.$r.get().$promise
 
       markAsRead: (id) ->
-        Notification.$r.post(notification_id: id, action: 'mark_as_read').$promise
+        AuthWrapper.wrap ->
+          Notification.$r.post(notification_id: id, action: 'mark_as_read').$promise
 
       markAllAsRead: ->
-        Notification.$r.post(action: 'mark_all_as_read').$promise
+        AuthWrapper.wrap ->
+          Notification.$r.post(action: 'mark_all_as_read').$promise
