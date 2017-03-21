@@ -10,6 +10,12 @@ app.factory 'TokenService', ($q, $window, $cordovaNativeStorage, LoggerService, 
       5: 'JSON_ERROR'
       6: 'WRONG_PARAMETER'
 
+    getTokenFromLocalStorage: ->
+      $window.localStorage.getItem(AUTH_HEADER)
+
+    setTokenToLocalStorage: (header) ->
+      $window.localStorage.setItem(AUTH_HEADER, header)
+
     getToken: (success, error)->
       defer = $q.defer()
 
@@ -20,7 +26,7 @@ app.factory 'TokenService', ($q, $window, $cordovaNativeStorage, LoggerService, 
       defer.promise
 
     moveTokenFromLocalStorage: ->
-      token = $window.localStorage.getItem(AUTH_HEADER)
+      token = @getTokenFromLocalStorage()
 
       @logNoHeaderException() unless token
 

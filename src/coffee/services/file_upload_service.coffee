@@ -1,11 +1,17 @@
-app.factory 'FileUploadService', ($cordovaFileTransfer, $auth, $q) ->
+app.factory 'FileUploadService', ($window, $cordovaFileTransfer, $q, TokenService, AuthWrapper) ->
   new class FileUploadService
     upload: (method, upload_path, file_uri) ->
+      AuthWrapper.wrap =>
+        @run(method, upload_path, file_uri)
+
+    run: (method, upload_path, file_uri) ->
+      auth_header = JSON.parse(TokenService.getTokenFromLocalStorage())
+
       fileTransfer = $cordovaFileTransfer.upload(
         upload_path,
         file_uri,
         httpMethod: method,
-        headers:  $auth.retrieveData('auth_headers')
+        headers: auth_header
        )
 
       @d = $q.defer()

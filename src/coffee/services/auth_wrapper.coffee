@@ -1,7 +1,6 @@
 app.factory 'AuthWrapper',
   (
     $q,
-    $window,
     $state,
     LoggerService,
     TokenService,
@@ -9,7 +8,7 @@ app.factory 'AuthWrapper',
   ) ->
     new class AuthWrapper
       wrap: (requestCallback) ->
-        token = $window.localStorage.getItem(TokenService.AUTH_HEADER)
+        token = TokenService.getTokenFromLocalStorage()
 
         return @preloadAuthHeader(requestCallback) unless token
 
@@ -29,7 +28,7 @@ app.factory 'AuthWrapper',
         defer.promise
 
       forwardRequest: (header, defer, requestCallback) ->
-        $window.localStorage.setItem(TokenService.AUTH_HEADER, header)
+        TokenService.setTokenToLocalStorage(header)
 
         @callRequest(defer, requestCallback)
 
