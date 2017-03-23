@@ -1,7 +1,9 @@
-app.factory 'ReservationsService', (Reservation, $cacheFactory) ->
+app.factory 'ReservationsService', (Reservation, AuthWrapper, $cacheFactory) ->
   new class ReservationsService
     save: (params) ->
-      Reservation.$r.save(params).$promise
+      AuthWrapper.wrap ->
+        Reservation.$r.save(params).$promise
 
     do: (action, reservation_id) ->
-      Reservation.$r.post(reservation_id: reservation_id, action: action).$promise
+      AuthWrapper.wrap ->
+        Reservation.$r.post(reservation_id: reservation_id, action: action).$promise
