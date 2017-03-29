@@ -4,7 +4,7 @@ app.factory 'AuthService', (
   $auth,
   $ionicHistory,
   $cordovaNativeStorage,
-  NotificationService,
+  PushNotificationService,
   TokenService
   Context,
   IntervalsService,
@@ -32,11 +32,11 @@ app.factory 'AuthService', (
       d.promise
 
     saveToken: =>
-      NotificationService.saveToken()
+      PushNotificationService.saveToken()
 
     logout: ->
       @destroyCurrentUser()
-      NotificationService.unregisterToken()
+      PushNotificationService.unregisterToken()
       $ionicHistory.clearCache()
       IntervalsService.stop(UPDATE_LOADED_SERVICES_INTERVAL)
       TokenService.remove()
