@@ -22,9 +22,9 @@ app.config ($stateProvider, $urlRouterProvider) ->
     .state('app'
       url: '/app'
       resolve:
-        Context: 'Context'
-        currentUser: ($window, Context) ->
-          Context.resolveCurrentUser()
+        CurrentUserResolver: 'CurrentUserResolver'
+        currentUser: ($window, CurrentUserResolver) ->
+          CurrentUserResolver.resolveCurrentUser()
       abstract: true
       controller: 'MainController as vm'
       templateUrl: 'templates/app.html')
@@ -133,7 +133,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
       resolve:
         eventsService: 'EventsService'
         event: (eventsService, $stateParams) ->
-          eventsService.findById($stateParams.event_id).$promise
+          eventsService.findById($stateParams.event_id)
       views:
         '@':
           templateUrl: 'templates/calendar/event/edit.html'
@@ -146,7 +146,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
       resolve:
         eventsService: 'EventsService'
         event: (eventsService, $stateParams) ->
-          eventsService.findById($stateParams.event_id).$promise
+          eventsService.findById($stateParams.event_id)
       views:
         '@':
           templateUrl: 'templates/calendar/event/preview.html'

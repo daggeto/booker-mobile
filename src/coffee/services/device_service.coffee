@@ -1,7 +1,5 @@
-app.factory 'DeviceService', (Device) ->
+app.factory 'DeviceService', (Device, AuthWrapper) ->
   new class DeviceService
     save: (params) ->
-      Device.$r.save(params).$promise
-
-    delete: (token) ->
-      Device.$r.delete(token: token).$promise
+      AuthWrapper.wrap ->
+        Device.$r.save(params).$promise

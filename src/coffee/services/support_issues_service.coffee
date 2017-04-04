@@ -1,4 +1,5 @@
-app.factory 'SupportIssuesService', (SupportIssue) ->
+app.factory 'SupportIssuesService', (SupportIssue, AuthWrapper) ->
   new class SupportIssuesService
     save: (params) ->
-      SupportIssue.$r.save(params).$promise
+      AuthWrapper.wrap ->
+        SupportIssue.$r.save(params).$promise

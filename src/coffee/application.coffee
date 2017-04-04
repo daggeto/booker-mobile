@@ -23,7 +23,8 @@ app = angular.module(
     'ionic.cloud',
     'ngAnimate',
     'pascalprecht.translate',
-    'monospaced.elastic'
+    'monospaced.elastic',
+    'ngCordova.plugins.nativeStorage',
     @@templates
   ]
 )
@@ -39,7 +40,7 @@ Raven.context( =>
     translateFilter,
     Navigator,
     AjaxInterceptor,
-    NotificationService,
+    PushNotificationService,
     AuthService,
     LoggerService,
     AppUpdateService,
@@ -51,7 +52,7 @@ Raven.context( =>
     $ionicPlatform.ready =>
       LoggerService.init()
       AppUpdateService.checkForUpdate()
-      NotificationService.registerToken()
+      PushNotificationService.registerToken()
 
       if ionic.Platform.isIOS()
         cordova.plugins.notification.local.registerPermission (granted) ->
