@@ -30,6 +30,8 @@ app.factory 'TokenService', ($q, $window, $cordovaNativeStorage, LoggerService, 
 
       @logNoHeaderException() unless token
 
+      return if typeof NativeStorage == 'undefined'
+
       $cordovaNativeStorage.setItem(AUTH_HEADER, token).catch(@catchError)
 
     remove: ->
