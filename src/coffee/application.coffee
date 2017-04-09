@@ -72,7 +72,7 @@ Raven.context( =>
       , 300)
 
     $rootScope.$on('$stateChangeStart', (event, next, nextParams, fromState) ->
-      GoogleAnalyticsService.trackEvent('Category', 'StateChanged', 'To', next.name)
+      GoogleAnalyticsService.trackEvent('Navigation', 'State Changed To' , next.name)
       GoogleAnalyticsService.trackView(next.name)
 
       if !AuthService.isAuthenticated()

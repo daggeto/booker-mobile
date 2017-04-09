@@ -16,17 +16,22 @@ app.factory 'GoogleAnalyticsService',
           $window.ga.startTrackerWithId(GA_ID, 1, @success, @error)
           $window.ga.setAppVersion(APP_VERSION, @success, @error)
 
-          user = Context.getCurrentUser()
-
-          $window.ga.setUserId(user.id, @success, @error) if user
-
         trackView: (name) ->
+          @setCurrentUser()
+
           $window.ga.trackView(name, null, false, @success, @error) if $window.ga
 
         trackEvent: (category, action, label, value) ->
           return unless $window.ga
 
+          @setCurrentUser()
+
           $window.ga.trackEvent(category, action, label, value, false, @success, @error)
+
+        setCurrentUser: ->
+          user = Context.getCurrentUser()
+
+          $window.ga.setUserId(user.id, @success, @error) if user
 
         success: ->
 
