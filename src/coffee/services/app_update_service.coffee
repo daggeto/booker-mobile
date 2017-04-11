@@ -1,22 +1,57 @@
-app.factory 'AppUpdateService', ($rootScope, $ionicDeploy, APP_CHANNEL) ->
-  new class AppUpdateService
-    checkForUpdate: ->
-      @doDeploy().check().then (updateAvailable) ->
-        $rootScope.updateAvailable = updateAvailable
+app.factory 'AppUpdateService',
+  (
+    $rootScope,
+    $ionicDeploy,
+    $ionicPopup,
+    translateFilter,
+    APP_CHANNEL
+  ) ->
+    new class AppUpdateService
+      constructor: ->
+        @storeUpdate = false
 
-    download: ->
-      $rootScope.updateInProgess = true
+      checkForUpdate: ->
+        @doDeploy().check().then (updateAvailable) =>
+          return unless updateAvailable
 
-      @doDeploy().download().then(@extract)
+          @checkForMetaData ->
+            $rootScope.updateAvailable = updateAvailable
 
-    extract: =>
-      @doDeploy().extract().then(@load)
+      checkForMetaData: (callback) ->
+        $ionicDeploy.getMetadata().then (metadata) =>
+          @storeUpdate = metadata.storeUpdate
 
-    load: =>
-      $rootScope.updateInProgess = false
-      @doDeploy().load()
+          callback()
 
-    doDeploy: ->
-      $ionicDeploy.channel = APP_CHANNEL;
+      download: ->
+        return @notifyAboutStoreUpdate() if @storeUpdate
 
-      $ionicDeploy
+        $rootScope.updateInProgess = true
+        
+        @doDeploy().download().then(@extract)
+
+      notifyAboutStoreUpdate: () ->
+        template = translateFilter('app_update.store_update')
+
+        storeName = @getStoreName()
+
+        $ionicPopup.alert
+          title: translateFilter('app_update.popup_title'),
+          template: "#{template} #{storeName}"
+
+      getStoreName: ->
+        return translateFilter('app_update.google_play') if ionic.Platform.isAndroid()
+
+        translateFilter('app_update.app_store')
+
+      extract: =>
+        @doDeploy().extract().then(@load)
+
+      load: =>
+        $rootScope.updateInProgess = false
+        @doDeploy().load()
+
+      doDeploy: ->
+        $ionicDeploy.channel = APP_CHANNEL;
+
+        $ionicDeploy
