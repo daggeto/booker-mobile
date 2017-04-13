@@ -179,6 +179,10 @@ function replaceParams() {
         replacement: settings.app_channel
       },
       {
+        match: 'google_analytics_id',
+        replacement: settings.google_analytics_id
+      },
+      {
         match: 'env',
         replacement: settings.env
       },

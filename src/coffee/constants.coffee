@@ -39,6 +39,8 @@ app.constant 'APP_CHANNEL', '@@app_channel'
 
 app.constant 'ENVIRONMENT', '@@env'
 
+app.constant 'GA_ID', '@@google_analytics_id'
+
 app.constant('$ionicLoadingConfig', {
   templateUrl: 'templates/components/loading.html'
   noBackdrop: 'false'

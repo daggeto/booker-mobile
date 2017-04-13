@@ -1,14 +1,18 @@
-app.factory 'UsersService', ($cacheFactory, User) ->
+app.factory 'UsersService', ($cacheFactory, AuthWrapper, User) ->
   new class UsersService
     findById: (id) ->
-      User.$r.get(id: id).$promise
+      AuthWrapper.wrap ->
+        User.$r.get(id: id).$promise
 
     update: (params) ->
-      User.$r.update(params).$promise
+      AuthWrapper.wrap ->
+        User.$r.update(params).$promise
 
     current: ->
-      User.$current.get().$promise
+      AuthWrapper.wrap ->
+        User.$current.get().$promise
 
     reservations: (params) ->
-      params.assoc = 'reservations'
-      User.$a.get(params).$promise
+      AuthWrapper.wrap ->
+        params.assoc = 'reservations'
+        User.$a.get(params).$promise

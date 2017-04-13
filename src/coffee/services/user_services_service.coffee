@@ -1,34 +1,37 @@
-app.factory 'UserServicesService', ($cacheFactory, UserService) ->
+app.factory 'UserServicesService', ($cacheFactory, UserService, AuthWrapper) ->
   new class UserServicesService
     events: (params) ->
-      UserService.$events.get(params).$promise
+      AuthWrapper.wrap ->
+        UserService.$events.get(params).$promise
 
     service_photos: (params) ->
-      UserService.$service_photos.query(params).$promise
+      AuthWrapper.wrap ->
+        UserService.$service_photos.query(params).$promise
 
     reservations: (service_id, group = true) ->
-      UserService.$r.get(id: service_id, action: 'reservations', group: group).$promise
+      AuthWrapper.wrap ->
+        UserService.$r.get(id: service_id, action: 'reservations', group: group).$promise
 
     findById: (id) ->
-      UserService.$r.get(id: id).$promise
-
-    find: (params) ->
-      UserService.$r.query(params).$promise
+      AuthWrapper.wrap ->
+        UserService.$r.get(id: id).$promise
 
     findWithGet: (params) ->
-      UserService.$r.get(params).$promise
+      AuthWrapper.wrap ->
+        UserService.$r.get(params).$promise
 
     save: (params) ->
-      UserService.$r.save(params).$promise
+      AuthWrapper.wrap ->
+        UserService.$r.save(params).$promise
 
     update: (params) ->
-      UserService.$r.update(params).$promise
-
-    delete: (id) ->
-      UserService.$r.delete(id: id).$promise
+      AuthWrapper.wrap ->
+        UserService.$r.update(params).$promise
 
     publish: (service_id) ->
-      UserService.$r.post(id: service_id, action: 'publish').$promise
+      AuthWrapper.wrap ->
+        UserService.$r.post(id: service_id, action: 'publish').$promise
 
     unpublish: (service_id) ->
-      UserService.$r.post(id: service_id, action: 'unpublish').$promise
+      AuthWrapper.wrap ->
+        UserService.$r.post(id: service_id, action: 'unpublish').$promise

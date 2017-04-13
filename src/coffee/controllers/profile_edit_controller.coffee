@@ -5,11 +5,12 @@ app.controller 'ProfileEditController',
     ImageService,
     AuthService,
     UsersService,
-    Context
+    Context,
+    CurrentUserResolver
   ) ->
     new class ProfileEditController
       constructor: ->
-        Context.resolveCurrentUser().then (user) =>
+        CurrentUserResolver.resolveCurrentUser().then (user) =>
           @currentUser = user
           @userData =
             first_name: @currentUser.first_name
