@@ -48,27 +48,24 @@
     "cordova-plugin-console",
     "cordova-plugin-splashscreen",
     "ionic-plugin-keyboard",
-    "cordova-plugin-whitelist",
-    {
-      "locator": "https://github.com/katzer/cordova-plugin-local-notifications",
-      "id": "de.appplant.cordova.plugin.local-notification"
-    },
-    "cordova-plugin-app-event",
-    "ionic-plugin-deploy",
-    "cordova-plugin-crosswalk-webview",
-    "cordova-plugin-compat",
-    "cordova-plugin-camera",
-    "cordova-plugin-file-transfer",
-    "cordova-plugin-file",
-    "cordova-plugin-google-analytics",
-    "cordova-plugin-nativestorage",
     {
       "id": "phonegap-plugin-push",
       "locator": "phonegap-plugin-push",
       "variables": {
         "SENDER_ID": "295670871905"
       }
-    }
+    },
+    "de.appplant.cordova.plugin.local-notification",
+    "cordova-plugin-app-event",
+    "cordova-plugin-google-analytics",
+    "cordova-plugin-nativestorage",
+    "cordova-plugin-whitelist",
+    "ionic-plugin-deploy",
+    "cordova-plugin-crosswalk-webview",
+    "cordova-plugin-compat",
+    "cordova-plugin-camera",
+    "cordova-plugin-file-transfer",
+    "cordova-plugin-file"
   ],
   "cordovaPlatforms": [
     "android",
