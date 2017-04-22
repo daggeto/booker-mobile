@@ -37,6 +37,6 @@ app.factory 'GoogleAnalyticsService',
 
         error: (error) ->
           LoggerService.angularException(
-            message: 'Google Analytics does not registerd',
+            'Google Analytics does not registerd',
             error: error
           )
