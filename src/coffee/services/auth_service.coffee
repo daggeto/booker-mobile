@@ -27,7 +27,8 @@ app.factory 'AuthService', (
           TokenService.moveTokenFromLocalStorage()
 
           d.resolve(user)
-        .catch(LoggerService.angularException)
+        .catch (error) ->
+          LoggerService.angularException('Submit Login failed.', extraContext: error)
 
       d.promise
 
