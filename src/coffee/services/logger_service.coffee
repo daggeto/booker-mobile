@@ -2,8 +2,8 @@ app.factory 'LoggerService', ($raven, $log, Context, APP_VERSION, ERROR_TYPES) -
   new class LoggerService
     init: ->
 
-    angularException: (exception) =>
-      @captureException(exception, type: ERROR_TYPES.ANGULAR)
+    angularException: (exception, params) =>
+      @captureException(exception, extraContext: params, type: ERROR_TYPES.ANGULAR)
       $log.error(exception)
 
     httpException: (response) ->
