@@ -23,7 +23,10 @@ app.factory 'AuthWrapper',
 
         TokenService.getToken()
           .then (header) => @forwardRequest(header, defer, requestCallback)
-          .catch (error) => $state.go('login')
+          .catch (error) =>
+            LoggerService.sendMessage('Login in TokenService', level: 'warning', extraContext: { error: error })
+
+            $state.go('login')
 
         defer.promise
 

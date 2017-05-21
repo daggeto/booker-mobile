@@ -4,6 +4,11 @@ app.factory 'UserServicesService', ($cacheFactory, UserService, AuthWrapper) ->
       AuthWrapper.wrap ->
         UserService.$events.get(params).$promise
 
+    future_events: (params) ->
+      params['action'] = 'future'
+
+      UserService.$events.get(params).$promise
+
     service_photos: (params) ->
       AuthWrapper.wrap ->
         UserService.$service_photos.query(params).$promise
@@ -13,12 +18,10 @@ app.factory 'UserServicesService', ($cacheFactory, UserService, AuthWrapper) ->
         UserService.$r.get(id: service_id, action: 'reservations', group: group).$promise
 
     findById: (id) ->
-      AuthWrapper.wrap ->
-        UserService.$r.get(id: id).$promise
+      UserService.$r.get(id: id).$promise
 
     findWithGet: (params) ->
-      AuthWrapper.wrap ->
-        UserService.$r.get(params).$promise
+      UserService.$r.get(params).$promise
 
     save: (params) ->
       AuthWrapper.wrap ->

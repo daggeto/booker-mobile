@@ -76,10 +76,7 @@ Raven.context( =>
       GoogleAnalyticsService.trackView(next.name)
 
       if !AuthService.isAuthenticated()
-        unless next.name in ['login', 'signup', 'terms']
-          LoggerService
-            .sendMessage("App logged out from #{fromState.name} to #{next.name}", level: 'warning')
-
+        if next.name in ['service.service_settings']
           event.preventDefault()
 
           $state.transitionTo('login')
@@ -98,6 +95,7 @@ Raven.context( =>
       $rootScope.isAppInForeground = false
 
     $rootScope.$on(AUTH_EVENTS.notAuthorized, ->
+      console.log('Login in notAuthorized')
       $state.go('login')
       $auth.deleteData('auth_headers')
 
