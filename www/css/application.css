@@ -96,12 +96,13 @@
   color: #ff3333;
   font-size: 0.7em; }
 
-.message__success {
-  background-color: #c2f0c2; }
-
-.message__warning {
-  color: #ffffff;
-  background-color: #ffa500; }
+.message {
+  padding: 0 5px; }
+  .message__success {
+    background-color: #c2f0c2; }
+  .message__warning {
+    color: #ffffff;
+    background-color: #ffa500; }
 
 .profile .image-loader-container {
   width: 100%;

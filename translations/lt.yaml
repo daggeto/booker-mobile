@@ -13,6 +13,7 @@ errors:
   unauthorized: Nepavyko autorizuoti
   try_login_again: Pamėginkite prisijungti dar kartą
   no_network: Nepavyko prisijungti prie serverio. Pamėginkite patikrinti interneto ryšį
+  please_login: Prisijunkite, kad galėtumėte naudotis šią funkcija.
 login:
   title: Prisijungti
   login: Prisijungti
@@ -69,6 +70,8 @@ side:
       teikti paslaugą
     begin: Pradėti
     cancel: Grįžti
+  login: Prisijungti
+  sign_up: Registruotis
   help: Pagalba
   update:
     title: Atnaujinti programą

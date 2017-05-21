@@ -2,29 +2,53 @@ ion-scroll[lazy-scroll]
   .profile
     .photo-preview
       img[ng-src="{{context.currentUser.profile_image.preview_url}}"]
+
   ion-lists.side-list[can-swipe="true"]
-    ion-item.side-list--item[ng-click="vm.providerSettingsClicked()"]
+    ion-item.side-list--item[
+      ng-click="vm.providerSettingsClicked()"
+      ng-hide="context.currentUser.is_guest"]
+
       i.side-list--item--icon.ion-ios-settings
       .side-list--item--title[translate] side.service_settings
-    ion-item.side-list--item[ng-click="navigator.go('app.main.reservations')" ]
+
+    ion-item.side-list--item[
+      ng-click="navigator.go('app.main.reservations')"
+      ng-hide="context.currentUser.is_guest"]
+
       i.side-list--item--icon.ion-ios-list-outline
       .side-list--item--title[translate] side.reservations
+
     ion-item.side-list--item.item-icon-left.item-icon-right[
       ng-click="navigator.go('app.main.profile_edit')"
-      ]
+      ng-hide="context.currentUser.is_guest"]
+
         i.side-list--item--icon.ion-person
         .side-list--item--title[translate] side.profile
         i.side-list--item--icon.ion-alert[
-          ng-hide="context.currentUser.first_name || context.currentUser.last_name"
-        ]
+          ng-hide="context.currentUser.first_name || context.currentUser.last_name"]
+
+    ion-item.side-list--item[
+      ng-click="navigator.go('login')"
+      ng-show="context.currentUser.is_guest"]
+
+      i.side-list--item--icon.ion-person
+      .side-list--item--title[translate] side.login
+
+    ion-item.side-list--item[
+      ng-click="navigator.go('sign_up')"
+      ng-show="context.currentUser.is_guest"]
+
+      i.side-list--item--icon.ion-person-add
+      .side-list--item--title[translate] side.sign_up
+
     ion-item.side-list--item[ng-click="navigator.go('app.main.support_issue')"]
       i.side-list--item--icon.ion-help-buoy
       .side-list--item--title[translate] side.help
 
     ion-item.side-list--item.side-list--item__update[
       ng-click="vm.confirmUpdate()"
-      ng-show="updateAvailable"
-    ]
+      ng-show="updateAvailable"]
+
       i.side-list--item--icon.ion-load-d[ng-hide="updateInProgess"]
       ion-spinner[icon="ios-small" ng-show="updateInProgess"]
       .side-list--item--title[translate] side.update.title

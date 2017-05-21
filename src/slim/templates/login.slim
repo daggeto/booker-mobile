@@ -1,8 +1,14 @@
 ion-view[name="login-view"]
   ion-header-bar[align-title="center" ]
+    .buttons
+      a.button.icon-left.ion-chevron-left.button-clear.button-dark[
+        ng-click="navigator.back()"
+        translate
+        ] back
     h1.title[translate] login.title
   ion-content
-    .align-center[class="message__{{vm.message.severity}}" ng-if="vm.message"] {{vm.message.text }}
+    .align-center[class="message message__{{vm.message.severity}}" ng-if="vm.message"]
+      | {{vm.message.text }}
     div[class="list"]
       label[class="item item-input item-floating-label"]
         span[class="input-label" translate] form.email

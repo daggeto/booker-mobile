@@ -2,7 +2,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
   $stateProvider
     .state('login'
       cache: false
-      url: '/login/:message'
+      url: '/login/{message.json}'
       params:
         message: null
       controller: 'LoginController as vm'

@@ -8,8 +8,7 @@ app.constant('SERVER_EVENTS'
 )
 
 app.constant('USER_ROLES'
-  seller: 'admin_role'
-  simple: 'public_role'
+  guest: 'guest'
 )
 
 app.constant 'EVENTS',

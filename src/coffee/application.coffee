@@ -94,14 +94,6 @@ Raven.context( =>
     $ionicPlatform.on 'pause', ->
       $rootScope.isAppInForeground = false
 
-    $rootScope.$on(AUTH_EVENTS.notAuthorized, ->
-      console.log('Login in notAuthorized')
-      $state.go('login')
-      $auth.deleteData('auth_headers')
-
-      ToastService.error(translateFilter('errors.something_wrong'))
-    )
-
     $rootScope.error = (message) ->
       ToastService.error(translateFilter('errors.something_wrong'))
 

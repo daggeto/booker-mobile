@@ -12,6 +12,7 @@ errors:
   something_wrong: Ups, something wrong. Try again or connect support.
   unauthorized: Unauthorized
   try_login_again: Try to login again
+  please_login: Please login to use this action.
 login:
   title: Login
   login: Login
@@ -57,6 +58,8 @@ side:
     template: Here you can setup your service information and your time when you are available.
     begin: Begin
     cancel: Cancel
+  login: Login
+  sign_up: Sign Up
   help: Help
   update:
     title: Update
