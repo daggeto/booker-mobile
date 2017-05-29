@@ -1,12 +1,18 @@
 ion-scroll[lazy-scroll]
   .profile
     .photo-preview
-      img[ng-src="{{context.currentUser.profile_image.preview_url}}"]
+      img[
+        ng-show="context.currentUser.profile_image.preview_url"
+        ng-src="{{context.currentUser.profile_image.preview_url}}"]
+
+      img.random[
+        ng-hide="context.currentUser.profile_image.preview_url"
+        ng-src="data:image/svg+xml;base64,{{vm.generateProfileImage()}}"
+      ]
 
   ion-lists.side-list[can-swipe="true"]
     ion-item.side-list--item[
-      ng-click="vm.providerSettingsClicked()"
-      ng-hide="context.currentUser.is_guest"]
+      ng-click="vm.goToServiceSettings()"]
 
       i.side-list--item--icon.ion-ios-settings
       .side-list--item--title[translate] side.service_settings
@@ -35,7 +41,7 @@ ion-scroll[lazy-scroll]
       .side-list--item--title[translate] side.login
 
     ion-item.side-list--item[
-      ng-click="navigator.go('sign_up')"
+      ng-click="navigator.go('signup')"
       ng-show="context.currentUser.is_guest"]
 
       i.side-list--item--icon.ion-person-add

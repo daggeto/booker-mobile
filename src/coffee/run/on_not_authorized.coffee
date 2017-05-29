@@ -1,6 +1,5 @@
-app.run ($rootScope, $auth, translateFilter, ToastService, AUTH_EVENTS) ->
-  $rootScope.$on(AUTH_EVENTS.notAuthorized, ->
-
+app.run ($rootScope, $auth, $state, translateFilter, ToastService, AUTH_EVENTS) ->
+  redirectToLogin = ->
     $rootScope.navigator.go(
       'login',
       message:
@@ -8,5 +7,8 @@ app.run ($rootScope, $auth, translateFilter, ToastService, AUTH_EVENTS) ->
         severity: 'warning'
     )
 
+  $rootScope.$on(AUTH_EVENTS.notAuthorized, ->
     $auth.deleteData('auth_headers')
+
+    redirectToLogin() if $state.current.name != 'login'
   )

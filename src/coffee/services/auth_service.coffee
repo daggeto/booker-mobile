@@ -7,6 +7,7 @@ app.factory 'AuthService', (
   PushNotificationService,
   TokenService
   Context,
+  CurrentUserResolver,
   IntervalsService,
   LoggerService,
   UPDATE_LOADED_SERVICES_INTERVAL
@@ -25,10 +26,12 @@ app.factory 'AuthService', (
           @saveToken()
 
           TokenService.moveTokenFromLocalStorage()
+          Context.setCurrentUser(user)
 
           d.resolve(user)
         .catch (error) ->
           LoggerService.angularException('Submit Login failed.', extraContext: error)
+          d.reject(error)
 
       d.promise
 
@@ -36,14 +39,13 @@ app.factory 'AuthService', (
       PushNotificationService.saveToken()
 
     logout: ->
-      @destroyCurrentUser()
       PushNotificationService.unregisterToken()
       $ionicHistory.clearCache()
       IntervalsService.stop(UPDATE_LOADED_SERVICES_INTERVAL)
       TokenService.remove()
 
       $auth.signOut()
-        .then => console.log('Loggout success')
+        .then => CurrentUserResolver.updateCurrentUser()
         .catch -> console.log('Loggout failed')
 
     signup: (data) ->

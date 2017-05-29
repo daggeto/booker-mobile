@@ -401,6 +401,9 @@
   .photo-preview img {
     width: 100%;
     margin-top: -180px; }
+  .photo-preview img.random {
+    height: 10em;
+    margin-top: 0; }
   .photo-preview__clicked {
     height: 100%; }
     .photo-preview__clicked img {
@@ -528,7 +531,8 @@
   .service__address {
     padding: 0.1em;
     font-size: 1em;
-    color: #2aa9d4; }
+    color: #2aa9d4;
+    overflow: hidden; }
   .service .image-loader-container {
     width: 100%;
     height: 450px;

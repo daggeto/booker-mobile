@@ -8,12 +8,14 @@ free: Nemokama
 upload_photo_button: Įkelti nuotrauką
 send: Siųsti
 exit: Išeiti
+cancel:
 errors:
   something_wrong: Oj, kažkas negerai. Mėginkite dar kartą arba susisiekite su pagalba.
   unauthorized: Nepavyko autorizuoti
   try_login_again: Pamėginkite prisijungti dar kartą
   no_network: Nepavyko prisijungti prie serverio. Pamėginkite patikrinti interneto ryšį
   please_login: Prisijunkite, kad galėtumėte naudotis šią funkcija.
+  login_failed: Blogi prisijungimo duomenys
 login:
   title: Prisijungti
   login: Prisijungti
@@ -58,7 +60,7 @@ form:
     email_wrong: Blogas El. paštas
     min_length: Per trumpas slaptažodis. Min. 8 simboliai
 side:
-  service_settings: Paslaugos nustatymai
+  service_settings: Mano Paslauga
   profile: Profilis
   reservations: Mano Rezervacijos
   published: Matomas
@@ -68,8 +70,6 @@ side:
     template: >
       Čia galėsite užpildyti savo paslaugos informaciją ir nustatyti laiką kada galite
       teikti paslaugą
-    begin: Pradėti
-    cancel: Grįžti
   login: Prisijungti
   sign_up: Registruotis
   help: Pagalba

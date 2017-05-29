@@ -46,4 +46,4 @@ app.controller 'ProfileEditController',
 
       logout: ->
         AuthService.logout()
-        $scope.navigator.go('login')
+        $scope.navigator.home()
