@@ -75,6 +75,8 @@ app.factory 'PushNotificationService',
                 extraContext: error
               )
 
+          d.promise
+
         saveTokenToServer: ->
           return unless $ionicPush.token
 

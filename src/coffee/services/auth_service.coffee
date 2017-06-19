@@ -23,8 +23,6 @@ app.factory 'AuthService', (
 
       $auth.submitLogin(data)
         .then (user) =>
-          @saveToken()
-
           TokenService.moveTokenFromLocalStorage()
           Context.setCurrentUser(user)
 
@@ -34,9 +32,6 @@ app.factory 'AuthService', (
           d.reject(error)
 
       d.promise
-
-    saveToken: =>
-      PushNotificationService.saveToken()
 
     logout: ->
       PushNotificationService.unregisterToken()

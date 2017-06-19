@@ -1,12 +1,30 @@
-app.factory('AuthInterceptor', ($rootScope, $q, $injector, AUTH_EVENTS, SERVER_EVENTS) ->
-  { responseError: (response) ->
+app.factory('AuthInterceptor',
+  (
+    $rootScope,
+    $q,
+    $injector,
+    StorageService,
+    STORAGE_KEYS,
+    API_URL,
+    AUTH_EVENTS
+  ) -> {
+    request: (request) ->
+      return request unless request.url.match(API_URL)
 
-    LoggerService = $injector.get('LoggerService')
+      request.headers[STORAGE_KEYS.DEVICE_TOKEN] =
+        StorageService.getFromLocalStorage(STORAGE_KEYS.DEVICE_TOKEN)
 
-    $rootScope.$broadcast { 401: AUTH_EVENTS.notAuthorized }[response.status], response
+      request
 
-    LoggerService.httpException(response)
+    responseError: (response) ->
+      LoggerService = $injector.get('LoggerService')
 
-    $q.reject response
- }
+      httpResponses = { 401: AUTH_EVENTS.notAuthorized }
+
+      $rootScope.$broadcast(httpResponses[response.status], response)
+
+      LoggerService.httpException(response)
+
+      $q.reject response
+  }
 )

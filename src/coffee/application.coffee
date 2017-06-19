@@ -3,8 +3,7 @@ Raven
     'https://f02365b72b7e42d38235bfe73849e651@sentry.io/129218',
     release: '@@app_version',
     environment: '@@env'
-  )
-  .install();
+  ).install()
 
 app = angular.module(
   'timespex',
@@ -40,7 +39,6 @@ Raven.context( =>
     translateFilter,
     Navigator,
     AjaxInterceptor,
-    PushNotificationService,
     AuthService,
     LoggerService,
     AppUpdateService,
@@ -54,18 +52,17 @@ Raven.context( =>
       LoggerService.init()
       GoogleAnalyticsService.init()
       AppUpdateService.checkForUpdate()
-      PushNotificationService.registerToken()
 
       if ionic.Platform.isIOS()
         cordova.plugins.notification.local.registerPermission (granted) ->
           console.log("Notifications granted: #{granted}")
       if window.cordova and window.cordova.plugins.Keyboard
-        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true)
 
-        cordova.plugins.Keyboard.disableScroll(true);
+        cordova.plugins.Keyboard.disableScroll(true)
 
       if window.StatusBar
-        StatusBar.styleDefault();
+        StatusBar.styleDefault()
 
       setTimeout(
         -> navigator.splashscreen.hide()
