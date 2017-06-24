@@ -77,6 +77,7 @@ date:
   last: Last
 book:
   confirm: Please confirm your reservation
+  message: Message ...
 search:
   no_results: No results
   placeholder: Search...
@@ -130,8 +131,5 @@ support_issue:
   what_to_ask: What do you want to ask?
   explain: Briefly explain your problem or question here
   message_sent: Thanks. We got your question and will answer to your email.
-app_update:
-  popup_title: Update
-  store_update: There is serious updates. Please update TimeSpex in
-  app_store: App Store
-  google_play: Google Play
+event_preview:
+  no_user: No User

@@ -1,13 +1,16 @@
 .item.event.no-padding-grid
-  .row
-    .col.col-75.event--content
-      .event--title
-        | {{event.start_at | amDateFormat: 'HH:mm' }} -
-         {{event.end_at | amDateFormat: 'HH:mm' }}
-      .event--sub-title
-        .event--status[class="event--status__{{event.status}}"]
-          | {{event.status_label | uppercase}}
-        .event--name[ng-show="name"] {{name}}
+  .event--avatar
+    img[src="{{avatar}}" ng-show="avatar"]
+    i.ion-person[ng-hide="avatar"]
+  .event--middle
+    p.event--description[ng-show="event.description"] {{event.description}}
+    p.event--name[ng-show="name"] {{name}}
+    p.event--message[ng-show="reservation.message"] "{{reservation.message}}"
 
-    .col.col-25.event--avatar
-      img[src="{{avatar}}" ng-show="avatar"]
+  .event--end
+    .event--time {{event.start_at | amDateFormat: 'HH:mm' }}
+    .event--status
+      i.icon.ion-ios-circle-filled[
+        class="event--status__{{event.status}}"
+      ]
+      .event--status-text {{event.status_label | uppercase}}

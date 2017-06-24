@@ -9,10 +9,14 @@ app.factory 'BookingService', (
 ) ->
   new class BookingService
     book: (event) ->
+      $rootScope.data = {}
+
       confirmBooking = $ionicPopup.confirm
         title: translateFilter('book.confirm')
+        templateUrl: 'templates/book/_confirm.html'
         okText: translateFilter('yes')
         cancelText: translateFilter('close')
+        scope: $rootScope
 
       confirmBooking.then (confirmed) =>
         @bookingConfirmed(event) if confirmed
@@ -24,13 +28,15 @@ app.factory 'BookingService', (
         @resolveMethod = resolve
         @rejectMethod = reject
 
-        ReservationsService.save(event_id: event.id)
+        params = { event_id: event.id, message: $rootScope.data.message }
+
+        ReservationsService.save(params)
           .then(@bookSuccess)
           .catch(@bookFailed)
       )
 
     bookSuccess: (response) =>
-      ToastService.show(response.message, 'bottom', false, 3000);
+      ToastService.show(response.message, 'bottom', false, 3000)
 
       @resolveMethod(response)
 

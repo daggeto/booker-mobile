@@ -21,8 +21,8 @@ ion-view
 
         .row.no-padding
           .col.item.item-input.b-event--time
-            | {{ 'form.from' | translate }}
             input[
+              ng-hide="vm.notFree"
               name="start_at"
               type="time"
               ng-model="vm.event.start_at"
@@ -30,9 +30,12 @@ ion-view
               align-to="{{vm.calendar.selectedDate.format()}}"
               required
             ]
+            span[ng-show="vm.notFree"]
+              | {{ vm.event.start_at | date: "H:mm" }}
+
           .col.item.item-input.b-event--time
-            | {{ 'form.to' | translate }}
             input[
+              ng-hide="vm.notFree"
               name="end_at"
               type="time"
               ng-model="vm.event.end_at"
@@ -40,6 +43,9 @@ ion-view
               align-to="{{vm.calendar.selectedDate.format()}}"
               required
             ]
+            span[ng-show="vm.notFree"]
+              | {{ vm.event.end_at | date: "H:mm" }}
+
         .row.no-padding[ng-show="editEventForm.$submitted && !editEventForm.$valid"]
           .col.b-event--time
             error-messages.padding-left[

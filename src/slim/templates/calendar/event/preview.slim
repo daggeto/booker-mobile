@@ -7,17 +7,33 @@ ion-view
       ] back
     h1.title {{vm.calendar.selectedDate.format() | date }}
   ion-content[scroll="false"]
+    .event-preview[ng-show="{{vm.event.reservation != null}}"]
+      .event-preview__reservation
+        .event-preview__reservation--with-user[ng-show="{{vm.event.user != null}}"]
+          .event-preview__avatar
+            img[src="{{vm.event.user.profile_image.preview_ur}}"]
+          .event-preview__info
+            .event-preview__name
+              | {{vm.event.user.first_name}} {{vm.event.user.last_name}}
+            .event-preview__email
+              | {{vm.event.user.email}}
+            .event-preview__message[ng-show="vm.event.reservation.message"]
+              | "{{vm.event.reservation.message}}"
+        .event-preview__reservation--no-user[ng-show="{{vm.event.user == null}}"]
+          .event-preview__avatar
+            i.ion-person[ng-hide="avatar"]
+          .event-preview__info
+            .event-preview__name[translate] event_preview.no_user
+
     .list
       label.item.item-input.padding
-        .col.input-label[translate] form.description
-        .col.align-right {{vm.event.description}}
-
+        i.icon.ion-ios-circle-filled[class="event--status__{{vm.event.status}}"]
+        .event--status-text {{vm.event.status_label | uppercase}}
       .row.no-padding
         .col.item.item-input.b-event--time
           | {{ vm.event.start_at | date: "H:mm" }}
         .col.item.item-input.b-event--time
           | {{ vm.event.end_at | date: "H:mm" }}
-
       label.item.item-input.padding
-        .col.input-label[translate] form.status
-        .col.align-right {{ 'event.status.' + vm.event.status | translate }}
+        .col.input-label[translate] form.description
+        .col.align-right {{vm.event.description}}
