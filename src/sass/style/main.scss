@@ -54,6 +54,10 @@
   display: flex;
 }
 
+.flex-vertical {
+  flex-direction: column;
+}
+
 .center {
   justify-content: center;
 }

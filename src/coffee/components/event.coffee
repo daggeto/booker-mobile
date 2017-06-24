@@ -10,9 +10,17 @@ app.directive('event', ->
 
   link: (scope, element) ->
     element.on 'click', =>
-      scope.$emit('onEventClick', event: scope.event, reservation: scope.reservation)
+      scope.$emit('onEventClick',
+        event: scope.event,
+        reservation: scope.reservation
+      )
+
     element.find('img').on 'click', (event) =>
-      scope.$emit('onEventAvatarClick', event: scope.event, reservation: scope.reservation)
+      scope.$emit('onEventAvatarClick',
+        event: scope.event,
+        reservation: scope.reservation
+      )
+
       event.stopPropagation()
 
 )

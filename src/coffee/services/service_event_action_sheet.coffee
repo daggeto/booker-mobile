@@ -31,7 +31,7 @@ app.factory 'ServiceEventActionSheet',
 
         buttons.push @button(translateFilter('event.actions.preview'), 'ion-eye', @onPreview, event)
 
-        unless event.past || Event.isEventNotFree(event)
+        unless event.past
           buttons.push @button(translateFilter('event.actions.edit'), 'ion-edit', @onEdit, event)
 
         if event.status == EVENT_STATUS.PENDING
