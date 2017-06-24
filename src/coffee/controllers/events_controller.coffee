@@ -24,6 +24,8 @@ app.controller 'EventsController',
         @initialEventStatus = event.status
         @duration = service.duration
 
+        @notFree = Event.isEventNotFree(event)
+
         @initEvent()
 
       initEvent: ->

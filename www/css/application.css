@@ -38,6 +38,9 @@
 .flexbox {
   display: flex; }
 
+.flex-vertical {
+  flex-direction: column; }
+
 .center {
   justify-content: center; }
 
@@ -273,30 +276,75 @@
   to {
     left: 100%; } }
 
-.event--title {
-  font-size: 1.5em;
-  font-weight: lighter; }
-
-.event--sub-title {
-  bottom: 0; }
-
-.event--status {
-  display: inline;
-  font-size: 0.7em;
-  font-weight: bold; }
-  .event--status__free {
-    color: #8BC34A; }
-  .event--status__pending {
-    color: #FFC107; }
-  .event--status__booked {
-    color: #4e9cf4; }
-
-.event--avatar {
-  text-align: right; }
-  .event--avatar img {
+.event-preview {
+  display: flex;
+  flex-direction: row;
+  padding: 1em;
+  display: flex; }
+  .event-preview__reservation--with-user {
+    display: flex;
+    flex-direction: row; }
+  .event-preview__reservation--no-user {
+    display: flex;
+    flex-direction: row; }
+  .event-preview__avatar img {
     border-radius: 50%;
-    width: 2.7em;
-    height: 2.7em; }
+    width: 6em;
+    height: 6em; }
+  .event-preview__avatar i {
+    font-size: 6em; }
+  .event-preview__info {
+    padding: 1em; }
+  .event-preview__name {
+    font-size: 1.5em; }
+  .event-preview__message {
+    font-style: italic;
+    color: #676767; }
+
+.event {
+  display: flex;
+  flex-direction: row; }
+  .event--avatar {
+    display: flex;
+    flex-grow: 1; }
+    .event--avatar img {
+      border-radius: 50%;
+      width: 3em;
+      height: 3em; }
+    .event--avatar i {
+      font-size: 3em; }
+  .event--middle {
+    display: flex;
+    flex-grow: 3;
+    flex-direction: column;
+    margin-left: 1em;
+    font-size: 1em;
+    width: 8em; }
+  .event--message {
+    font-style: italic;
+    color: #676767; }
+  .event--description {
+    color: #676767; }
+  .event--end {
+    display: flex;
+    flex-grow: 2;
+    flex-direction: column;
+    align-items: flex-end; }
+  .event--time {
+    font-size: 1.5em; }
+  .event--status-text {
+    color: #676767;
+    display: inline;
+    font-weight: bold;
+    text-align: right; }
+  .event--status {
+    font-size: 0.5em; }
+    .event--status__free {
+      color: #8BC34A; }
+    .event--status__pending {
+      color: #FFC107; }
+    .event--status__booked {
+      color: #4e9cf4; }
 
 .button-float {
   background: #ef473a !important;

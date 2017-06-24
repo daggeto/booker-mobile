@@ -1,0 +1,47 @@
+$avatar-size: 6em;
+
+.event-preview {
+  display: flex;
+  flex-direction: row;
+
+  padding: $r-size-small;
+
+  &__reservation {
+    &--with-user {
+      display: flex;
+      flex-direction: row;
+    }
+
+    &--no-user {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+
+  &__avatar {
+    img {
+      border-radius: 50%;
+      width: $avatar-size;
+      height: $avatar-size;
+    }
+
+    i {
+      font-size: $avatar-size;
+    }
+  }
+
+  &__info {
+    padding: $r-size-small;
+  }
+
+  &__name {
+    font-size: $font-default;
+  }
+
+  &__message {
+    font-style: italic;
+    color: $gray;
+  }
+
+  display: flex;
+}
