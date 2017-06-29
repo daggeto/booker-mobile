@@ -8,7 +8,8 @@
     p.event--message[ng-show="reservation.message"] "{{reservation.message}}"
 
   .event--end
-    .event--time {{event.start_at | amDateFormat: 'HH:mm' }}
+    .event--time {{event.start_at | amDateFormat: 'H:mm' }} 
+    .event--time__end {{event.end_at | amDateFormat: 'H:mm' }}
     .event--status
       i.icon.ion-ios-circle-filled[
         class="event--status__{{event.status}}"
