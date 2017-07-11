@@ -13,6 +13,7 @@ $content-height: 2em;
 .event {
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
 
   &--avatar {
     display: flex;
@@ -59,6 +60,10 @@ $content-height: 2em;
 
   &--time {
     font-size: $event-time-size;
+  }
+
+  &--time__end {
+    color: $gray;
   }
 
   &--status-text {
