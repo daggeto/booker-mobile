@@ -38,6 +38,7 @@ $address-text-color: #2aa9d4;
     padding: $r-size-nano;
     font-size: $font-small;
     color: $address-text-color;
+    overflow: hidden;
   }
 
   .image-loader-container {

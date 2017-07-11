@@ -47,5 +47,3 @@ app.factory 'BookingService', (
 
     showError: (message) ->
       return ToastService.error(message) if message
-
-      $rootScope.error()

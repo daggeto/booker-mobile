@@ -1,4 +1,4 @@
-app.factory 'Context', ($q, $rootScope) ->
+app.factory 'Context', ($q, $rootScope, USER_ROLES) ->
   new class Context
     constructor: ->
       $rootScope.context = {}

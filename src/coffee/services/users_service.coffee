@@ -9,8 +9,7 @@ app.factory 'UsersService', ($cacheFactory, AuthWrapper, User) ->
         User.$r.update(params).$promise
 
     current: ->
-      AuthWrapper.wrap ->
-        User.$current.get().$promise
+      User.$current.get().$promise
 
     reservations: (params) ->
       AuthWrapper.wrap ->

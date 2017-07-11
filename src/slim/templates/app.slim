@@ -11,9 +11,15 @@ ion-header-bar.b-header.flexbox
   .buttons[ng-hide="stateIs('app.main.search_results')"]
     i.icon.ion-ios-bell.b-action-button.b-icon.b-icon__active.badge-container[
       ng-click="navigator.go('app.main.notifications')"
+      ng-hide="context.currentUser.is_guest"
     ]
       span.badge.badge-assertive[
         ng-show="context.currentUser.unread_count > 0"
       ] {{context.currentUser.unread_count}}
+
+    i.icon.ion-ios-person.b-action-button.b-icon.b-icon__active[
+      ng-click="navigator.go('login')"
+      ng-show="context.currentUser.is_guest"
+    ]
 
 ion-nav-view[name="content" class="main-content"]

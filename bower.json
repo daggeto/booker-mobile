@@ -2,7 +2,7 @@
   "name": "HelloIonic",
   "private": "true",
   "devDependencies": {
-    "ionic": "driftyco/ionic-bower#1.2.4",
+    "ionic": "driftyco/ionic-bower#1.3.2",
     "phonegap-plugin-push": "^1.7.3",
     "angular-translate": "^2.12.1",
     "ngcordova-wrapper-nativestorage": "git://github.com/TheCocoaProject/ngcordova-wrapper-nativestorage"
@@ -16,6 +16,7 @@
     "ionic-image-lazy-load": "ion-image-lazy-load#*",
     "ng-token-auth": "^0.0.29",
     "raven-js": "^3.9.1",
-    "angular-raven": "^0.6.2"
+    "angular-raven": "^0.6.2",
+    "identicon.js": "identicon#^2.2.1"
   }
 }
