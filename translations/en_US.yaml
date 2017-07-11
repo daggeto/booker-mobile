@@ -12,6 +12,9 @@ errors:
   something_wrong: Ups, something wrong. Try again or connect support.
   unauthorized: Unauthorized
   try_login_again: Try to login again
+  please_login: Please login to use this action.
+  no_network: Failed connect to server. Try to check you internet connection
+  login_failed: Wrong email or password
 login:
   title: Login
   login: Login
@@ -47,7 +50,7 @@ form:
     email_wrong: Wrong email
     min_length: At least 8 symbols
 side:
-  service_settings: Service Settings
+  service_settings: My Service
   profile: Profile
   reservations: My Reservations
   published: Visible
@@ -55,8 +58,8 @@ side:
   new_service:
     title: Start to sell your time!
     template: Here you can setup your service information and your time when you are available.
-    begin: Begin
-    cancel: Cancel
+  login: Login
+  sign_up: Sign Up
   help: Help
   update:
     title: Update

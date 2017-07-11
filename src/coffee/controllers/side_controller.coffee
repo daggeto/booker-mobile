@@ -5,28 +5,33 @@ app.controller 'SideController',
     $ionicSlideBoxDelegate,
     $ionicPopup,
     translateFilter,
-    currentUser,
     UserServicesService,
     AppUpdateService
   ) ->
     new class SideController
-      constructor: ->
-        @currentUser = currentUser
+      goToServiceSettings: ->
+        return @showAlert() unless @currentUser().service
 
-      providerSettingsClicked: ->
-        return @showAlert() unless currentUser.service
-
-        $scope.navigator.go('service.service_settings', id: currentUser.service.id)
+        $scope.navigator.go('service.service_settings', id:  @currentUser().service.id)
 
       showAlert: ->
         popup = $ionicPopup.confirm
           title: translateFilter('side.new_service.title')
           template: translateFilter('side.new_service.template')
-          okText: translateFilter('yes')
+          okText: @getServiceOkText()
           cancelText: translateFilter('close')
 
         popup.then (confirmed) =>
-          @createService() if confirmed
+          return unless confirmed
+
+          return $scope.navigator.go('login') if @currentUser().is_guest
+
+          @createService()
+
+      getServiceOkText: ->
+        return translateFilter('login.login') if @currentUser().is_guest
+
+        translateFilter('yes')
 
       createService: =>
         UserServicesService.save(confirmed: true).then(@goToService, $scope.error)
@@ -34,8 +39,8 @@ app.controller 'SideController',
       confirmUpdate: ->
         popup = $ionicPopup.confirm
           title: translateFilter('side.update.confirm')
-          okText: translateFilter('side.new_service.begin')
-          cancelText: translateFilter('side.new_service.cancel')
+          okText: translateFilter('yes')
+          cancelText: translateFilter('close')
 
         popup.then (confirmed) =>
           return unless confirmed
@@ -44,9 +49,15 @@ app.controller 'SideController',
             AppUpdateService.download() if updateAvailable
 
       goToService: (service) =>
-        currentUser.service = service
+        @currentUser().service = service
         $scope.navigator.go('service.service_settings', id: service.id)
 
       slideTo: (index, view) ->
         $ionicSlideBoxDelegate.slide(index)
         state.go(view, {movieid: 1})
+
+      generateProfileImage: ->
+        new Identicon(moment().format().toString(), size: 420, format: 'svg').toString()
+
+      currentUser: ->
+        $scope.context.currentUser

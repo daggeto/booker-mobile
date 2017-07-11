@@ -7,7 +7,7 @@ ion-view[can-swipe-back="true"]
       ] back
     h1.title {{vm.service.name}}
     .buttons.actions
-      service-actions.action[service="vm.service"]
+      service-actions.action[service="vm.service" ng-hide="context.currentUser.is_guest"]
   ion-content.has-header[lazy-scroll]
     photos-carousel[photos='vm.service.service_photos']
     .book-service--description

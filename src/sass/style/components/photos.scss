@@ -32,6 +32,11 @@ $slider-bottom: 8px;
     margin-top: $image-margin-top;
   }
 
+  img.random {
+    height: $photo-slide-height;
+    margin-top: 0;
+  }
+
   &__clicked {
     height: $photo-slide-height-clicked;
 

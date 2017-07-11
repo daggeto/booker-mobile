@@ -18,9 +18,8 @@ app.controller 'ServiceCalendarController',
         @loadEvents(data.date || @calendar.selectedDate)
 
       loadEvents: (date) =>
-        UserServicesService.events(
+        UserServicesService.future_events(
           service_id: service.id
-          action: 'future'
           start_at: date.format()
         ).then(((response) =>
           @calendar.update(response)

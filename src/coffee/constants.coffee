@@ -8,8 +8,7 @@ app.constant('SERVER_EVENTS'
 )
 
 app.constant('USER_ROLES'
-  seller: 'admin_role'
-  simple: 'public_role'
+  guest: 'guest'
 )
 
 app.constant 'EVENTS',
@@ -24,8 +23,14 @@ app.constant 'ERROR_TYPES',
   HTTP: 'Http'
   TOKEN: 'Token'
   ANGULAR: 'Angular'
+  NATIVE_STORAGE: 'Native Storage'
 
-app.constant 'UPDATE_LOADED_SERVICES_INTERVAL', 'update_loaded_services_interval'
+app.constant(
+  'UPDATE_LOADED_SERVICES_INTERVAL',
+  'update_loaded_services_interval'
+)
+
+app.constant('STORAGE_KEYS', DEVICE_TOKEN: 'DEVICE_TOKEN')
 
 app.constant 'API_URL', '@@api_url'
 
@@ -44,4 +49,4 @@ app.constant 'GA_ID', '@@google_analytics_id'
 app.constant('$ionicLoadingConfig', {
   templateUrl: 'templates/components/loading.html'
   noBackdrop: 'false'
-});
+})
