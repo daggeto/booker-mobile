@@ -51,7 +51,6 @@ Raven.context( =>
     $ionicPlatform.ready =>
       LoggerService.init()
       GoogleAnalyticsService.init()
-      AppUpdateService.checkForUpdate()
 
       if ionic.Platform.isIOS()
         cordova.plugins.notification.local.registerPermission (granted) ->
@@ -83,8 +82,6 @@ Raven.context( =>
 
     $ionicPlatform.on 'resume', ->
       $rootScope.$emit(EVENTS.UPDATE_CURRENT_USER) if AuthService.isAuthenticated()
-
-      AppUpdateService.checkForUpdate()
 
       $rootScope.isAppInForeground = true
 
